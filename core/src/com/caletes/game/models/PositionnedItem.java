@@ -1,12 +1,13 @@
 package com.caletes.game.models;
 
+import com.badlogic.gdx.math.Vector3;
 import com.caletes.game.models.items.Item;
 
 public class PositionnedItem {
     private Item item;
-    private Coordinates3D position;
+    private Vector3 position;
 
-    public PositionnedItem(Item item, Coordinates3D position) {
+    public PositionnedItem(Item item, Vector3 position) {
         this.item = item;
         this.position = position;
     }
@@ -15,22 +16,22 @@ public class PositionnedItem {
         return item;
     }
 
-    public Coordinates3D getPosition() {
+    public Vector3 getPosition() {
         return position;
     }
 
     public static int compare(PositionnedItem item1, PositionnedItem item2) {
-        if (item1.getPosition().getZ() < item2.getPosition().getZ())
+        if (item1.getPosition().z < item2.getPosition().z)
             return -1;
-        if (item1.getPosition().getZ() > item2.getPosition().getZ())
+        if (item1.getPosition().z > item2.getPosition().z)
             return 1;
-        if (item1.getPosition().getY() < item2.getPosition().getY())
+        if (item1.getPosition().y < item2.getPosition().y)
             return 1;
-        if (item1.getPosition().getY() > item2.getPosition().getY())
+        if (item1.getPosition().y > item2.getPosition().y)
             return -1;
-        if (item1.getPosition().getX() < item2.getPosition().getX())
+        if (item1.getPosition().x < item2.getPosition().x)
             return -1;
-        if (item1.getPosition().getX() > item2.getPosition().getX())
+        if (item1.getPosition().x > item2.getPosition().x)
             return 1;
         return 0;
     }

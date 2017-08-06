@@ -2,8 +2,8 @@ package com.caletes.game.renderers;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.caletes.game.models.Coordinates2D;
-import com.caletes.game.models.Coordinates3D;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.caletes.game.models.PositionnedItem;
 import com.caletes.game.models.World;
 import com.caletes.game.models.items.Item;
@@ -17,6 +17,7 @@ public class IsometricWorldDrawer {
     private SpriteBatch batch;
 
     public IsometricWorldDrawer(World world, SpriteBatch batch) {
+        world.sortForDisplay();
         this.world = world;
         this.batch = batch;
     }
@@ -24,12 +25,18 @@ public class IsometricWorldDrawer {
     public void draw() {
         for (PositionnedItem positionnedItem : world) {
             Item item = positionnedItem.getItem();
-            Coordinates3D coordinates = positionnedItem.getPosition();
+            Vector3 coordinates = positionnedItem.getPosition();
             Sprite sprite = new Sprite(item.getTextureRegion());
-            Coordinates2D iso = coordinates.toIsometric(TILE_WIDTH, TILE_HEIGHT);
-            sprite.setPosition(iso.getX(), iso.getY());
+            Vector2 iso = toIsometric(coordinates, TILE_WIDTH, TILE_HEIGHT);
+            sprite.setPosition(iso.x, iso.y);
             sprite.draw(batch);
         }
+    }
+
+    public Vector2 toIsometric(Vector3 coordinates, float tileWidth, float tileheight) {
+        float isoX = (coordinates.x + coordinates.y) * tileWidth / 2;
+        float isoY = (coordinates.y - coordinates.x) * tileheight / 2 + coordinates.z * tileheight;
+        return new Vector2(isoX, isoY);
     }
 
 }
