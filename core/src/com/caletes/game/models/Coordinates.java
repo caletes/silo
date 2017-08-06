@@ -29,9 +29,10 @@ public class Coordinates {
     public Coordinates toIsometric(float tileWidth, float tileheight){
         float orthoX = getX();
         float orthoY = getY();
+        float orthoZ = getZ();
         float isoX = (orthoX + orthoY) * tileWidth / 2;
-        float isoY = (orthoY - orthoX) * tileheight / 2;
-        return new Coordinates(isoX, isoY, getZ());
+        float isoY = (orthoY - orthoX) * tileheight / 2 + z * tileheight;
+        return new Coordinates(isoX, isoY, 0);
     }
 
 }

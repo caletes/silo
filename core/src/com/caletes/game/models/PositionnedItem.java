@@ -20,8 +20,18 @@ public class PositionnedItem {
     }
 
     public static int compare(PositionnedItem item1, PositionnedItem item2) {
-        return  item1.getPosition().getX() > item2.getPosition().getX() ||
-                item1.getPosition().getY() < item2.getPosition().getY()
-                ? 1 : -1;
+        if (item1.getPosition().getZ() < item2.getPosition().getZ())
+            return -1;
+        if (item1.getPosition().getZ() > item2.getPosition().getZ())
+            return 1;
+        if (item1.getPosition().getY() < item2.getPosition().getY())
+            return 1;
+        if (item1.getPosition().getY() > item2.getPosition().getY())
+            return -1;
+        if (item1.getPosition().getX() < item2.getPosition().getX())
+            return -1;
+        if (item1.getPosition().getX() > item2.getPosition().getX())
+            return 1;
+        return 0;
     }
 }

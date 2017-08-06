@@ -8,9 +8,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.caletes.game.models.Coordinates;
 import com.caletes.game.models.World;
-import com.caletes.game.models.items.tiles.GrassTile;
-import com.caletes.game.models.items.tiles.GroundTile;
-import com.caletes.game.models.items.tiles.StoneTile;
+import com.caletes.game.models.items.cubes.GrassCube;
+import com.caletes.game.models.items.cubes.GroundCube;
+import com.caletes.game.models.items.cubes.StoneCube;
 import com.caletes.game.renderers.IsometricWorldDrawer;
 
 public class SiloGame extends ApplicationAdapter {
@@ -41,13 +41,16 @@ public class SiloGame extends ApplicationAdapter {
 
     private World createWorld() {
         World world = new World();
-        world.add(new GrassTile(), new Coordinates(1, 0, 0));
-        world.add(new GrassTile(), new Coordinates(0, 1, 0));
-        world.add(new GroundTile(), new Coordinates(0, 0, 0));
-        world.add(new GrassTile(), new Coordinates(1, 1, 0));
-        world.add(new StoneTile(), new Coordinates(2, 1, 0));
-        world.add(new StoneTile(), new Coordinates(2, 0, 0));
-        world.add(new GrassTile(), new Coordinates(1,2,0));
+        world.add(new GroundCube(), new Coordinates(0, 0, 1));
+        world.add(new GrassCube(), new Coordinates(1, 0, 0));
+        world.add(new StoneCube(), new Coordinates(2, 1, 0));
+        world.add(new GrassCube(), new Coordinates(0, 1, 0));
+        world.add(new GrassCube(), new Coordinates(1, 1, 0));
+        world.add(new GroundCube(), new Coordinates(2, 1, 1));
+        world.add(new GrassCube(), new Coordinates(1,2,0));
+        world.add(new StoneCube(), new Coordinates(2, 0, 0));
+        world.add(new GrassCube(), new Coordinates(0, 0, 2));
+        world.add(new GroundCube(), new Coordinates(0, 0, 0));
         return world;
     }
 
@@ -75,6 +78,12 @@ public class SiloGame extends ApplicationAdapter {
         }
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
             camera.translate(0, 3, 0);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.PAGE_UP)) {
+            camera.zoom = camera.zoom - 0.1f;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.PAGE_DOWN)) {
+            camera.zoom = camera.zoom + 0.1f;
         }
     }
 
