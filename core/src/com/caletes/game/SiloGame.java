@@ -6,7 +6,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.caletes.game.models.Coordinates;
+import com.caletes.game.models.Coordinates3D;
 import com.caletes.game.models.World;
 import com.caletes.game.models.items.cubes.GrassCube;
 import com.caletes.game.models.items.cubes.GroundCube;
@@ -41,16 +41,18 @@ public class SiloGame extends ApplicationAdapter {
 
     private World createWorld() {
         World world = new World();
-        world.add(new GroundCube(), new Coordinates(0, 0, 1));
-        world.add(new GrassCube(), new Coordinates(1, 0, 0));
-        world.add(new StoneCube(), new Coordinates(2, 1, 0));
-        world.add(new GrassCube(), new Coordinates(0, 1, 0));
-        world.add(new GrassCube(), new Coordinates(1, 1, 0));
-        world.add(new GroundCube(), new Coordinates(2, 1, 1));
-        world.add(new GrassCube(), new Coordinates(1,2,0));
-        world.add(new StoneCube(), new Coordinates(2, 0, 0));
-        world.add(new GrassCube(), new Coordinates(0, 0, 2));
-        world.add(new GroundCube(), new Coordinates(0, 0, 0));
+        world.add(new GroundCube(), new Coordinates3D(0, 0, 1));
+        world.add(new GrassCube(), new Coordinates3D(1, 0, 0));
+        world.add(new StoneCube(), new Coordinates3D(2, 1, 0));
+        world.add(new GrassCube(), new Coordinates3D(0, 1, 0));
+        world.add(new GrassCube(), new Coordinates3D(1, 1, 0));
+        world.add(new GroundCube(), new Coordinates3D(1,2,0));
+        world.add(new GroundCube(), new Coordinates3D(1, 2, 1));
+        world.add(new GrassCube(), new Coordinates3D(1, 2, 2));
+        world.add(new StoneCube(), new Coordinates3D(2, 0, 0));
+        world.add(new GrassCube(), new Coordinates3D(0, 0, 2));
+        world.add(new GrassCube(), new Coordinates3D(0, 2, 0));
+        world.add(new GroundCube(), new Coordinates3D(0, 0, 0));
         return world;
     }
 

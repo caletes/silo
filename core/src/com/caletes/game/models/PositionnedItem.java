@@ -4,9 +4,9 @@ import com.caletes.game.models.items.Item;
 
 public class PositionnedItem {
     private Item item;
-    private Coordinates position;
+    private Coordinates3D position;
 
-    public PositionnedItem(Item item, Coordinates position) {
+    public PositionnedItem(Item item, Coordinates3D position) {
         this.item = item;
         this.position = position;
     }
@@ -15,7 +15,7 @@ public class PositionnedItem {
         return item;
     }
 
-    public Coordinates getPosition() {
+    public Coordinates3D getPosition() {
         return position;
     }
 
