@@ -17,15 +17,15 @@ public class IsometricWorldDrawer {
     private SpriteBatch batch;
 
     public IsometricWorldDrawer(World world, SpriteBatch batch) {
-        world.sortForDisplay();
         this.world = world;
         this.batch = batch;
     }
 
     public void draw() {
+        world.sortForDisplay();
         for (PositionnedItem positionnedItem : world) {
             Item item = positionnedItem.getItem();
-            Vector3 coordinates = positionnedItem.getPosition();
+            Vector3 coordinates = positionnedItem.getDisplayPosition();
             Sprite sprite = new Sprite(item.getTextureRegion());
             Vector2 iso = toIsometric(coordinates, TILE_WIDTH, TILE_HEIGHT);
             sprite.setPosition(iso.x, iso.y);

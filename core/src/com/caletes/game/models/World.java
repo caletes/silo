@@ -8,21 +8,20 @@ import com.caletes.game.models.items.Item;
 import java.util.ArrayList;
 
 public class World extends ArrayList<PositionnedItem> {
-    public void add(Item item, Vector3 position){
+
+    private Vector2 origin = new Vector2(0, 0);
+
+    public void add(Item item, Vector3 position) {
         add(new PositionnedItem(item, position));
     }
 
-    public void sortForDisplay(){
+    public void sortForDisplay() {
         this.sort(PositionnedItem::compare);
     }
 
-    public void rotate(int dir){
+    public void rotate(Vector2 pivot, int dir) {
         for (PositionnedItem positionnedItem : this) {
-            Vector3 coordinates = positionnedItem.getPosition();
-            Vector2 vector = new Vector2(coordinates.x, coordinates.y);
-            vector.rotate90(dir);
-            coordinates.x = vector.x;
-            coordinates.y = vector.y;
+            positionnedItem.rotate(pivot, dir);
         }
     }
 }
