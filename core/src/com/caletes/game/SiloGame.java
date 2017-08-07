@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.caletes.game.models.World;
+import com.caletes.game.models.items.actors.Player;
 import com.caletes.game.models.items.cubes.GrassCube;
 import com.caletes.game.models.items.cubes.GroundCube;
 import com.caletes.game.models.items.cubes.StoneCube;
@@ -18,11 +19,14 @@ public class SiloGame extends ApplicationAdapter {
     SpriteBatch batch;
     OrthographicCamera camera;
     World world;
+    Player player;
     IsometricWorldDrawer drawer;
 
     @Override
     public void create() {
         world = createWorld();
+        player = new Player();
+        world.add(player, new Vector3(0,1,1));
         batch = new SpriteBatch();
         drawer = new IsometricWorldDrawer(world, batch);
         float viewportWidth = Gdx.graphics.getWidth();
@@ -97,6 +101,18 @@ public class SiloGame extends ApplicationAdapter {
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
             world.rotate(new Vector2(1, 1), -1);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.Q)) {
+            player.moveToLeft();
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+            player.moveToRight();
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.Z)) {
+            player.moveToUp();
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+            player.moveToDown();
         }
     }
 

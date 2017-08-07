@@ -9,8 +9,6 @@ import java.util.ArrayList;
 
 public class World extends ArrayList<PositionnedItem> {
 
-    private Vector2 origin = new Vector2(0, 0);
-
     public void add(Item item, Vector3 position) {
         add(new PositionnedItem(item, position));
     }
