@@ -16,10 +16,4 @@ public class World extends ArrayList<PositionnedItem> {
     public void sortForDisplay() {
         this.sort(PositionnedItem::compare);
     }
-
-    public void rotate(Vector2 pivot, int dir) {
-        for (PositionnedItem positionnedItem : this) {
-            positionnedItem.rotate(pivot, dir);
-        }
-    }
 }

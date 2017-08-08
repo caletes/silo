@@ -11,12 +11,10 @@ public class PositionnedItem {
     private static final int TILE_HEIGHT = 64;
     private Item item;
     private Vector3 position;
-    private Vector3 displayPosition;
 
     public PositionnedItem(Item item, Vector3 position) {
         this.item = item;
         this.position = position;
-        this.displayPosition = position;
         updateSpritePosition();
     }
 
@@ -28,43 +26,27 @@ public class PositionnedItem {
         return position;
     }
 
-    public Vector3 getDisplayPosition() {
-        return displayPosition;
-    }
-
-
     public static int compare(PositionnedItem item1, PositionnedItem item2) {
-        if (item1.getDisplayPosition().z < item2.getDisplayPosition().z)
+        if (item1.position.z < item2.position.z)
             return -1;
-        if (item1.getDisplayPosition().z > item2.getDisplayPosition().z)
+        if (item1.position.z > item2.position.z)
             return 1;
-        if (item1.getDisplayPosition().y < item2.getDisplayPosition().y)
+        if (item1.position.y < item2.position.y)
             return 1;
-        if (item1.getDisplayPosition().y > item2.getDisplayPosition().y)
+        if (item1.position.y > item2.position.y)
             return -1;
-        if (item1.getDisplayPosition().x < item2.getDisplayPosition().x)
+        if (item1.position.x < item2.position.x)
             return -1;
-        if (item1.getDisplayPosition().x > item2.getDisplayPosition().x)
+        if (item1.position.x > item2.position.x)
             return 1;
         return 0;
     }
 
-    public void rotate(Vector2 pivot, int dir) {
-        Vector3 position3D = this.getDisplayPosition();
-        Vector2 position2D = new Vector2(position3D.x, position3D.y);
-        position2D.x -= pivot.x;
-        position2D.y -= pivot.y;
-        position2D.rotate90(dir);
-        position2D.x += pivot.x;
-        position2D.y += pivot.y;
-        position3D.x = position2D.x;
-        position3D.y = position2D.y;
-        updateSpritePosition();
-    }
+
 
     private void updateSpritePosition() {
-        float isoX = (displayPosition.x + displayPosition.y) * TILE_WIDTH / 2;
-        float isoY = (displayPosition.y - displayPosition.x) * TILE_HEIGHT / 2 + displayPosition.z * TILE_HEIGHT;
+        float isoX = (position.x + position.y) * TILE_WIDTH / 2;
+        float isoY = (position.y - position.x) * TILE_HEIGHT / 2 + position.z * TILE_HEIGHT;
 
 
         Vector2 itemOrigin = item.getOrigin();
@@ -76,15 +58,8 @@ public class PositionnedItem {
         Vector2 itemOrigin = item.getOrigin();
         float x = item.getSprite().getX() + itemOrigin.x;
         float y = item.getSprite().getY() + itemOrigin.y;
-
         float mapX = 1 - (y / TILE_HEIGHT - x / TILE_WIDTH);
         float mapY = x / TILE_WIDTH + y / TILE_HEIGHT - 1;
-
-        displayPosition = new Vector3(Math.round(mapX), Math.round(mapY), position.z);
-
-        if (item instanceof Player) {
-
-            System.out.println(position);
-        }
+        position = new Vector3(Math.round(mapX), Math.round(mapY), position.z);
     }
 }
