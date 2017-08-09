@@ -1,9 +1,8 @@
 package com.caletes.game.renderers;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.caletes.game.models.PositionnedItem;
 import com.caletes.game.models.World;
+import com.caletes.game.models.items.Item;
 
 public class IsometricWorldDrawer {
 
@@ -17,10 +16,8 @@ public class IsometricWorldDrawer {
 
     public void draw() {
         world.sortForDisplay();
-        for (PositionnedItem positionnedItem : world) {
-            Sprite sprite = positionnedItem.getItem().getSprite();
-            positionnedItem.updatePosition();
-            sprite.draw(batch);
+        for (Item item : world) {
+            item.getSprite().draw(batch);
         }
     }
 
