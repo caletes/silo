@@ -1,24 +1,32 @@
 package com.caletes.game.octree;
 
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 //cf. http://pierre-benet.developpez.com/tutoriels/algorithme-3d/octree-morton/
 public class Octree {
 
-    private int exponent;
-    private int size;
+    private static final int DEFAULT_MAX_OBJECTS = 10;
 
-    private Octree[] children;
+    private final int exponent;
+    private final int maxObjects;
+    private List<Positionable3D> objects = new ArrayList<>();
+    private Octree[] children = null;
 
-    public Octree(int size) {
-        if (!isPowOf2(size)) {
-            throw new IllegalArgumentException("Octree size must be a power of 2");
-        }
-        this.size = size;
-        exponent = convertSizeToExponent(size);
+    public static Octree create(int size) {
+        return Octree.create(size, DEFAULT_MAX_OBJECTS);
     }
 
-    private boolean isPowOf2(int x) {
-        return (x != 0) && ((x & (x - 1)) == 0);
+    public static Octree create(int size, int maxObjects) {
+        return new Octree(convertSizeToExponent(size), maxObjects);
+    }
+
+    private Octree(int exponent, int maxObjects) {
+        this.exponent = exponent;
+        this.maxObjects = maxObjects;
     }
 
     public int getExponent() {
@@ -26,50 +34,80 @@ public class Octree {
     }
 
     public int getSize() {
-        return size;
+        return convertExponentToSize(exponent);
     }
 
-    private int convertSizeToExponent(int size) {
+    public List<Positionable3D> getObjects() {
+        return objects;
+    }
+
+    private static int convertSizeToExponent(int size) {
+        if (!isPowOf2(size)) {
+            throw new IllegalArgumentException(String.format("Octree size (%d) is not a power of 2", size));
+        }
         return (int) (Math.log(size) / Math.log(2));
     }
 
-
-    private Octree getChild(int x, int y, int z) throws PositionOutOfBounds {
-        Octree child = null;
-        if (children != null) {
-            child = children[getIndex(x, y, z)].getChild(x, y, z);
-        }
-        return child;
+    private static boolean isPowOf2(int x) {
+        return (x != 0) && ((x & (x - 1)) == 0);
     }
 
-    public int getIndex(int x, int y, int z) throws PositionOutOfBounds {
-        if (isOutOfBounds(x, y, z)) {
-            throw new PositionOutOfBounds(x, y, z);
+    private static int convertExponentToSize(int exponent) {
+        return (int) Math.pow(2, exponent);
+    }
+
+    public List<Positionable3D> findObjectsNear(int x, int y, int z) {
+        return getLeaf(x, y, z).objects;
+    }
+
+    public Octree getLeaf(int x, int y, int z) {
+        if (isLeaf()) {
+            return this;
         }
+        return children[getIndex(x, y, z)].getLeaf(x, y, z);
+    }
+
+    public int getIndex(Positionable3D object) {
+        return getIndex(object.getX(), object.getY(), object.getZ());
+    }
+
+    public int getIndex(int x, int y, int z) {
         int sub = exponent - 1;
         return ((x >> sub) & 1) + (((y >> sub) & 1) << 1) + (((z >> sub) & 1) << 2);
     }
 
-    private boolean isOutOfBounds(int x, int y, int z) {
-        return x < 0 || x >= size || y < 0 || y >= size || z < 0 || z >= size;
+    public void addObject(Positionable3D toAdd) {
+        objects.add(toAdd);
+        boolean leaf = isLeaf();
+        if (hasMaxObjectsExceeded() || !leaf) {
+            if (leaf) {
+                split();
+            }
+            for (Positionable3D object : objects) {
+                children[getIndex(object)].addObject(object);
+            }
+            objects.clear();
+        }
+    }
+
+    private boolean hasMaxObjectsExceeded() {
+        return objects.size() > maxObjects;
     }
 
     private void split() {
-        int childrenSize = size - 1;
+        int childrenExponent = exponent - 1;
         children = new Octree[8];
-        children[0] = new Octree(childrenSize);
-        children[1] = new Octree(childrenSize);
-        children[2] = new Octree(childrenSize);
-        children[3] = new Octree(childrenSize);
-        children[4] = new Octree(childrenSize);
-        children[5] = new Octree(childrenSize);
-        children[6] = new Octree(childrenSize);
-        children[7] = new Octree(childrenSize);
+        children[0] = new Octree(childrenExponent, maxObjects);
+        children[1] = new Octree(childrenExponent, maxObjects);
+        children[2] = new Octree(childrenExponent, maxObjects);
+        children[3] = new Octree(childrenExponent, maxObjects);
+        children[4] = new Octree(childrenExponent, maxObjects);
+        children[5] = new Octree(childrenExponent, maxObjects);
+        children[6] = new Octree(childrenExponent, maxObjects);
+        children[7] = new Octree(childrenExponent, maxObjects);
     }
 
-    public class PositionOutOfBounds extends Exception {
-        public PositionOutOfBounds(int x, int y, int z) {
-            super("point(" + x + "," + y + "," + z + ") is out of bounds");
-        }
+    public boolean isLeaf() {
+        return children == null;
     }
 }
