@@ -12,17 +12,26 @@ import com.caletes.game.models.items.actors.Player;
 import com.caletes.game.models.items.cubes.GrassCube;
 import com.caletes.game.models.items.cubes.GroundCube;
 import com.caletes.game.models.items.cubes.StoneCube;
+import com.caletes.game.quadtree.QuadTree;
+import com.caletes.game.quadtree.Fake2dObject;
 import com.caletes.game.renderers.IsometricWorldDrawer;
 
 public class SiloGame extends ApplicationAdapter {
-    SpriteBatch batch;
-    OrthographicCamera camera;
-    World world;
-    Player player;
-    IsometricWorldDrawer drawer;
+    private SpriteBatch batch;
+    private OrthographicCamera camera;
+    private World world;
+    private Player player;
+    private IsometricWorldDrawer drawer;
 
     @Override
     public void create() {
+        QuadTree tree = new QuadTree();
+        tree.insert(new Fake2dObject(1,1));
+        tree.insert(new Fake2dObject(1,2));
+        tree.insert(new Fake2dObject(4,4));
+        tree.insert(new Fake2dObject(4,5));
+        tree.insert(new Fake2dObject(4,6));
+        tree.insert(new Fake2dObject(4,7));
         world = createWorld();
         player = new Player();
         world.add(player, new Vector3(1, 0, 1));
