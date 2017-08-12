@@ -2,12 +2,12 @@ package com.caletes.game.octree;
 
 public class MortonCode {
 
-    public static final long MASK_1 = 0x1fffffL;
-    public static final long MASK_2 = 0x1f00000000ffffL;
-    public static final long MASK_3 = 0x1f0000ff0000ffL;
-    public static final long MASK_4 = 0x100f00f00f00f00fL;
-    public static final long MASK_5 = 0x10c30c30c30c30c3L;
-    public static final long MASK_6 = 0x1249249249249249L;
+    private static final long MASK_1 = 0x1fffffL;
+    private static final long MASK_2 = 0x1f00000000ffffL;
+    private static final long MASK_3 = 0x1f0000ff0000ffL;
+    private static final long MASK_4 = 0x100f00f00f00f00fL;
+    private static final long MASK_5 = 0x10c30c30c30c30c3L;
+    private static final long MASK_6 = 0x1249249249249249L;
 
     public static long pack(int x, int y, int z) {
         return splitBy3(x) | splitBy3(y) << 1 | splitBy3(z) << 2;

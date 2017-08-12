@@ -2,9 +2,7 @@ package com.caletes.game.octree;
 
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 //cf. http://pierre-benet.developpez.com/tutoriels/algorithme-3d/octree-morton/
 public class Octree {
@@ -73,7 +71,8 @@ public class Octree {
 
     public int getIndex(int x, int y, int z) {
         int sub = exponent - 1;
-        return ((x >> sub) & 1) + (((y >> sub) & 1) << 1) + (((z >> sub) & 1) << 2);
+        long mortonCode = MortonCode.pack(x, y, z);
+        return (int) (mortonCode >> 3 * sub) & 7;
     }
 
     public void addObject(Positionable3D toAdd) {
