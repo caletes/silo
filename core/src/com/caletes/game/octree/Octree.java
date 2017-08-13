@@ -10,7 +10,7 @@ public class Octree {
     private final int exponent;
     private List<Positionable3D> objects = new ArrayList<>();
     private Octree[] children = null;
-    
+
     public static Octree create(int size) {
         return new Octree(convertSizeToExponent(size));
     }
@@ -32,9 +32,8 @@ public class Octree {
     }
 
     private static int convertSizeToExponent(int size) {
-        if (!isPowOf2(size)) {
+        if (!isPowOf2(size))
             throw new IllegalArgumentException(String.format("Octree size (%d) is not a power of 2", size));
-        }
         return (int) (Math.log(size) / Math.log(2));
     }
 
@@ -51,14 +50,9 @@ public class Octree {
     }
 
     public Octree getLeaf(int x, int y, int z) {
-        if (isLeaf()) {
+        if (isLeaf())
             return this;
-        }
-        return children[getIndex(x, y, z)].getLeaf(x, y, z);
-    }
-
-    public int getIndex(Positionable3D object) {
-        return getIndex(object.getX(), object.getY(), object.getZ());
+        return getChildAt(x, y, z).getLeaf(x, y, z);
     }
 
     public int getIndex(int x, int y, int z) {
@@ -69,13 +63,16 @@ public class Octree {
 
     public void addObject(Positionable3D object) {
         if (!isFinalLeaf()) {
-            if (isLeaf()) {
+            if (isLeaf())
                 split();
-            }
-            children[getIndex(object)].addObject(object);
+            getChildAt(object.getX(), object.getY(), object.getZ()).addObject(object);
         } else {
             objects.add(object);
         }
+    }
+
+    private Octree getChildAt(int x, int y, int z) {
+        return children[getIndex(x, y, z)];
     }
 
     private void split() {
