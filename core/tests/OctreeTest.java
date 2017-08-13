@@ -1,4 +1,3 @@
-import com.caletes.game.octree.Item;
 import com.caletes.game.octree.Octree;
 import junit.framework.TestCase;
 import org.junit.Test;
@@ -6,11 +5,11 @@ import org.junit.Test;
 public class OctreeTest extends TestCase {
     @Test
     public void testComputeExponent() {
-        Octree octree = Octree.create(8);
+        Octree<String> octree = new Octree<>(8);
         assertEquals(3, octree.getExponent());
         assertEquals(8, octree.getSize());
 
-        Octree octree2 = Octree.create(256);
+        Octree<String> octree2 = new Octree<>(256);
         assertEquals(8, octree2.getExponent());
         assertEquals(256, octree2.getSize());
     }
@@ -18,7 +17,7 @@ public class OctreeTest extends TestCase {
     @Test
     public void testSizeNotPowOf2ThrowException() {
         try {
-            Octree.create(5);
+            new Octree<>(5);
         } catch (IllegalArgumentException e) {
             assertEquals("Octree size (5) is not a power of 2", e.getMessage());
         }
@@ -26,60 +25,40 @@ public class OctreeTest extends TestCase {
 
     @Test
     public void testGetIndex() {
-        Octree octree = Octree.create(256);
+        Octree<String> octree = new Octree<>(256);
         assertEquals(0, octree.getIndex(0, 0, 0));
         assertEquals(7, octree.getIndex(255, 255, 255));
     }
 
     @Test
-    public void testAddObject() {
-        Octree octree = Octree.create(8);
-        Item item = new Item("Item 1", 4, 5, 7);
-        octree.addObject(item);
-        assertEquals(1, octree.getLeaf(4, 5, 7).getObjects().size());
-        assertEquals("Item 1", ((Item) octree.findObjectsAt(4, 5, 7).get(0)).getName());
-
-    }
-
-    @Test
     public void testAddAndFindObjects() {
-        Octree octree = Octree.create(1024);
-        Item item1 = new Item("Item 1", 1, 3, 1);
-        Item item2 = new Item("Item 2", 4, 5, 7);
-        Item item3 = new Item("Item 3", 7, 7, 7);
-        Item item4 = new Item("Item 4", 4, 5, 5);
-        Item item5 = new Item("Item 5", 1023, 1023, 1023);
-        octree.addObject(item1);
-        octree.addObject(item2);
-        octree.addObject(item3);
-        octree.addObject(item4);
-        octree.addObject(item5);
-        assertEquals(0, octree.getObjects().size());
-        assertEquals(1, octree.findObjectsAt(1, 3, 1).size());
-        assertEquals(1, octree.findObjectsAt(4, 5, 7).size());
-        assertEquals(1, octree.findObjectsAt(4, 5, 5).size());
-        assertEquals(1, octree.findObjectsAt(7, 7, 7).size());
-        assertEquals(1, octree.findObjectsAt(1023, 1023, 1023).size());
-        assertEquals(0, octree.findObjectsAt(500, 500, 500).size());
+        Octree<String> octree = new Octree<>(1024);
+        octree.addObjectAt("Item 1", 1, 3, 1);
+        octree.addObjectAt("Item 2", 4, 5, 7);
+        octree.addObjectAt("Item 3", 7, 7, 7);
+        octree.addObjectAt("Item 4", 4, 5, 5);
+        octree.addObjectAt("Item 5", 1023, 1023, 1023);
 
-        assertEquals("Item 1", ((Item) octree.findObjectsAt(1, 3, 1).get(0)).getName());
-        assertEquals("Item 3", ((Item) octree.findObjectsAt(7, 7, 7).get(0)).getName());
-        assertEquals("Item 5", ((Item) octree.findObjectsAt(1023, 1023, 1023).get(0)).getName());
+        assertEquals("Item 1", octree.getObjectAt(1, 3, 1));
+        assertEquals("Item 2", octree.getObjectAt(4, 5, 7));
+        assertEquals("Item 3", octree.getObjectAt(7, 7, 7));
+        assertEquals("Item 4", octree.getObjectAt(4, 5, 5));
+        assertEquals("Item 5", octree.getObjectAt(1023, 1023, 1023));
     }
 
     @Test
-    public void testAddLotOfObjects() {
-        Octree octree = Octree.create(1024);
+    public void testOneMillionObjects() {
+        Octree<String> octree = new Octree(1024);
         int z = 1;
         for (int x = 0; x <= 1024; x++) {
             for (int y = 0; y <= 1024; y++) {
-                octree.addObject(new Item("Item " + x + "," + y + "," + z, x, y, z));
+                octree.addObjectAt("Item " + x + "," + y + "," + z, x, y, z);
             }
         }
         long startTime = System.currentTimeMillis();
-        assertEquals("Item 1,3,1", ((Item) octree.findObjectsAt(1, 3, 1).get(0)).getName());
-        assertEquals("Item 7,7,1", ((Item) octree.findObjectsAt(7, 7, 1).get(0)).getName());
-        assertEquals("Item 1023,1023,1", ((Item) octree.findObjectsAt(1023, 1023, 1).get(0)).getName());
+        assertEquals("Item 1,3,1", octree.getObjectAt(1, 3, 1));
+        assertEquals("Item 7,7,1", octree.getObjectAt(7, 7, 1));
+        assertEquals("Item 1023,1023,1", octree.getObjectAt(1023, 1023, 1));
         long endTime = System.currentTimeMillis();
         System.out.println(endTime - startTime + "ms");
     }
