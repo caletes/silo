@@ -3,14 +3,14 @@ import com.caletes.game.octree.Octree;
 import junit.framework.TestCase;
 import org.junit.Test;
 
-public class OctreeTest extends TestCase {
+public class IterativeOctreeTest extends TestCase {
     @Test
     public void testComputeExponent() {
-        Octree<String> octree = new Octree<>(8);
+        IterativeOctree<String> octree = new IterativeOctree<>(8);
         assertEquals(3, octree.getExponent());
         assertEquals(8, octree.getSize());
 
-        Octree<String> octree2 = new Octree<>(256);
+        IterativeOctree<String> octree2 = new IterativeOctree<>(256);
         assertEquals(8, octree2.getExponent());
         assertEquals(256, octree2.getSize());
     }
@@ -18,7 +18,7 @@ public class OctreeTest extends TestCase {
     @Test
     public void testSizeNotPowOf2ThrowException() {
         try {
-            new Octree<>(5);
+            new IterativeOctree<>(5);
         } catch (IllegalArgumentException e) {
             assertEquals("Octree size (5) is not a power of 2", e.getMessage());
         }
@@ -26,14 +26,14 @@ public class OctreeTest extends TestCase {
 
     @Test
     public void testGetIndex() {
-        Octree<String> octree = new Octree<>(256);
+        IterativeOctree<String> octree = new IterativeOctree<>(256);
         assertEquals(0, octree.getIndex(0, 0, 0));
         assertEquals(7, octree.getIndex(255, 255, 255));
     }
 
     @Test
     public void testPushAndGetObjects() {
-        Octree<String> octree = new Octree<>(1024);
+        IterativeOctree<String> octree = new IterativeOctree<>(1024);
         octree.pushObjectAt("Item 1", 1, 3, 1);
         octree.pushObjectAt("Item 2", 4, 5, 7);
         octree.pushObjectAt("Item 3", 7, 7, 7);
@@ -50,7 +50,7 @@ public class OctreeTest extends TestCase {
     @Test
     public void testOneMillionObjects() {
         long startTime = System.currentTimeMillis();
-        Octree<String> octree = new Octree(1024);
+        IterativeOctree<String> octree = new IterativeOctree(1024);
         int z = 1;
         for (int x = 0; x <= 1024; x++) {
             for (int y = 0; y <= 1024; y++) {
@@ -67,7 +67,7 @@ public class OctreeTest extends TestCase {
 
     @Test
     public void testPopObjectAt() {
-        Octree<String> octree = new Octree(1024);
+        IterativeOctree<String> octree = new IterativeOctree(1024);
         octree.pushObjectAt("Item 1", 567, 52, 345);
         assertEquals("Item 1", octree.getObjectAt(567, 52, 345));
         assertEquals("Item 1", octree.popObjectAt(567, 52, 345));

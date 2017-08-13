@@ -88,8 +88,11 @@ public class Node<T> {
     }
 
     public int getIndex(int x, int y, int z) {
+        return getIndex(MortonCode.pack(x, y, z));
+    }
+
+    public int getIndex(long mortonCode) {
         int sub = exponent - 1;
-        long mortonCode = MortonCode.pack(x, y, z);
         return (int) (mortonCode >> 3 * sub) & 7;
     }
 
