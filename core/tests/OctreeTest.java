@@ -36,13 +36,14 @@ public class OctreeTest extends TestCase {
         Octree octree = Octree.create(8);
         Item item = new Item("Item 1", 4, 5, 7);
         octree.addObject(item);
-        assertEquals(1, octree.getObjects().size());
+        assertEquals(1, octree.getLeaf(4, 5, 7).getObjects().size());
+        assertEquals("Item 1", ((Item)octree.findObjectsAt(4, 5, 7).get(0)).getName());
 
     }
 
     @Test
     public void testSplit() {
-        Octree octree = Octree.create(1024, 1);
+        Octree octree = Octree.create(1024);
         Item item1 = new Item("Item 1", 1, 3, 1);
         Item item2 = new Item("Item 2", 4, 5, 7);
         Item item3 = new Item("Item 3", 7, 7, 7);
@@ -54,15 +55,15 @@ public class OctreeTest extends TestCase {
         octree.addObject(item4);
         octree.addObject(item5);
         assertEquals(0, octree.getObjects().size());
-        assertEquals(1, octree.findObjectsNear(1, 3, 1).size());
-        assertEquals(1, octree.findObjectsNear(4, 5, 7).size());
-        assertEquals(1, octree.findObjectsNear(4, 5, 5).size());
-        assertEquals(1, octree.findObjectsNear(7, 7, 7).size());
-        assertEquals(1, octree.findObjectsNear(1023, 1023, 1023).size());
-        assertEquals(0, octree.findObjectsNear(500, 500, 500).size());
+        assertEquals(1, octree.findObjectsAt(1, 3, 1).size());
+        assertEquals(1, octree.findObjectsAt(4, 5, 7).size());
+        assertEquals(1, octree.findObjectsAt(4, 5, 5).size());
+        assertEquals(1, octree.findObjectsAt(7, 7, 7).size());
+        assertEquals(1, octree.findObjectsAt(1023, 1023, 1023).size());
+        assertEquals(0, octree.findObjectsAt(500, 500, 500).size());
 
-        assertEquals("Item 1", ((Item)octree.findObjectsNear(1, 3, 1).get(0)).getName());
-        assertEquals("Item 3", ((Item)octree.findObjectsNear(7, 7, 7).get(0)).getName());
-        assertEquals("Item 5", ((Item)octree.findObjectsNear(1023, 1023, 1023).get(0)).getName());
+        assertEquals("Item 1", ((Item)octree.findObjectsAt(1, 3, 1).get(0)).getName());
+        assertEquals("Item 3", ((Item)octree.findObjectsAt(7, 7, 7).get(0)).getName());
+        assertEquals("Item 5", ((Item)octree.findObjectsAt(1023, 1023, 1023).get(0)).getName());
     }
 }

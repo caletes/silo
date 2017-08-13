@@ -7,24 +7,16 @@ import java.util.List;
 //cf. http://pierre-benet.developpez.com/tutoriels/algorithme-3d/octree-morton/
 public class Octree {
 
-    private static final int DEFAULT_MAX_OBJECTS = 10;
-
     private final int exponent;
-    private final int maxObjects;
     private List<Positionable3D> objects = new ArrayList<>();
     private Octree[] children = null;
-
+    
     public static Octree create(int size) {
-        return Octree.create(size, DEFAULT_MAX_OBJECTS);
+        return new Octree(convertSizeToExponent(size));
     }
 
-    public static Octree create(int size, int maxObjects) {
-        return new Octree(convertSizeToExponent(size), maxObjects);
-    }
-
-    private Octree(int exponent, int maxObjects) {
+    private Octree(int exponent) {
         this.exponent = exponent;
-        this.maxObjects = maxObjects;
     }
 
     public int getExponent() {
@@ -54,7 +46,7 @@ public class Octree {
         return (int) Math.pow(2, exponent);
     }
 
-    public List<Positionable3D> findObjectsNear(int x, int y, int z) {
+    public List<Positionable3D> findObjectsAt(int x, int y, int z) {
         return getLeaf(x, y, z).objects;
     }
 
@@ -75,38 +67,35 @@ public class Octree {
         return (int) (mortonCode >> 3 * sub) & 7;
     }
 
-    public void addObject(Positionable3D toAdd) {
-        objects.add(toAdd);
-        boolean leaf = isLeaf();
-        if (hasMaxObjectsExceeded() || !leaf) {
-            if (leaf) {
+    public void addObject(Positionable3D object) {
+        if (!isFinalLeaf()) {
+            if (isLeaf()) {
                 split();
             }
-            for (Positionable3D object : objects) {
-                children[getIndex(object)].addObject(object);
-            }
-            objects.clear();
+            children[getIndex(object)].addObject(object);
+        } else {
+            objects.add(object);
         }
-    }
-
-    private boolean hasMaxObjectsExceeded() {
-        return objects.size() > maxObjects;
     }
 
     private void split() {
         int childrenExponent = exponent - 1;
         children = new Octree[8];
-        children[0] = new Octree(childrenExponent, maxObjects);
-        children[1] = new Octree(childrenExponent, maxObjects);
-        children[2] = new Octree(childrenExponent, maxObjects);
-        children[3] = new Octree(childrenExponent, maxObjects);
-        children[4] = new Octree(childrenExponent, maxObjects);
-        children[5] = new Octree(childrenExponent, maxObjects);
-        children[6] = new Octree(childrenExponent, maxObjects);
-        children[7] = new Octree(childrenExponent, maxObjects);
+        children[0] = new Octree(childrenExponent);
+        children[1] = new Octree(childrenExponent);
+        children[2] = new Octree(childrenExponent);
+        children[3] = new Octree(childrenExponent);
+        children[4] = new Octree(childrenExponent);
+        children[5] = new Octree(childrenExponent);
+        children[6] = new Octree(childrenExponent);
+        children[7] = new Octree(childrenExponent);
     }
 
     public boolean isLeaf() {
         return children == null;
+    }
+
+    public boolean isFinalLeaf() {
+        return exponent == 0;
     }
 }
