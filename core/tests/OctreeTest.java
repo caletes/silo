@@ -37,12 +37,12 @@ public class OctreeTest extends TestCase {
         Item item = new Item("Item 1", 4, 5, 7);
         octree.addObject(item);
         assertEquals(1, octree.getLeaf(4, 5, 7).getObjects().size());
-        assertEquals("Item 1", ((Item)octree.findObjectsAt(4, 5, 7).get(0)).getName());
+        assertEquals("Item 1", ((Item) octree.findObjectsAt(4, 5, 7).get(0)).getName());
 
     }
 
     @Test
-    public void testSplit() {
+    public void testAddAndFindObjects() {
         Octree octree = Octree.create(1024);
         Item item1 = new Item("Item 1", 1, 3, 1);
         Item item2 = new Item("Item 2", 4, 5, 7);
@@ -62,8 +62,25 @@ public class OctreeTest extends TestCase {
         assertEquals(1, octree.findObjectsAt(1023, 1023, 1023).size());
         assertEquals(0, octree.findObjectsAt(500, 500, 500).size());
 
-        assertEquals("Item 1", ((Item)octree.findObjectsAt(1, 3, 1).get(0)).getName());
-        assertEquals("Item 3", ((Item)octree.findObjectsAt(7, 7, 7).get(0)).getName());
-        assertEquals("Item 5", ((Item)octree.findObjectsAt(1023, 1023, 1023).get(0)).getName());
+        assertEquals("Item 1", ((Item) octree.findObjectsAt(1, 3, 1).get(0)).getName());
+        assertEquals("Item 3", ((Item) octree.findObjectsAt(7, 7, 7).get(0)).getName());
+        assertEquals("Item 5", ((Item) octree.findObjectsAt(1023, 1023, 1023).get(0)).getName());
+    }
+
+    @Test
+    public void testAddLotOfObjects() {
+        Octree octree = Octree.create(1024);
+        int z = 1;
+        for (int x = 0; x <= 1024; x++) {
+            for (int y = 0; y <= 1024; y++) {
+                octree.addObject(new Item("Item " + x + "," + y + "," + z, x, y, z));
+            }
+        }
+        long startTime = System.currentTimeMillis();
+        assertEquals("Item 1,3,1", ((Item) octree.findObjectsAt(1, 3, 1).get(0)).getName());
+        assertEquals("Item 7,7,1", ((Item) octree.findObjectsAt(7, 7, 1).get(0)).getName());
+        assertEquals("Item 1023,1023,1", ((Item) octree.findObjectsAt(1023, 1023, 1).get(0)).getName());
+        long endTime = System.currentTimeMillis();
+        System.out.println(endTime - startTime + "ms");
     }
 }
