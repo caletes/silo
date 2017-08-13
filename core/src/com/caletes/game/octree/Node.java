@@ -50,17 +50,11 @@ public class Node<T> {
         return getChildAt(x, y, z).getLeaf(x, y, z);
     }
 
-    public int getIndex(int x, int y, int z) {
-        int sub = exponent - 1;
-        long mortonCode = MortonCode.pack(x, y, z);
-        return (int) (mortonCode >> 3 * sub) & 7;
-    }
-
     public void pushObjectAt(T object, int x, int y, int z) {
         if (!isFinalLeaf()) {
             if (isLeaf())
                 split();
-            getChildAt(x, y, z).pushObjectAt(object, x, y, z);
+            getLeaf(x, y, z).pushObjectAt(object, x, y, z);
         } else {
             this.object = object;
         }
@@ -91,6 +85,12 @@ public class Node<T> {
 
     protected Node getChildAt(int x, int y, int z) {
         return children[getIndex(x, y, z)];
+    }
+
+    public int getIndex(int x, int y, int z) {
+        int sub = exponent - 1;
+        long mortonCode = MortonCode.pack(x, y, z);
+        return (int) (mortonCode >> 3 * sub) & 7;
     }
 
     protected void split() {
