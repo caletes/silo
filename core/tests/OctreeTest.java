@@ -31,13 +31,13 @@ public class OctreeTest extends TestCase {
     }
 
     @Test
-    public void testAddAndFindObjects() {
+    public void testPushAndGetObjects() {
         Octree<String> octree = new Octree<>(1024);
-        octree.addObjectAt("Item 1", 1, 3, 1);
-        octree.addObjectAt("Item 2", 4, 5, 7);
-        octree.addObjectAt("Item 3", 7, 7, 7);
-        octree.addObjectAt("Item 4", 4, 5, 5);
-        octree.addObjectAt("Item 5", 1023, 1023, 1023);
+        octree.pushObjectAt("Item 1", 1, 3, 1);
+        octree.pushObjectAt("Item 2", 4, 5, 7);
+        octree.pushObjectAt("Item 3", 7, 7, 7);
+        octree.pushObjectAt("Item 4", 4, 5, 5);
+        octree.pushObjectAt("Item 5", 1023, 1023, 1023);
 
         assertEquals("Item 1", octree.getObjectAt(1, 3, 1));
         assertEquals("Item 2", octree.getObjectAt(4, 5, 7));
@@ -52,7 +52,7 @@ public class OctreeTest extends TestCase {
         int z = 1;
         for (int x = 0; x <= 1024; x++) {
             for (int y = 0; y <= 1024; y++) {
-                octree.addObjectAt("Item " + x + "," + y + "," + z, x, y, z);
+                octree.pushObjectAt("Item " + x + "," + y + "," + z, x, y, z);
             }
         }
         long startTime = System.currentTimeMillis();
@@ -61,5 +61,15 @@ public class OctreeTest extends TestCase {
         assertEquals("Item 1023,1023,1", octree.getObjectAt(1023, 1023, 1));
         long endTime = System.currentTimeMillis();
         System.out.println(endTime - startTime + "ms");
+    }
+
+    @Test
+    public void testPopObjectAt() {
+        Octree<String> octree = new Octree(1024);
+        octree.pushObjectAt("Item 1", 567, 52, 345);
+        assertEquals("Item 1", octree.getObjectAt(567, 52, 345));
+        assertEquals("Item 1", octree.popObjectAt(567, 52, 345));
+        assertNull(octree.getObjectAt(567, 52, 345));
+        assertNull(octree.popObjectAt(567, 52, 345));
     }
 }

@@ -6,10 +6,16 @@ public class Node<T> {
 
     protected final int exponent;
     protected T object = null;
+    protected Node parent = null;
     protected Node[] children = null;
 
     protected Node(int exponent) {
+        this(exponent, null);
+    }
+
+    protected Node(int exponent, Node parent) {
         this.exponent = exponent;
+        this.parent = parent;
     }
 
     public int getExponent() {
@@ -50,14 +56,37 @@ public class Node<T> {
         return (int) (mortonCode >> 3 * sub) & 7;
     }
 
-    public void addObjectAt(T object, int x, int y, int z) {
+    public void pushObjectAt(T object, int x, int y, int z) {
         if (!isFinalLeaf()) {
             if (isLeaf())
                 split();
-            getChildAt(x, y, z).addObjectAt(object, x, y, z);
+            getChildAt(x, y, z).pushObjectAt(object, x, y, z);
         } else {
             this.object = object;
         }
+    }
+
+    public T popObjectAt(int x, int y, int z) {
+        Node leaf = getLeaf(x, y, z);
+        T object = (T) leaf.object;
+        leaf.object = null;
+        leaf.cleanBranch();
+        return object;
+    }
+
+    private void cleanBranch() {
+        if (!isRoot() && this.parent.allChildrenAreEmpty()) {
+            this.parent.cleanBranch();
+            this.parent = null;
+        }
+    }
+
+    private boolean allChildrenAreEmpty() {
+        for (Node child : children) {
+            if (child.object != null)
+                return false;
+        }
+        return true;
     }
 
     protected Node getChildAt(int x, int y, int z) {
@@ -67,14 +96,14 @@ public class Node<T> {
     protected void split() {
         int childrenExponent = exponent - 1;
         children = new Node[8];
-        children[0] = new Node(childrenExponent);
-        children[1] = new Node(childrenExponent);
-        children[2] = new Node(childrenExponent);
-        children[3] = new Node(childrenExponent);
-        children[4] = new Node(childrenExponent);
-        children[5] = new Node(childrenExponent);
-        children[6] = new Node(childrenExponent);
-        children[7] = new Node(childrenExponent);
+        children[0] = new Node(childrenExponent, this);
+        children[1] = new Node(childrenExponent, this);
+        children[2] = new Node(childrenExponent, this);
+        children[3] = new Node(childrenExponent, this);
+        children[4] = new Node(childrenExponent, this);
+        children[5] = new Node(childrenExponent, this);
+        children[6] = new Node(childrenExponent, this);
+        children[7] = new Node(childrenExponent, this);
     }
 
     public boolean isLeaf() {
@@ -83,5 +112,9 @@ public class Node<T> {
 
     public boolean isFinalLeaf() {
         return exponent == 0;
+    }
+
+    public boolean isRoot() {
+        return parent == null;
     }
 }
