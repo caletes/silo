@@ -1,12 +1,15 @@
 package com.caletes.game.octree;
 
+import java.util.Iterator;
+
 //cf. http://pierre-benet.developpez.com/tutoriels/algorithme-3d/octree-morton/
-public class Node<T> {
+public class Node<T> implements Iterable<Node> {
 
     protected final int exponent;
     protected T object = null;
     protected Node parent = null;
     protected Node[] children = null;
+    protected long mortonMax = 0;
 
     protected Node(int exponent) {
         this(exponent, null);
@@ -15,6 +18,8 @@ public class Node<T> {
     protected Node(int exponent, Node parent) {
         this.exponent = exponent;
         this.parent = parent;
+        int maxXYZ = getSize() - 1;
+        this.mortonMax = MortonCode.pack(maxXYZ, maxXYZ, maxXYZ);
     }
 
     public int getExponent() {
@@ -23,6 +28,10 @@ public class Node<T> {
 
     public int getSize() {
         return convertExponentToSize(exponent);
+    }
+
+    public T getObject() {
+        return object;
     }
 
     protected static int convertSizeToExponent(int size) {
@@ -122,6 +131,11 @@ public class Node<T> {
 
     public boolean isRoot() {
         return parent == null;
+    }
+
+    @Override
+    public Iterator<Node> iterator() {
+        return new NodeIterator(this, getSize());
     }
 
 }
