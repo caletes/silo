@@ -1,6 +1,5 @@
 package com.caletes.game.octree;
 
-
 //cf. http://pierre-benet.developpez.com/tutoriels/algorithme-3d/octree-morton/
 public class Node<T> {
 
@@ -37,31 +36,43 @@ public class Node<T> {
     }
 
     protected static int convertExponentToSize(int exponent) {
-        return (int) Math.pow(2, exponent);
+        return 1 << exponent; // 1*2^exponent;
     }
 
-    public T getObjectAt(int x, int y, int z) {
-        return (T) getLeaf(x, y, z).object;
-    }
-
-    public Node getLeaf(int x, int y, int z) {
-        if (isLeaf())
-            return this;
-        return getChildAt(x, y, z).getLeaf(x, y, z);
+    public Node getLeaf(long morton) {
+        Node node = this;
+        int childrenExponent = exponent;
+        while (!node.isLeaf()) {
+            morton += 1 << 3 * childrenExponent;
+            node = node.children[node.getIndex(morton)];
+            childrenExponent--;
+        }
+        return node;
     }
 
     public void pushObjectAt(T object, int x, int y, int z) {
+        long morton = MortonCode.pack(x, y, z);
+        pushObjectAt(object, morton);
+    }
+
+    public void pushObjectAt(T object, long morton) {
         if (!isFinalLeaf()) {
             if (isLeaf())
                 split();
-            getLeaf(x, y, z).pushObjectAt(object, x, y, z);
+            getLeaf(morton).pushObjectAt(object, morton);
         } else {
             this.object = object;
         }
     }
 
+    public T getObjectAt(int x, int y, int z) {
+        long morton = MortonCode.pack(x, y, z);
+        return (T) getLeaf(morton).object;
+    }
+
     public T popObjectAt(int x, int y, int z) {
-        Node leaf = getLeaf(x, y, z);
+        long morton = MortonCode.pack(x, y, z);
+        Node leaf = getLeaf(morton);
         T object = (T) leaf.object;
         leaf.object = null;
         leaf.cleanBranch();
@@ -83,17 +94,9 @@ public class Node<T> {
         return true;
     }
 
-    protected Node getChildAt(int x, int y, int z) {
-        return children[getIndex(x, y, z)];
-    }
-
-    public int getIndex(int x, int y, int z) {
-        return getIndex(MortonCode.pack(x, y, z));
-    }
-
-    public int getIndex(long mortonCode) {
-        int sub = exponent - 1;
-        return (int) (mortonCode >> 3 * sub) & 7;
+    public int getIndex(long morton) {
+        int childrenExponent = exponent - 1;
+        return (int) (morton >> 3 * childrenExponent) & 7;
     }
 
     protected void split() {
@@ -120,4 +123,5 @@ public class Node<T> {
     public boolean isRoot() {
         return parent == null;
     }
+
 }

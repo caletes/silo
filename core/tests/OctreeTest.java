@@ -1,4 +1,3 @@
-import com.caletes.game.octree.IterativeOctree;
 import com.caletes.game.octree.Octree;
 import junit.framework.TestCase;
 import org.junit.Test;
@@ -22,13 +21,6 @@ public class OctreeTest extends TestCase {
         } catch (IllegalArgumentException e) {
             assertEquals("Octree size (5) is not a power of 2", e.getMessage());
         }
-    }
-
-    @Test
-    public void testGetIndex() {
-        Octree<String> octree = new Octree<>(256);
-        assertEquals(0, octree.getIndex(0, 0, 0));
-        assertEquals(7, octree.getIndex(255, 255, 255));
     }
 
     @Test
