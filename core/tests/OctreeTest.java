@@ -1,4 +1,5 @@
 import com.caletes.game.octree.Node;
+import com.caletes.game.octree.NodeIterator;
 import com.caletes.game.octree.Octree;
 import junit.framework.TestCase;
 import org.junit.Test;
@@ -107,11 +108,11 @@ public class OctreeTest extends TestCase {
     public void testGetPosition() {
         Octree<String> octree = new Octree(256);
         octree.pushObjectAt("Item 0", 0, 0, 0);
-        Iterator<Node> it = octree.iterator();
+        NodeIterator it = octree.iterator();
         while (it.hasNext()) {
             Node node = it.next();
             if(node.isFinalLeaf()) {
-                System.out.println(node);
+                System.out.println(it.getPosition());
             }
         }
     }

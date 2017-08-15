@@ -9,7 +9,6 @@ public class Node<T> implements Iterable<Node> {
     protected T object = null;
     protected Node parent = null;
     protected Node[] children = null;
-    protected long mortonMax = 0;
 
     protected Node(int exponent) {
         this(exponent, null);
@@ -18,8 +17,6 @@ public class Node<T> implements Iterable<Node> {
     protected Node(int exponent, Node parent) {
         this.exponent = exponent;
         this.parent = parent;
-        int maxXYZ = getSize() - 1;
-        this.mortonMax = MortonCode.pack(maxXYZ, maxXYZ, maxXYZ);
     }
 
     public int getExponent() {
@@ -134,7 +131,7 @@ public class Node<T> implements Iterable<Node> {
     }
 
     @Override
-    public Iterator<Node> iterator() {
+    public NodeIterator iterator() {
         return new NodeIterator(this, getSize());
     }
 
