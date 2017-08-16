@@ -1,3 +1,4 @@
+import com.caletes.game.octree.MortonCode;
 import com.caletes.game.octree.Node;
 import com.caletes.game.octree.NodeIterator;
 import com.caletes.game.octree.Octree;
@@ -108,11 +109,14 @@ public class OctreeTest extends TestCase {
     public void testGetPosition() {
         Octree<String> octree = new Octree(256);
         octree.pushObjectAt("Item 0", 0, 0, 0);
+        octree.pushObjectAt("Item 1", 124, 12, 235);
         NodeIterator it = octree.iterator();
         while (it.hasNext()) {
             Node node = it.next();
             if(node.isFinalLeaf()) {
-                System.out.println(it.getPosition());
+                MortonCode.Vector3 position = node.getPosition();
+                System.out.println(position);
+                assertEquals(it.getPosition(),position);
             }
         }
     }

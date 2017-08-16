@@ -30,7 +30,6 @@ public class NodeIterator implements Iterator {
     }
 
     public MortonCode.Vector3 getPosition() {
-        //todo: vaut-il mieux que ce soit le node qui renvoi sa propre position ?
         return MortonCode.unpack(currentMorton);
     }
 }

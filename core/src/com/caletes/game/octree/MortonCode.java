@@ -50,5 +50,10 @@ public class MortonCode {
         public String toString() {
             return x + "," + y + "," + z;
         }
+
+        @Override
+        public boolean equals(Object obj) {
+            return this.toString().equals(obj.toString());
+        }
     }
 }
