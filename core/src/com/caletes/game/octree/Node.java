@@ -1,7 +1,5 @@
 package com.caletes.game.octree;
 
-import java.util.Iterator;
-
 //cf. http://pierre-benet.developpez.com/tutoriels/algorithme-3d/octree-morton/
 public class Node<T> implements Iterable<Node> {
 
@@ -47,11 +45,12 @@ public class Node<T> implements Iterable<Node> {
 
     public Node getLeaf(long morton) {
         Node node = this;
-        int childrenExponent = exponent;
+        int currentExponent = exponent;
         while (!node.isLeaf()) {
-            morton += 1 << 3 * childrenExponent;
-            node = node.children[node.getIndex(morton)];
-            childrenExponent--;
+            //morton de la feuille suivante
+            morton += 1 << 3 * currentExponent;
+            node = node.children[node.getIndex(morton, currentExponent - 1)];
+            currentExponent--;
         }
         return node;
     }
@@ -100,9 +99,13 @@ public class Node<T> implements Iterable<Node> {
         return true;
     }
 
-    public int getIndex(long morton) {
-        int childrenExponent = exponent - 1;
-        return (int) (morton >> 3 * childrenExponent) & 7;
+    public int getIndex(long morton, int exponent) {
+        return (int) (morton >> 3 * exponent) & 7;
+    }
+
+    //todo : implémenter l'invers de getIndex pour retrouver le morton du cube
+    public long getMorton(int index) {
+        return 0;
     }
 
     protected void split() {
