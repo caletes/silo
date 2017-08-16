@@ -47,12 +47,16 @@ public class Node<T> implements Iterable<Node> {
         Node node = this;
         int currentExponent = exponent;
         while (!node.isLeaf()) {
-            //morton de la feuille suivante
-            morton += 1 << 3 * currentExponent;
+            morton = getNextMorton(morton, currentExponent);
             node = node.children[node.getIndex(morton, currentExponent - 1)];
             currentExponent--;
         }
         return node;
+    }
+
+    public static long getNextMorton(long morton , int exponent){
+        morton += 1 << 3 * exponent;
+        return morton;
     }
 
     public void pushObjectAt(T object, int x, int y, int z) {

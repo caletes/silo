@@ -25,9 +25,7 @@ public class NodeIterator implements Iterator {
     public Node next() {
         currentMorton = morton;
         Node node = root.getLeaf(morton);
-        // si elle n'est pas finale, incrémenter de 8 pour passer au premier élément du cube parent suivant
-        //Todo à revoir il peut y avoir encore plus efficace en ne regardant que les leafs ?
-        morton = node.isFinalLeaf() ? morton + 1 : morton + 8;
+        morton = Node.getNextMorton(morton, node.exponent);
         return node;
     }
 
