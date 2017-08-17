@@ -7,6 +7,7 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.caletes.game.Camera;
 import com.caletes.game.SiloGame;
 import com.caletes.game.drawers.ItemDrawer;
 import com.caletes.game.models.World;
@@ -18,7 +19,7 @@ import com.caletes.game.models.items.cubes.StoneCube;
 public class GameScreen extends ScreenAdapter {
 
 
-    private OrthographicCamera camera;
+    private Camera camera;
     private World world;
 
     private ItemDrawer drawer;
@@ -29,12 +30,12 @@ public class GameScreen extends ScreenAdapter {
         //world = createWorld1();
         world = createWorld2();
         drawer = new ItemDrawer(world, batch);
-        camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera = new Camera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
     @Override
     public void render(float delta) {
-        handleInput();
+        camera.handleInput();
         camera.update();
         batch.setProjectionMatrix(camera.combined);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -82,26 +83,4 @@ public class GameScreen extends ScreenAdapter {
         camera.update();
     }
 
-    private void handleInput() {
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            camera.translate(-3, 0, 0);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            camera.translate(3, 0, 0);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            camera.translate(0, -3, 0);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            camera.translate(0, 3, 0);
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.PAGE_UP)) {
-            if (camera.zoom > 1)
-                camera.zoom = camera.zoom - 0.5f;
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.PAGE_DOWN)) {
-            if (camera.zoom < 2)
-                camera.zoom = camera.zoom + 0.5f;
-        }
-    }
 }
