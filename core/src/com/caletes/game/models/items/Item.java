@@ -1,5 +1,6 @@
 package com.caletes.game.models.items;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -27,6 +28,7 @@ public abstract class Item {
         Vector2 screenPosition = worldToScreenPosition(position);
         sprite.setPosition(screenPosition.x, screenPosition.y);
     }
+
     public void setSpritePosition(Vector2 position) {
         this.sprite.setPosition(position.x, position.y);
         this.position = screenToWorldPosition(position);
@@ -49,11 +51,12 @@ public abstract class Item {
     }
 
     private Vector2 worldToScreenPosition(Vector3 worldPosition) {
-        float isoX = (worldPosition.x + worldPosition.y) * TILE_WIDTH / 2;
-        float isoY = (worldPosition.y - worldPosition.x) * TILE_HEIGHT / 2 + worldPosition.z * TILE_HEIGHT;
+        float isoX = (worldPosition.x - worldPosition.y) * TILE_WIDTH / 2;
+        float isoY = (worldPosition.y + worldPosition.x) * -(TILE_HEIGHT / 2) + worldPosition.z * TILE_HEIGHT;
         Vector2 itemOrigin = getOrigin();
         return new Vector2(isoX - itemOrigin.x, isoY - itemOrigin.y);
     }
+
 
     public Vector3 screenToWorldPosition(Vector2 screenPosition) {
         Vector2 itemOrigin = getOrigin();
