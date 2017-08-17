@@ -15,11 +15,11 @@ import com.caletes.game.models.items.cubes.StoneCube;
 import com.caletes.game.renderers.IsometricWorldDrawer;
 
 public class SiloGame extends ApplicationAdapter {
-    SpriteBatch batch;
-    OrthographicCamera camera;
-    World world;
-    Player player;
-    IsometricWorldDrawer drawer;
+    private SpriteBatch batch;
+    private OrthographicCamera camera;
+    private World world;
+    private Player player;
+    private IsometricWorldDrawer drawer;
 
     @Override
     public void create() {
