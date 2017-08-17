@@ -1,13 +1,13 @@
 package com.caletes.game.models.items.cubes;
 
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.graphics.Texture;
 import com.caletes.game.models.items.Item;
 
-abstract class Cube extends Item {
+public abstract class Cube extends Item {
+
+    private static Texture texture = new Texture("basic_ground_tiles.png");
+
     protected Cube(int x, int y) {
-        super("basic_ground_tiles.png", x, y, 128,128);
-    }
-    public Vector2 getOrigin(){
-        return new Vector2(64, 96);
+        super(texture, x, y, 128, 128, 64, 96);
     }
 }
