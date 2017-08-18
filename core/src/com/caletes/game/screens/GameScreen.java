@@ -63,7 +63,7 @@ public class GameScreen extends ScreenAdapter {
     }
 
     private World createWorld2() {
-        int size = 64;
+        int size = 128;
         World world = new World(size);
         for (int x = 0; x < size; x++) {
             for (int y = 0; y < size; y++) {
