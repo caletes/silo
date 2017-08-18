@@ -2,13 +2,13 @@ package com.caletes.game.screens;
 
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.caletes.game.Camera;
+import com.caletes.game.HeightMap;
 import com.caletes.game.SiloGame;
+import com.caletes.game.WorldFromHeightMapGenerator;
 import com.caletes.game.drawers.ItemDrawer;
 import com.caletes.game.models.World;
 import com.caletes.game.models.items.cubes.Cube;
@@ -28,7 +28,8 @@ public class GameScreen extends ScreenAdapter {
     public GameScreen(SiloGame game) {
         batch = game.getBatch();
         //world = createWorld1();
-        world = createWorld2();
+        //world = createWorld2();
+        world = createWorld3();
         drawer = new ItemDrawer(world, batch);
         camera = new Camera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
@@ -67,13 +68,18 @@ public class GameScreen extends ScreenAdapter {
         World world = new World(size);
         for (int x = 0; x < size; x++) {
             for (int y = 0; y < size; y++) {
-                for (int z = 0; z < 3; z++) {
-                    Cube cube = z < 2 ? new GroundCube() : new GrassCube();
-                    world.pushObjectAt(cube, x, y, z);
+                for (int z = 0; z < 1; z++) {
+                    world.pushObjectAt(new GrassCube(), x, y, z);
                 }
             }
         }
         return world;
+    }
+
+    private World createWorld3() {
+        HeightMap heightMap = new HeightMap("assets/heightmap5.jpg", 9);
+        WorldFromHeightMapGenerator generator = new WorldFromHeightMapGenerator(heightMap);
+        return generator.generate();
     }
 
     @Override

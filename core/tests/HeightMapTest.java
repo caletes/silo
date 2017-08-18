@@ -1,6 +1,7 @@
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.GdxNativesLoader;
 import com.caletes.game.HeightMap;
+import com.caletes.game.WorldFromHeightMapGenerator;
 import junit.framework.TestCase;
 import org.junit.Test;
 
@@ -28,6 +29,15 @@ public class HeightMapTest extends TestCase {
         for (int x = 0; x < width; x++) {
             System.out.println(heightMap.getElevation(x, 1));
         }
+    }
 
+
+
+    @Test
+    public void testNextPowOf2() {
+        assertEquals(1, WorldFromHeightMapGenerator.nextPowOf2(0));
+        assertEquals(8, WorldFromHeightMapGenerator.nextPowOf2(8));
+        assertEquals(256, WorldFromHeightMapGenerator.nextPowOf2(200));
+        assertEquals(512, WorldFromHeightMapGenerator.nextPowOf2(450));
     }
 }

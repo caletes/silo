@@ -11,24 +11,28 @@ public class Camera extends OrthographicCamera {
 
     public void handleInput() {
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            translate(-3, 0, 0);
+            translate(-getSpeed(), 0, 0);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            translate(3, 0, 0);
+            translate(getSpeed(), 0, 0);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            translate(0, -3, 0);
+            translate(0, -getSpeed(), 0);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            translate(0, 3, 0);
+            translate(0, getSpeed(), 0);
         }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.PAGE_UP)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.PAGE_UP)) {
             if (zoom > 1)
                 zoom -= 0.5f;
         }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.PAGE_DOWN)) {
-            if (zoom < 2)
+        if (Gdx.input.isKeyPressed(Input.Keys.PAGE_DOWN)) {
+            if (zoom < 10)
                 zoom += 0.5f;
         }
+    }
+
+    private float getSpeed() {
+        return 3 * zoom;
     }
 }
