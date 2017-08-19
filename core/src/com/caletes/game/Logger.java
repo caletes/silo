@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class Logger {
     public static final int PADDING = 10;
     private static SpriteBatch batch;
-    private int screenWidth, screenHeight;
+    private int viewportWidth, viewportHeight;
     private int fps;
     private int[] cameraWorldPosition;
 
@@ -18,12 +18,12 @@ public class Logger {
         this.font = new BitmapFont();
     }
 
-    public void setScreenWidth(int screenWidth) {
-        this.screenWidth = screenWidth;
+    public void setViewportWidth(int viewportWidth) {
+        this.viewportWidth = viewportWidth;
     }
 
-    public void setScreenHeight(int screenHeight) {
-        this.screenHeight = screenHeight;
+    public void setViewportHeight(int viewportHeight) {
+        this.viewportHeight = viewportHeight;
     }
 
     public void setFps(int fps) {
@@ -37,7 +37,7 @@ public class Logger {
     public void render() {
         String message = fps + " fps";
         message += "\nCamera position " + cameraWorldPosition[0] + "," + cameraWorldPosition[1];
-        font.draw(batch, message, -screenWidth / 2 + PADDING, screenHeight / 2 - PADDING);
+        font.draw(batch, message, -viewportWidth / 2 + PADDING, viewportHeight / 2 - PADDING);
     }
 
 

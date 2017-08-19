@@ -20,9 +20,9 @@ public class GameScreen extends ScreenAdapter {
         this.batch = game.getBatch();
         this.logger = game.getLogger();
         this.world = createWorld();
-        this.drawer = new ItemDrawer(world, batch);
-        this.camera = new Camera(game.getWidth(), game.getHeight());
-        this.camera.setPositionToWorld(20, 32, 2);
+        this.camera = new Camera(game.getViewportWidth(), game.getViewportHeight());
+        this.camera.setPositionToWorld(40, 40, 2);
+        this.drawer = new ItemDrawer(world, batch, camera);
     }
 
     @Override
@@ -40,7 +40,7 @@ public class GameScreen extends ScreenAdapter {
         HeightMap heightMap = new HeightMap("assets/heightmap5.jpg", 6);
         WorldFromHeightMapGenerator generator = new WorldFromHeightMapGenerator(heightMap);
         World world = generator.generate();
-        world.pushObjectAt(new StoneCube(), 20, 32, 2);
+        world.pushObjectAt(new StoneCube(), 40, 40, 2);
         return world;
     }
 

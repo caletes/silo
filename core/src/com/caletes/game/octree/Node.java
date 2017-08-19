@@ -79,8 +79,11 @@ public class Node<T> implements Iterable<Node> {
     }
 
     public T getObjectAt(int x, int y, int z) {
-        long morton = MortonCode.pack(x, y, z);
-        return (T) getLeaf(morton).object;
+        return (T) getLeafAt(x, y, z).object;
+    }
+
+    public Node getLeafAt(int x, int y, int z) {
+        return getLeaf(MortonCode.pack(x, y, z));
     }
 
     public T popObjectAt(int x, int y, int z) {
@@ -154,6 +157,14 @@ public class Node<T> implements Iterable<Node> {
     @Override
     public NodeIterator iterator() {
         return new NodeIterator(this, getSize());
+    }
+
+    public Node substract(int x, int y, int z, int exponent) {
+        Node node = getLeafAt(x, y, z);
+        while (node.exponent < exponent) {
+            node = node.parent;
+        }
+        return node;
     }
 
 }

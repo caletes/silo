@@ -9,7 +9,7 @@ import com.caletes.game.screens.GameScreen;
 
 public class SiloGame extends Game {
 
-    private int width, height;
+    private int viewportWidth, viewportHeight;
     private static SpriteBatch batch;
     private static OrthographicCamera camera;
     private static Logger logger;
@@ -18,7 +18,7 @@ public class SiloGame extends Game {
     @Override
     public void create() {
         this.batch = new SpriteBatch();
-        this.camera = new OrthographicCamera(width, height);
+        this.camera = new OrthographicCamera(viewportWidth, viewportHeight);
         this.logger = new Logger(this.batch);
         this.setScreen(new GameScreen(this));
     }
@@ -48,24 +48,24 @@ public class SiloGame extends Game {
         return logger;
     }
 
-    public int getWidth() {
-        return width;
+    public int getViewportWidth() {
+        return viewportWidth;
     }
 
-    public int getHeight() {
-        return height;
+    public int getViewportHeight() {
+        return viewportHeight;
     }
 
     @Override
     public void resize(int width, int height) {
         super.resize(width, height);
-        this.width = width;
-        this.height = height;
+        this.viewportWidth = width;
+        this.viewportHeight = height;
         camera.viewportWidth = width;
         camera.viewportHeight = height;
         camera.update();
-        logger.setScreenWidth(width);
-        logger.setScreenHeight(height);
+        logger.setViewportWidth(width);
+        logger.setViewportHeight(height);
     }
 
 }
