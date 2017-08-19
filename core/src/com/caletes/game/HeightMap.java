@@ -36,7 +36,7 @@ public class HeightMap {
                 int pixel = pixmap.getPixel(x, y);
                 Color.rgba8888ToColor(color, pixel);
                 float intensity = (color.r + color.g + color.b) / 3;
-                mapHeights[x][y] = (int) (intensity * whiteHeight);
+                mapHeights[x][y] = Math.round(intensity * whiteHeight);
             }
         }
         return mapHeights;
