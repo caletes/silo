@@ -17,8 +17,8 @@ public class HeightMapTest extends TestCase {
         assertEquals(4, heightMap.getElevation(0, 1));
         assertEquals(3, heightMap.getElevation(1, 1));
         assertEquals(2, heightMap.getElevation(2, 1));
-        assertEquals(1, heightMap.getElevation(3, 1));
-        assertEquals(0, heightMap.getElevation(4, 1));
+        assertEquals(2, heightMap.getElevation(3, 1));
+        assertEquals(1, heightMap.getElevation(4, 1));
     }
 
     @Test
