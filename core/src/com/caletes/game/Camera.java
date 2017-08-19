@@ -10,30 +10,34 @@ public class Camera extends OrthographicCamera {
     private static final int ZOOM_MAX = 1;
     private static final int ZOOM_MIN = 10;
     private static final float ZOOM_VELOCITY = 0.25f;
+    private float previousX;
+    private float previousY;
+    private Direction direction = null;
 
     public Camera(float viewportWidth, float viewportHeight) {
         super(viewportWidth, viewportHeight);
+        previousX = position.x;
+        previousY = position.y;
     }
 
     public void handleInput() {
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            translate(-getVelocity(), 0, 0);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            translate(getVelocity(), 0, 0);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            translate(0, -getVelocity(), 0);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.UP))
             translate(0, getVelocity(), 0);
-        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
+            translate(getVelocity(), 0, 0);
+
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN))
+            translate(0, -getVelocity(), 0);
+
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT))
+            translate(-getVelocity(), 0, 0);
+
         if (Gdx.input.isKeyPressed(Input.Keys.PAGE_UP)) {
             if (zoom > ZOOM_MAX)
                 zoom -= ZOOM_VELOCITY;
             else zoom = ZOOM_MAX;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.PAGE_DOWN)) {
+        } else if (Gdx.input.isKeyPressed(Input.Keys.PAGE_DOWN)) {
             if (zoom < ZOOM_MIN)
                 zoom += ZOOM_VELOCITY;
             else
@@ -54,5 +58,23 @@ public class Camera extends OrthographicCamera {
         this.position.x = screenPosition[0];
         this.position.y = screenPosition[1];
         this.position.z = z;
+    }
+
+    @Override
+    public void update() {
+        super.update();
+        findDirection();
+    }
+
+    private void findDirection() {
+        float deltaX = position.x - previousX;
+        float deltaY = position.y - previousY;
+        direction = Direction.getFromDeltas(deltaX, deltaY);
+        previousX = position.x;
+        previousY = position.y;
+    }
+
+    public Direction getDirection() {
+        return direction;
     }
 }
