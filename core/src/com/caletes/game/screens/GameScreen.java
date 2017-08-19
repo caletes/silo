@@ -3,12 +3,10 @@ package com.caletes.game.screens;
 
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.caletes.game.Camera;
-import com.caletes.game.HeightMap;
-import com.caletes.game.SiloGame;
-import com.caletes.game.WorldFromHeightMapGenerator;
+import com.caletes.game.*;
 import com.caletes.game.drawers.ItemDrawer;
 import com.caletes.game.models.World;
+import com.caletes.game.models.items.cubes.StoneCube;
 
 public class GameScreen extends ScreenAdapter {
 
@@ -16,16 +14,20 @@ public class GameScreen extends ScreenAdapter {
     private static World world;
     private static ItemDrawer drawer;
     private static SpriteBatch batch;
+    private static Logger logger;
 
     public GameScreen(SiloGame game) {
-        batch = game.getBatch();
-        world = createWorld();
-        drawer = new ItemDrawer(world, batch);
-        camera = new Camera(game.getWidth(), game.getHeight());
+        this.batch = game.getBatch();
+        this.logger = game.getLogger();
+        this.world = createWorld();
+        this.drawer = new ItemDrawer(world, batch);
+        this.camera = new Camera(game.getWidth(), game.getHeight());
+        this.camera.setPositionToWorld(20, 32, 2);
     }
 
     @Override
     public void render(float delta) {
+        logger.setCameraWorldPosition(camera.getPositionFromWorld());
         camera.handleInput();
         camera.update();
         batch.setProjectionMatrix(camera.combined);
@@ -37,7 +39,9 @@ public class GameScreen extends ScreenAdapter {
     private World createWorld() {
         HeightMap heightMap = new HeightMap("assets/heightmap5.jpg", 6);
         WorldFromHeightMapGenerator generator = new WorldFromHeightMapGenerator(heightMap);
-        return generator.generate();
+        World world = generator.generate();
+        world.pushObjectAt(new StoneCube(), 20, 32, 2);
+        return world;
     }
 
     @Override
