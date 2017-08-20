@@ -1,5 +1,9 @@
 package com.caletes.game.octree;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 //cf. http://pierre-benet.developpez.com/tutoriels/algorithme-3d/octree-morton/
 public class Node<T> implements Iterable<Node> {
 
@@ -47,12 +51,16 @@ public class Node<T> implements Iterable<Node> {
     }
 
     public Node getLeaf(long morton) {
+        return getCube(morton, 0);
+    }
+
+    public Node getCube(long morton, int exponentToStop) {
         Node node = this;
         int currentExponent = exponent;
-        while (!node.isLeaf()) {
+        while (!node.isLeaf() && node.exponent != exponentToStop) {
             morton = getNextMorton(morton, currentExponent);
-            node = node.children[node.getIndex(morton, currentExponent - 1)];
             currentExponent--;
+            node = node.children[node.getIndex(morton, currentExponent)];
         }
         return node;
     }
@@ -129,6 +137,16 @@ public class Node<T> implements Iterable<Node> {
         return MortonCode.unpack(getMorton());
     }
 
+    /**
+     * ...6--------7
+     * ../|       /|
+     * ./ |      / |
+     * 4--------5  |
+     * |  2-----|--3
+     * | /      | /
+     * |/       |/
+     * 0--------1
+     */
     protected void split() {
         int childrenExponent = exponent - 1;
         children = new Node[8];
@@ -167,4 +185,60 @@ public class Node<T> implements Iterable<Node> {
         return node;
     }
 
+
+    public List<Node> withNeighbors() {
+        int size = getSize();
+        MortonCode.Vector3 position = getPosition();
+
+        List<Long> mortons = new ArrayList<>();
+
+        // todo comment fair une boucle avec ca ? 3*3*3=27 (x y z)
+        mortons.add(getMorton());//center
+        mortons.add(MortonCode.pack(position.x - 1, position.y, position.z));//left
+        mortons.add(MortonCode.pack(position.x - 1, position.y - 1, position.z));//top left
+        mortons.add(MortonCode.pack(position.x - 1, position.y + size, position.z));//bottom left
+        mortons.add(MortonCode.pack(position.x + size, position.y, position.z));//right
+        mortons.add(MortonCode.pack(position.x + size, position.y - 1, position.z));//top right
+        mortons.add(MortonCode.pack(position.x + size, position.y + size, position.z));//bottom right
+        mortons.add(MortonCode.pack(position.x, position.y - 1, position.z));//top
+        mortons.add(MortonCode.pack(position.x, position.y + size, position.z));//bottom
+
+        mortons.add(MortonCode.pack(position.x, position.y, position.z - 1));//center
+        mortons.add(MortonCode.pack(position.x - 1, position.y, position.z - 1));//left
+        mortons.add(MortonCode.pack(position.x - 1, position.y - 1, position.z - 1));//top left
+        mortons.add(MortonCode.pack(position.x - 1, position.y + size, position.z - 1));//bottom left
+        mortons.add(MortonCode.pack(position.x + size, position.y, position.z - 1));//right
+        mortons.add(MortonCode.pack(position.x + size, position.y - 1, position.z - 1));//top right
+        mortons.add(MortonCode.pack(position.x + size, position.y + size, position.z - 1));//bottom right
+        mortons.add(MortonCode.pack(position.x, position.y - 1, position.z - 1));//top
+        mortons.add(MortonCode.pack(position.x, position.y + size, position.z - 1));//bottom
+
+        mortons.add(MortonCode.pack(position.x, position.y, position.z + size));//center
+        mortons.add(MortonCode.pack(position.x - 1, position.y, position.z + size));//left
+        mortons.add(MortonCode.pack(position.x - 1, position.y - 1, position.z + size));//top left
+        mortons.add(MortonCode.pack(position.x - 1, position.y + size, position.z + size));//bottom left
+        mortons.add(MortonCode.pack(position.x + size, position.y, position.z + size));//right
+        mortons.add(MortonCode.pack(position.x + size, position.y - 1, position.z + size));//top right
+        mortons.add(MortonCode.pack(position.x + size, position.y + size, position.z + size));//bottom right
+        mortons.add(MortonCode.pack(position.x, position.y - 1, position.z + size));//top
+        mortons.add(MortonCode.pack(position.x, position.y + size, position.z + size));//bottom
+
+        //trier par morton code croissant
+        Collections.sort(mortons);
+        List<Node> neighbors = new ArrayList<>();
+        //todo : Optimisation rechercher le parent commun le plus proche ?
+        Node root = getRoot();
+        for (long morton : mortons) {
+            neighbors.add(root.getCube(morton, exponent));
+        }
+        return neighbors;
+    }
+
+    private Node getRoot() {
+        Node node = this;
+        while (!node.isRoot()) {
+            node = node.parent;
+        }
+        return node;
+    }
 }

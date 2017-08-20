@@ -113,11 +113,27 @@ public class OctreeTest extends TestCase {
         NodeIterator it = octree.iterator();
         while (it.hasNext()) {
             Node node = it.next();
-            if(node.isFinalLeaf()) {
+            if (node.isFinalLeaf()) {
                 MortonCode.Vector3 position = node.getPosition();
                 System.out.println(position);
-                assertEquals(it.getPosition(),position);
+                assertEquals(it.getPosition(), position);
             }
         }
     }
+
+
+    @Test
+    public void testFindNeightboors() {
+        Octree<String> octree = new Octree(4);
+        for (int x = 0; x < 4; x++) {
+            for (int y = 0; y < 4; y++) {
+                for (int z = 0; z < 4; z++) {
+                    octree.pushObjectAt("item " + x + "," + y + "," + z, x, y, z);
+                }
+            }
+        }
+
+
+    }
+
 }
