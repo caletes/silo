@@ -21,7 +21,7 @@ public class GameScreen extends ScreenAdapter {
         this.logger = game.getLogger();
         this.world = createWorld();
         this.camera = new Camera(game.getViewportWidth(), game.getViewportHeight());
-        this.camera.setPositionToWorld(40, 40, 8);
+        this.camera.setPositionToWorld(40, 40, 6);
         this.drawer = new ItemDrawer(world, batch, camera);
     }
 
@@ -37,10 +37,10 @@ public class GameScreen extends ScreenAdapter {
     }
 
     private World createWorld() {
-        HeightMap heightMap = new HeightMap("assets/heightmap1.jpg", 8);
+        HeightMap heightMap = new HeightMap("assets/heightmap512.jpg", 6);
         WorldFromHeightMapGenerator generator = new WorldFromHeightMapGenerator(heightMap);
         World world = generator.generate();
-        world.pushObjectAt(new StoneCube(), 40, 40, 8);
+        world.pushObjectAt(new StoneCube(), 40, 40, 6);
         return world;
     }
 

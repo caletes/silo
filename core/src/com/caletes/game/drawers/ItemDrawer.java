@@ -25,10 +25,10 @@ public class ItemDrawer implements Drawer {
 
     public void draw() {
         int[] cameraPosition = camera.getPositionFromWorld();
-        int substractExponent = Math.min(4,items.getExponent());
+        int substractExponent = Math.min(4, items.getExponent());
         Node sub = items.substract(cameraPosition[0], cameraPosition[1], (int) camera.position.z, substractExponent);
         List<Node> nodes = sub.withNeighbors();
-        for(Node octree:nodes) {
+        for (Node octree : nodes) {
             NodeIterator it = octree.iterator();
             while (it.hasNext()) {
                 Node<Cube> node = it.next();

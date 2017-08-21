@@ -1,7 +1,6 @@
 package com.caletes.game.octree;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 //cf. http://pierre-benet.developpez.com/tutoriels/algorithme-3d/octree-morton/
@@ -9,9 +8,12 @@ public class Node<T> implements Iterable<Node> {
 
     protected final int index;
     protected final int exponent;
+    protected int size;
     protected T object = null;
     protected Node parent = null;
     protected Node[] children = null;
+    protected Node root = null;
+    private Long mortonMax = null;
 
     protected Node(int exponent) {
         this(0, exponent, null);
@@ -28,7 +30,9 @@ public class Node<T> implements Iterable<Node> {
     }
 
     public int getSize() {
-        return convertExponentToSize(exponent);
+        if (size == 0)
+            size = convertExponentToSize(exponent);
+        return size;
     }
 
     public T getObject() {
@@ -63,6 +67,14 @@ public class Node<T> implements Iterable<Node> {
             node = node.children[node.getIndex(morton, currentExponent)];
         }
         return node;
+    }
+
+    public long getMortonMax() {
+        if (mortonMax == null) {
+            int maxXYZ = getSize() - 1;
+            mortonMax = MortonCode.pack(maxXYZ, maxXYZ, maxXYZ);
+        }
+        return mortonMax;
     }
 
     public static long getNextMorton(long morton, int exponent) {
@@ -138,6 +150,7 @@ public class Node<T> implements Iterable<Node> {
     }
 
     /**
+     * Disposition des fils au sein d'un noeud :
      * ...6--------7
      * ../|       /|
      * ./ |      / |
@@ -150,14 +163,9 @@ public class Node<T> implements Iterable<Node> {
     protected void split() {
         int childrenExponent = exponent - 1;
         children = new Node[8];
-        children[0] = new Node(0, childrenExponent, this);
-        children[1] = new Node(1, childrenExponent, this);
-        children[2] = new Node(2, childrenExponent, this);
-        children[3] = new Node(3, childrenExponent, this);
-        children[4] = new Node(4, childrenExponent, this);
-        children[5] = new Node(5, childrenExponent, this);
-        children[6] = new Node(6, childrenExponent, this);
-        children[7] = new Node(7, childrenExponent, this);
+        for (int i = 0; i < 8; i++) {
+            children[i] = new Node(i, childrenExponent, this);
+        }
     }
 
     public boolean isLeaf() {
@@ -174,7 +182,7 @@ public class Node<T> implements Iterable<Node> {
 
     @Override
     public NodeIterator iterator() {
-        return new NodeIterator(this, getSize());
+        return new NodeIterator(this);
     }
 
     public Node substract(int x, int y, int z, int exponent) {
@@ -185,60 +193,36 @@ public class Node<T> implements Iterable<Node> {
         return node;
     }
 
-
     public List<Node> withNeighbors() {
-        int size = getSize();
-        MortonCode.Vector3 position = getPosition();
-
-        List<Long> mortons = new ArrayList<>();
-
-        // todo comment fair une boucle avec ca ? 3*3*3=27 (x y z)
-        mortons.add(getMorton());//center
-        mortons.add(MortonCode.pack(position.x - 1, position.y, position.z));//left
-        mortons.add(MortonCode.pack(position.x - 1, position.y - 1, position.z));//top left
-        mortons.add(MortonCode.pack(position.x - 1, position.y + size, position.z));//bottom left
-        mortons.add(MortonCode.pack(position.x + size, position.y, position.z));//right
-        mortons.add(MortonCode.pack(position.x + size, position.y - 1, position.z));//top right
-        mortons.add(MortonCode.pack(position.x + size, position.y + size, position.z));//bottom right
-        mortons.add(MortonCode.pack(position.x, position.y - 1, position.z));//top
-        mortons.add(MortonCode.pack(position.x, position.y + size, position.z));//bottom
-
-        mortons.add(MortonCode.pack(position.x, position.y, position.z - 1));//center
-        mortons.add(MortonCode.pack(position.x - 1, position.y, position.z - 1));//left
-        mortons.add(MortonCode.pack(position.x - 1, position.y - 1, position.z - 1));//top left
-        mortons.add(MortonCode.pack(position.x - 1, position.y + size, position.z - 1));//bottom left
-        mortons.add(MortonCode.pack(position.x + size, position.y, position.z - 1));//right
-        mortons.add(MortonCode.pack(position.x + size, position.y - 1, position.z - 1));//top right
-        mortons.add(MortonCode.pack(position.x + size, position.y + size, position.z - 1));//bottom right
-        mortons.add(MortonCode.pack(position.x, position.y - 1, position.z - 1));//top
-        mortons.add(MortonCode.pack(position.x, position.y + size, position.z - 1));//bottom
-
-        mortons.add(MortonCode.pack(position.x, position.y, position.z + size));//center
-        mortons.add(MortonCode.pack(position.x - 1, position.y, position.z + size));//left
-        mortons.add(MortonCode.pack(position.x - 1, position.y - 1, position.z + size));//top left
-        mortons.add(MortonCode.pack(position.x - 1, position.y + size, position.z + size));//bottom left
-        mortons.add(MortonCode.pack(position.x + size, position.y, position.z + size));//right
-        mortons.add(MortonCode.pack(position.x + size, position.y - 1, position.z + size));//top right
-        mortons.add(MortonCode.pack(position.x + size, position.y + size, position.z + size));//bottom right
-        mortons.add(MortonCode.pack(position.x, position.y - 1, position.z + size));//top
-        mortons.add(MortonCode.pack(position.x, position.y + size, position.z + size));//bottom
-
-        //trier par morton code croissant
-        Collections.sort(mortons);
         List<Node> neighbors = new ArrayList<>();
-        //todo : Optimisation rechercher le parent commun le plus proche ?
-        Node root = getRoot();
-        for (long morton : mortons) {
-            neighbors.add(root.getCube(morton, exponent));
+        for (Direction direction : Direction.values()) {
+            neighbors.add(getNextOn(direction));
         }
         return neighbors;
     }
 
+    public Node getNextOn(Direction direction) {
+        return getRoot().getCube(getNextMortonOn(direction), exponent);
+    }
+
+    public long getNextMortonOn(Direction direction) {
+        Direction.Delta delta = direction.getDelta();
+        int size = getSize();
+        int x = delta.x > 0 ? size : delta.x;
+        int y = delta.y > 0 ? size : delta.y;
+        int z = delta.z > 0 ? size : delta.z;
+        MortonCode.Vector3 position = getPosition();
+        return MortonCode.pack(position.x + x, position.y + y, position.z + z);
+    }
+
     private Node getRoot() {
-        Node node = this;
-        while (!node.isRoot()) {
-            node = node.parent;
+        if (root == null) {
+            Node node = this;
+            while (!node.isRoot()) {
+                node = node.parent;
+            }
+            root = node;
         }
-        return node;
+        return root;
     }
 }

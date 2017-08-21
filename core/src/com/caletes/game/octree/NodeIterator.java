@@ -10,10 +10,9 @@ public class NodeIterator implements Iterator {
     private long currentMorton = 0;
     private long mortonMax = 0;
 
-    public NodeIterator(Node node, int size) {
+    public NodeIterator(Node node) {
         this.root = node;
-        int maxXYZ = size - 1;
-        this.mortonMax = MortonCode.pack(maxXYZ, maxXYZ, maxXYZ);
+        this.mortonMax = node.getMortonMax();
     }
 
     @Override
