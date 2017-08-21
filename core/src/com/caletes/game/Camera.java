@@ -10,14 +10,9 @@ public class Camera extends OrthographicCamera {
     private static final int ZOOM_MAX = 1;
     private static final int ZOOM_MIN = 10;
     private static final float ZOOM_VELOCITY = 0.25f;
-    private float previousX;
-    private float previousY;
-    private Direction direction = null;
 
     public Camera(float viewportWidth, float viewportHeight) {
         super(viewportWidth, viewportHeight);
-        previousX = position.x;
-        previousY = position.y;
     }
 
     public void handleInput() {
@@ -83,18 +78,5 @@ public class Camera extends OrthographicCamera {
     @Override
     public void update() {
         super.update();
-        findDirection();
-    }
-
-    private void findDirection() {
-        float deltaX = position.x - previousX;
-        float deltaY = position.y - previousY;
-        direction = Direction.getFromDeltas(deltaX, deltaY);
-        previousX = position.x;
-        previousY = position.y;
-    }
-
-    public Direction getDirection() {
-        return direction;
     }
 }
