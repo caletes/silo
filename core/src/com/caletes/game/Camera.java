@@ -16,14 +16,23 @@ public class Camera extends OrthographicCamera {
     }
 
     public void handleInput() {
-        if (Gdx.input.isKeyPressed(Input.Keys.UP))
-            moveUp();
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
-            moveRight();
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN))
-            moveDown();
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT))
-            moveLeft();
+        if (Gdx.input.isKeyPressed(Input.Keys.UP) && Gdx.input.isKeyPressed(Input.Keys.RIGHT))
+            moveToNorthEast();
+        else if (Gdx.input.isKeyPressed(Input.Keys.UP) && Gdx.input.isKeyPressed(Input.Keys.LEFT))
+            moveToNorthWest();
+        else if (Gdx.input.isKeyPressed(Input.Keys.DOWN) && Gdx.input.isKeyPressed(Input.Keys.RIGHT))
+            moveToSouthEast();
+        else if (Gdx.input.isKeyPressed(Input.Keys.DOWN) && Gdx.input.isKeyPressed(Input.Keys.LEFT))
+            moveToSouthWest();
+        else if (Gdx.input.isKeyPressed(Input.Keys.UP))
+            moveToNorth();
+        else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
+            moveToEast();
+        else if (Gdx.input.isKeyPressed(Input.Keys.DOWN))
+            moveToSouth();
+        else if (Gdx.input.isKeyPressed(Input.Keys.LEFT))
+            moveToWest();
+
         if (Gdx.input.isKeyPressed(Input.Keys.PAGE_UP)) {
             zoomOut();
         } else if (Gdx.input.isKeyPressed(Input.Keys.PAGE_DOWN)) {
@@ -31,22 +40,38 @@ public class Camera extends OrthographicCamera {
         }
     }
 
-    private void moveUp() {
+    private void moveToNorth() {
         translate(0, getVelocity(), 0);
     }
 
-    private void moveRight() {
+    private void moveToNorthEast() {
+        translate(getVelocity(), getVelocity() / 2, 0);
+    }
+
+    private void moveToEast() {
         translate(getVelocity(), 0, 0);
     }
 
-    private void moveDown() {
+    private void moveToSouthEast() {
+        translate(getVelocity(), -getVelocity() / 2, 0);
+    }
+
+    private void moveToSouth() {
         translate(0, -getVelocity(), 0);
     }
 
-    private void moveLeft() {
+    private void moveToSouthWest() {
+        translate(-getVelocity(), -getVelocity() / 2, 0);
+    }
+
+    private void moveToWest() {
         translate(-getVelocity(), 0, 0);
     }
 
+    private void moveToNorthWest() {
+        translate(-getVelocity(), getVelocity() / 2, 0);
+    }
+    
     private void zoomIn() {
         if (zoom < ZOOM_MIN)
             zoom += ZOOM_VELOCITY;
