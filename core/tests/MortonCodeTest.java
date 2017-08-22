@@ -22,4 +22,17 @@ public class MortonCodeTest extends TestCase {
         assertEquals("100001,100002,100003", MortonCode.unpack(2216623912222773L).toString());
         assertEquals("100001,12,4007", MortonCode.unpack(316699826095525L).toString());
     }
+
+    @Test
+    public void testNeighboors(){
+        System.out.println(MortonCode.pack(1,0,0));
+        System.out.println(MortonCode.pack(2,0,0));
+        System.out.println(MortonCode.pack(3,0,0));
+        System.out.println(MortonCode.pack(1,1,0));
+        System.out.println(MortonCode.pack(2,1,0));
+        System.out.println(MortonCode.pack(3,1,0));
+        System.out.println(MortonCode.pack(1,2,0));
+        System.out.println(MortonCode.pack(2,2,0));
+        System.out.println(MortonCode.pack(3,2,0));
+    }
 }

@@ -1,7 +1,4 @@
-import com.caletes.game.octree.MortonCode;
-import com.caletes.game.octree.Node;
-import com.caletes.game.octree.NodeIterator;
-import com.caletes.game.octree.Octree;
+import com.caletes.game.octree.*;
 import junit.framework.TestCase;
 import org.junit.Test;
 
@@ -48,8 +45,8 @@ public class OctreeTest extends TestCase {
     public void testOneMillionObjects() {
         Octree<String> octree = new Octree(1024);
         int z = 1;
-        for (int x = 0; x <= 1024; x++) {
-            for (int y = 0; y <= 1024; y++) {
+        for (int x = 0; x < 1024; x++) {
+            for (int y = 0; y < 1024; y++) {
                 octree.pushObjectAt("Item " + x + "," + y + "," + z, x, y, z);
             }
         }
@@ -113,11 +110,57 @@ public class OctreeTest extends TestCase {
         NodeIterator it = octree.iterator();
         while (it.hasNext()) {
             Node node = it.next();
-            if(node.isFinalLeaf()) {
+            if (node.isFinalLeaf()) {
                 MortonCode.Vector3 position = node.getPosition();
                 System.out.println(position);
-                assertEquals(it.getPosition(),position);
+                assertEquals(it.getPosition(), position);
             }
         }
     }
+
+
+    @Test
+    public void testFindNeightboors() {
+        Octree<String> octree = new Octree(4);
+        for (int x = 0; x < 4; x++) {
+            for (int y = 0; y < 4; y++) {
+                for (int z = 0; z < 4; z++) {
+                    octree.pushObjectAt("Item " + x + y + z, x, y, z);
+                }
+            }
+        }
+        Node start = octree.getLeafAt(2, 2, 2);
+        assertEquals("Item 113", start.getNextOn(Direction.BOTTOM_NORTH_WEST).getObject());
+        assertEquals("Item 213", start.getNextOn(Direction.BOTTOM_NORTH).getObject());
+        assertEquals("Item 313", start.getNextOn(Direction.BOTTOM_NORTH_EAST).getObject());
+        assertEquals("Item 123", start.getNextOn(Direction.BOTTOM_WEST).getObject());
+        assertEquals("Item 223", start.getNextOn(Direction.BOTTOM).getObject());
+        assertEquals("Item 323", start.getNextOn(Direction.BOTTOM_EAST).getObject());
+        assertEquals("Item 133", start.getNextOn(Direction.BOTTOM_SOUTH_WEST).getObject());
+        assertEquals("Item 233", start.getNextOn(Direction.BOTTOM_SOUTH).getObject());
+        assertEquals("Item 333", start.getNextOn(Direction.BOTTOM_SOUTH_EAST).getObject());
+        assertEquals("Item 112", start.getNextOn(Direction.NORTH_WEST).getObject());
+        assertEquals("Item 212", start.getNextOn(Direction.NORTH).getObject());
+        assertEquals("Item 312", start.getNextOn(Direction.NORTH_EAST).getObject());
+        assertEquals("Item 122", start.getNextOn(Direction.WEST).getObject());
+        assertEquals("Item 222", start.getNextOn(Direction.NONE).getObject());
+        assertEquals("Item 322", start.getNextOn(Direction.EAST).getObject());
+        assertEquals("Item 132", start.getNextOn(Direction.SOUTH_WEST).getObject());
+        assertEquals("Item 232", start.getNextOn(Direction.SOUTH).getObject());
+        assertEquals("Item 332", start.getNextOn(Direction.SOUTH_EAST).getObject());
+        assertEquals("Item 111", start.getNextOn(Direction.TOP_NORTH_WEST).getObject());
+        assertEquals("Item 211", start.getNextOn(Direction.TOP_NORTH).getObject());
+        assertEquals("Item 311", start.getNextOn(Direction.TOP_NORTH_EAST).getObject());
+        assertEquals("Item 121", start.getNextOn(Direction.TOP_WEST).getObject());
+        assertEquals("Item 221", start.getNextOn(Direction.TOP).getObject());
+        assertEquals("Item 321", start.getNextOn(Direction.TOP_EAST).getObject());
+        assertEquals("Item 131", start.getNextOn(Direction.TOP_SOUTH_WEST).getObject());
+        assertEquals("Item 231", start.getNextOn(Direction.TOP_SOUTH).getObject());
+        assertEquals("Item 331", start.getNextOn(Direction.TOP_SOUTH_EAST).getObject());
+
+        Node end = start.getNextOn(Direction.NORTH).getNextOn(Direction.EAST).getNextOn(Direction.TOP).getNextOn(Direction.TOP_NORTH_WEST).getNextOn(Direction.SOUTH);
+        assertEquals("Item 210", end.getObject());
+
+    }
+
 }

@@ -16,29 +16,48 @@ public class Camera extends OrthographicCamera {
     }
 
     public void handleInput() {
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            translate(-getVelocity(), 0, 0);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            translate(getVelocity(), 0, 0);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            translate(0, -getVelocity(), 0);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            translate(0, getVelocity(), 0);
-        }
+        if (Gdx.input.isKeyPressed(Input.Keys.UP))
+            moveUp();
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
+            moveRight();
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN))
+            moveDown();
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT))
+            moveLeft();
         if (Gdx.input.isKeyPressed(Input.Keys.PAGE_UP)) {
-            if (zoom > ZOOM_MAX)
-                zoom -= ZOOM_VELOCITY;
-            else zoom = ZOOM_MAX;
+            zoomOut();
+        } else if (Gdx.input.isKeyPressed(Input.Keys.PAGE_DOWN)) {
+            zoomIn();
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.PAGE_DOWN)) {
-            if (zoom < ZOOM_MIN)
-                zoom += ZOOM_VELOCITY;
-            else
-                zoom = ZOOM_MIN;
-        }
+    }
+
+    private void moveUp() {
+        translate(0, getVelocity(), 0);
+    }
+
+    private void moveRight() {
+        translate(getVelocity(), 0, 0);
+    }
+
+    private void moveDown() {
+        translate(0, -getVelocity(), 0);
+    }
+
+    private void moveLeft() {
+        translate(-getVelocity(), 0, 0);
+    }
+
+    private void zoomIn() {
+        if (zoom < ZOOM_MIN)
+            zoom += ZOOM_VELOCITY;
+        else
+            zoom = ZOOM_MIN;
+    }
+
+    private void zoomOut() {
+        if (zoom > ZOOM_MAX)
+            zoom -= ZOOM_VELOCITY;
+        else zoom = ZOOM_MAX;
     }
 
     private float getVelocity() {
@@ -54,5 +73,10 @@ public class Camera extends OrthographicCamera {
         this.position.x = screenPosition[0];
         this.position.y = screenPosition[1];
         this.position.z = z;
+    }
+
+    @Override
+    public void update() {
+        super.update();
     }
 }
