@@ -3,6 +3,6 @@ package com.caletes.game.models.items.cubes;
 
 public class GroundCube extends Cube {
     public GroundCube() {
-        super(384, 0);
+        super(3, 0);
     }
 }
