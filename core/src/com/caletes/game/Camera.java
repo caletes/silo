@@ -6,9 +6,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 
 public class Camera extends OrthographicCamera {
 
-    private static final int TRANSLATION_VELOCITY = 5;
+    private static final int TRANSLATION_VELOCITY = 7;
     private static final int ZOOM_MAX = 1;
-    private static final int ZOOM_MIN = 10;
+    private static final int ZOOM_MIN = 20;
     private static final float ZOOM_VELOCITY = 0.25f;
 
     public Camera(float viewportWidth, float viewportHeight) {
