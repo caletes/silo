@@ -1,9 +1,11 @@
 package com.caletes.game.builders;
 
+import com.caletes.game.Biome;
 import com.caletes.game.Elevations;
 import com.caletes.game.IsoConverter;
 import com.caletes.game.models.World;
 import com.caletes.game.models.items.Item;
+import com.caletes.game.models.items.cubes.Cube;
 import com.caletes.game.models.items.cubes.CubeFactory;
 import com.caletes.game.models.items.cubes.GrassCube;
 import com.caletes.game.models.items.cubes.GroundCube;
@@ -26,9 +28,10 @@ public class ElevationsBuilder extends Builder {
         for (int y = 0; y < elevations.getHeight(); y++) {
             for (int x = 0; x < elevations.getWidth(); x++) {
                 double elevation = elevations.get(x, y);
+                Biome biome = Biome.find(elevation);
                 int peak = toZ(elevation);
                 for (int z = 0; z <= peak; z++) {
-                    Item item = z < peak ? cubeFactory.createGroundCube() : cubeFactory.createGrassCube();
+                    Item item = z < peak ? cubeFactory.createGroundCube() : getCubeFromBiome(biome);
                     world.pushObjectAt(item, x, y, z);
                 }
             }
@@ -38,5 +41,27 @@ public class ElevationsBuilder extends Builder {
 
     private int toZ(double elevation) {
         return (int) Math.round(elevation * maxHeight);
+    }
+
+    private Cube getCubeFromBiome(Biome biome){
+        Cube cube = null;
+        switch (biome){
+            case OCEAN:
+                cube = cubeFactory.createWaterCube();
+                break;
+            case BEACH:
+                cube = cubeFactory.createSandCube();
+                break;
+            case GRASSLAND:
+                cube = cubeFactory.createGrassCube();
+                break;
+            case STONE:
+                cube = cubeFactory.createStoneCube();
+                break;
+            case SNOW:
+                cube = cubeFactory.createSnowCube();
+                break;
+        }
+        return cube;
     }
 }
