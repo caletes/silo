@@ -29,10 +29,10 @@ public class ElevationsBuilder extends Builder {
             for (int x = 0; x < elevations.getWidth(); x++) {
                 double elevation = elevations.get(x, y);
                 Biome biome = Biome.find(elevation);
-                int peak = toZ(elevation);
+                int peak = biome == Biome.OCEAN ? toZ(biome.getElevationMax()): toZ(elevation);
                 for (int z = 0; z <= peak; z++) {
-                    Item item = z < peak ? cubeFactory.createGroundCube() : getCubeFromBiome(biome);
-                    world.pushObjectAt(item, x, y, z);
+                    Cube cube = getCubeFromBiome(biome);
+                    world.pushObjectAt(cube, x, y, z);
                 }
             }
         }

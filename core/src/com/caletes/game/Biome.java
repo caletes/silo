@@ -27,6 +27,10 @@ public enum Biome {
         return SNOW;
     }
 
+    public double getElevationMax() {
+        return elevationMax;
+    }
+
     public Color getColor() {
         return color;
     }
