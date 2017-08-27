@@ -3,10 +3,16 @@ package com.caletes.game.screens;
 
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.caletes.game.*;
+import com.caletes.game.Camera;
+import com.caletes.game.Logger;
+import com.caletes.game.SiloGame;
+import com.caletes.game.WorldGeneratorFromNoise;
+import com.caletes.game.builders.ElevationsBuilder;
 import com.caletes.game.drawers.ItemDrawer;
 import com.caletes.game.models.World;
 import com.caletes.game.models.items.cubes.StoneCube;
+
+import java.util.Random;
 
 public class GameScreen extends ScreenAdapter {
 
@@ -37,9 +43,11 @@ public class GameScreen extends ScreenAdapter {
     }
 
     private World createWorld() {
-        HeightMap heightMap = new HeightMap("assets/heightmaps/_generated_heightmap_m.png", 15);
-        WorldFromHeightMapGenerator generator = new WorldFromHeightMapGenerator(heightMap);
-        World world = generator.generate();
+        Random random = new Random();
+        long seed = random.nextLong();
+        WorldGeneratorFromNoise generator = new WorldGeneratorFromNoise(256, 256, seed, true);
+        ElevationsBuilder builder = new ElevationsBuilder(generator.getElevations(), 15);
+        World world = builder.build();
         world.pushObjectAt(new StoneCube(), 40, 40, 6);
         return world;
     }

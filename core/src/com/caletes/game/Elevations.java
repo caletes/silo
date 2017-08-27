@@ -14,6 +14,14 @@ public class Elevations {
         elevations = new double[width][height];
     }
 
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
     public double get(int x, int y) {
         return elevations[x][y];
     }
