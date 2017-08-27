@@ -9,15 +9,13 @@ import com.caletes.game.models.tilesheet.Cubesheet;
 
 public abstract class Cube extends Item {
 
-    protected static Cubesheet cubesheet = new KenneyCubesheet();
-
-    protected Cube(int x, int y) {
+    protected Cube(Cubesheet sheet, int x, int y) {
         super();
-        Texture texture = cubesheet.getTexture();
-        int width = cubesheet.getSpriteWidth();
-        int height = cubesheet.getSpriteHeight();
+        Texture texture = sheet.getTexture();
+        int width = sheet.getSpriteWidth();
+        int height = sheet.getSpriteHeight();
         setSprite(new Sprite(new TextureRegion(texture, x * width, y * height, width, height)));
-        setOrigins(cubesheet.getOriginX(), cubesheet.getOriginY());
+        setOrigins(sheet.getOriginX(), sheet.getOriginY());
     }
 
 

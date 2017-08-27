@@ -1,8 +1,10 @@
 package com.caletes.game.models.items.cubes;
 
 
+import com.caletes.game.models.tilesheet.Cubesheet;
+
 public class WaterCube extends Cube {
-    public WaterCube() {
-        super(cubesheet.getWater()[0], cubesheet.getWater()[1]);
+    WaterCube(Cubesheet sheet) {
+        super(sheet, sheet.getWater()[0], sheet.getWater()[1]);
     }
 }

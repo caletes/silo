@@ -1,8 +1,10 @@
 package com.caletes.game.builders;
 
 import com.caletes.game.Elevations;
+import com.caletes.game.IsoConverter;
 import com.caletes.game.models.World;
 import com.caletes.game.models.items.Item;
+import com.caletes.game.models.items.cubes.CubeFactory;
 import com.caletes.game.models.items.cubes.GrassCube;
 import com.caletes.game.models.items.cubes.GroundCube;
 
@@ -10,11 +12,13 @@ public class ElevationsBuilder extends Builder {
 
     private Elevations elevations;
     private int maxHeight;
+    private CubeFactory cubeFactory;
 
-    public ElevationsBuilder(Elevations elevations, int maxHeight) {
-        super(elevations.getWidth(), elevations.getHeight());
+    public ElevationsBuilder(Elevations elevations, int maxHeight, CubeFactory cubeFactory, IsoConverter isoConverter) {
+        super(elevations.getWidth(), elevations.getHeight(), isoConverter);
         this.elevations = elevations;
         this.maxHeight = maxHeight;
+        this.cubeFactory = cubeFactory;
     }
 
     @Override
@@ -24,7 +28,7 @@ public class ElevationsBuilder extends Builder {
                 double elevation = elevations.get(x, y);
                 int peak = toZ(elevation);
                 for (int z = 0; z <= peak; z++) {
-                    Item item = z < peak ? new GroundCube() : new GrassCube();
+                    Item item = z < peak ? cubeFactory.createGroundCube() : cubeFactory.createGrassCube();
                     world.pushObjectAt(item, x, y, z);
                 }
             }

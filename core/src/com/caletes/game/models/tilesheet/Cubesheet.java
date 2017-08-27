@@ -19,19 +19,19 @@ public abstract class Cubesheet {
         return texture;
     }
 
-    public static int getSpriteWidth() {
+    public int getSpriteWidth() {
         return spriteWidth;
     }
 
-    public static int getSpriteHeight() {
+    public int getSpriteHeight() {
         return spriteHeight;
     }
 
-    public static int getTileWidth() {
+    public int getTileWidth() {
         return tileWidth;
     }
 
-    public static int getTileHeight() {
+    public int getTileHeight() {
         return tileHeight;
     }
 

@@ -1,5 +1,6 @@
 package com.caletes.game.builders;
 
+import com.caletes.game.IsoConverter;
 import com.caletes.game.models.World;
 
 public abstract class Builder {
@@ -8,10 +9,10 @@ public abstract class Builder {
     protected World world;
 
 
-    public Builder(int width, int height) {
+    public Builder(int width, int height, IsoConverter isoConverter) {
         this.width = width;
         this.height = height;
-        this.world = new World(computeWorldSize());
+        this.world = new World(computeWorldSize(), isoConverter);
     }
 
     public int computeWorldSize() {

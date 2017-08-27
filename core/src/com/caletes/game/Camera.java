@@ -10,10 +10,11 @@ public class Camera extends OrthographicCamera {
     private static final int ZOOM_MAX = 1;
     private static final int ZOOM_MIN = 20;
     private static final float ZOOM_VELOCITY = 0.25f;
-    private static IsoConverter converter = new IsoConverter(111,64);
+    private static IsoConverter isoConverter;
 
-    public Camera(float viewportWidth, float viewportHeight) {
+    public Camera(float viewportWidth, float viewportHeight, IsoConverter isoConverter) {
         super(viewportWidth, viewportHeight);
+        this.isoConverter = isoConverter;
     }
 
     public void handleInput() {
@@ -72,7 +73,7 @@ public class Camera extends OrthographicCamera {
     private void moveToNorthWest() {
         translate(-getVelocity(), getVelocity() / 2, 0);
     }
-    
+
     private void zoomIn() {
         if (zoom < ZOOM_MIN)
             zoom += ZOOM_VELOCITY;
@@ -91,11 +92,11 @@ public class Camera extends OrthographicCamera {
     }
 
     public int[] getPositionFromWorld() {
-        return converter.toWorld(this.position.x, this.position.y);
+        return isoConverter.toWorld(this.position.x, this.position.y);
     }
 
     public void setPositionToWorld(int x, int y, int z) {
-        int[] screenPosition = converter.toScreen(x, y, z);
+        int[] screenPosition = isoConverter.toScreen(x, y, z);
         this.position.x = screenPosition[0];
         this.position.y = screenPosition[1];
         this.position.z = z;

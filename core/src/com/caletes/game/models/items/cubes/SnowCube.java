@@ -1,8 +1,10 @@
 package com.caletes.game.models.items.cubes;
 
 
+import com.caletes.game.models.tilesheet.Cubesheet;
+
 public class SnowCube extends Cube {
-    public SnowCube() {
-        super(cubesheet.getSnow()[0], cubesheet.getSnow()[1]);
+    SnowCube(Cubesheet sheet) {
+        super(sheet, sheet.getSnow()[0], sheet.getSnow()[1]);
     }
 }

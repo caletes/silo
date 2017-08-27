@@ -1,8 +1,10 @@
 package com.caletes.game.models.items.cubes;
 
 
+import com.caletes.game.models.tilesheet.Cubesheet;
+
 public class SandCube extends Cube {
-    public SandCube() {
-        super(cubesheet.getSand()[0], cubesheet.getSand()[1]);
+    SandCube(Cubesheet sheet) {
+        super(sheet, sheet.getSand()[0], sheet.getSand()[1]);
     }
 }
