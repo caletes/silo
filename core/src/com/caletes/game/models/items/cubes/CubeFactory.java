@@ -33,4 +33,8 @@ public class CubeFactory {
     public WaterCube createWaterCube() {
         return new WaterCube(sheet);
     }
+
+    public MarkerCube createMarkerCube() {
+        return new MarkerCube(sheet);
+    }
 }

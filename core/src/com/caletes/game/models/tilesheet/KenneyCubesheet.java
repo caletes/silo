@@ -3,7 +3,7 @@ package com.caletes.game.models.tilesheet;
 import com.badlogic.gdx.graphics.Texture;
 
 public class KenneyCubesheet extends Cubesheet {
-    private static Texture texture = new Texture("assets/spritesets/kenney_tilesheet.png");
+    private static Texture texture = new Texture("assets/spritesets/kenney_tilesheet_sd.gif");
     private static final int SPRITE_WIDTH = 111;
     private static final int SPRITE_HEIGHT = 128;
     private static final int TILE_WIDTH = 111;
@@ -42,5 +42,11 @@ public class KenneyCubesheet extends Cubesheet {
     @Override
     public int[] getWater() {
         return new int[]{5, 0};
+    }
+
+
+    @Override
+    public int[] getMarker() {
+        return new int[]{0, 7};
     }
 }

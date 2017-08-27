@@ -52,7 +52,7 @@ public class GameScreen extends ScreenAdapter {
         WorldGeneratorFromNoise generator = new WorldGeneratorFromNoise(256, 256, seed, true);
         ElevationsBuilder builder = new ElevationsBuilder(generator.getElevations(), 15, cubeFactory, isoConverter);
         World world = builder.build();
-        world.pushObjectAt(cubeFactory.createStoneCube(), 40, 40, 6);
+        world.pushObjectAt(cubeFactory.createMarkerCube(), 40, 40, 6);
         return world;
     }
 

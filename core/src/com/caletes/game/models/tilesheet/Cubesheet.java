@@ -54,4 +54,6 @@ public abstract class Cubesheet {
     public abstract int[] getSnow();
 
     public abstract int[] getWater();
+    
+    public abstract int[] getMarker();
 }
