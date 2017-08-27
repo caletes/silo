@@ -10,10 +10,13 @@ import java.util.Random;
  */
 public class WorldGeneratorFromNoise {
 
-    public static OpenSimplexNoise simplexNoise1;
-    public int width, height;
-    public boolean island;
-    public double[][] elevations;
+    private static OpenSimplexNoise simplexNoise1;
+    private int width, height;
+    private boolean island;
+    private double[][] elevations;
+    public double minE = 1;
+    public double maxE = -1;
+
 
     public WorldGeneratorFromNoise(int width, int height, boolean island) {
         this.width = width;
@@ -38,23 +41,39 @@ public class WorldGeneratorFromNoise {
                 elevation += heightNoise(nx, ny, 32, 0.12);
                 elevation += heightNoise(nx, ny, 64, 0.06);
                 elevation += heightNoise(nx, ny, 128, 0.03);
-
                 elevation /= 1 + 0.5 + 0.25 + 0.12 + 0.06 + 0.03;
+
                 elevation = redistribute(elevation);
                 if (island) {
                     elevation = toIsland(elevation, nx, ny);
                 }
-                System.out.println(elevation);
                 elevations[x][y] = elevation;
+                System.out.println(elevation);
+                minE = Math.min(elevation, minE);
+                maxE = Math.max(elevation, maxE);
+            }
+        }
+
+        System.out.println(minE);
+        System.out.println(maxE);
+        //normalize();
+    }
+
+    private void normalize() {
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                elevations[x][y] = (elevations[x][y] - minE)/(maxE-minE);
+                System.out.println(elevations[x][y]);
             }
         }
     }
 
+
     private double toIsland(double elevation, double nx, double ny) {
         double distance = getManhattanDistance(nx, ny);
         double a = 0.05;
-        double b = 4;
-        double c = 2;
+        double b = 2;
+        double c = 1;
         return (elevation + a) * (1 - b * Math.pow(distance, c));
     }
 
@@ -72,8 +91,7 @@ public class WorldGeneratorFromNoise {
 
     private double heightNoise(double nx, double ny, int frequency, double amplitude) {
         double noise = simplexNoise1.eval(nx * frequency, ny * frequency);
-        // Rescale from -1.0:+1.0 to 0.0:1.0
-        noise = noise / 2.0 + 0.5;
+        noise = noise / 2.0 + 0.6465;
         return amplitude * noise;
     }
 
@@ -108,5 +126,9 @@ public class WorldGeneratorFromNoise {
 
     private byte toGrayScale(double elevation) {
         return (byte) (elevation * 255);
+    }
+
+    public double[][] getElevations() {
+        return elevations;
     }
 }
