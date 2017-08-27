@@ -37,7 +37,7 @@ public class GameScreen extends ScreenAdapter {
     }
 
     private World createWorld() {
-        HeightMap heightMap = new HeightMap("assets/heightmaps/_generated_heightmap.png", 20);
+        HeightMap heightMap = new HeightMap("assets/heightmaps/_generated_heightmap_m.png", 15);
         WorldFromHeightMapGenerator generator = new WorldFromHeightMapGenerator(heightMap);
         World world = generator.generate();
         world.pushObjectAt(new StoneCube(), 40, 40, 6);

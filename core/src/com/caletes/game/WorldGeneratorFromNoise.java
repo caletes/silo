@@ -3,7 +3,6 @@ package com.caletes.game;
 import com.badlogic.gdx.graphics.Pixmap;
 
 import java.awt.*;
-import java.util.Random;
 
 /**
  * cf. http://www.redblobgames.com/maps/terrain-from-noise/
@@ -13,28 +12,26 @@ public class WorldGeneratorFromNoise {
     private static OpenSimplexNoise simplexNoise1;
     private int width, height;
     private boolean island;
-    private double[][] elevations;
-    public double minE = 1;
-    public double maxE = -1;
+    private Elevations elevations;
 
-
-    public WorldGeneratorFromNoise(int width, int height, boolean island) {
+    public WorldGeneratorFromNoise(int width, int height, long seed, boolean island) {
         this.width = width;
         this.height = height;
         this.island = island;
-        Random random = new Random();
-        simplexNoise1 = new OpenSimplexNoise(random.nextLong());
+        simplexNoise1 = new OpenSimplexNoise(seed);
         generateElevations();
     }
 
+    public Elevations getElevations() {
+        return elevations;
+    }
+
     private void generateElevations() {
-        elevations = new double[width][height];
+        elevations = new Elevations(width, height);
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 double nx = x / (double) width - 0.5, ny = y / (double) height - 0.5;
-                //double nx = x / (double) width, ny = y / (double) height;
                 double elevation = 0;
-
                 elevation += heightNoise(nx, ny, 4, 1);
                 elevation += heightNoise(nx, ny, 8, 0.5);
                 elevation += heightNoise(nx, ny, 16, 0.25);
@@ -47,25 +44,10 @@ public class WorldGeneratorFromNoise {
                 if (island) {
                     elevation = toIsland(elevation, nx, ny);
                 }
-                elevations[x][y] = elevation;
-                System.out.println(elevation);
-                minE = Math.min(elevation, minE);
-                maxE = Math.max(elevation, maxE);
+                elevations.pushTo(elevation, x, y);
             }
         }
-
-        System.out.println(minE);
-        System.out.println(maxE);
-        //normalize();
-    }
-
-    private void normalize() {
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                elevations[x][y] = (elevations[x][y] - minE)/(maxE-minE);
-                System.out.println(elevations[x][y]);
-            }
-        }
+        elevations = elevations.normalize();
     }
 
 
@@ -86,13 +68,11 @@ public class WorldGeneratorFromNoise {
     }
 
     private double redistribute(double elevation) {
-        return Math.pow(elevation, 2.4);
+        return Math.pow(elevation / 2.0 + 0.5, 2.4);
     }
 
     private double heightNoise(double nx, double ny, int frequency, double amplitude) {
-        double noise = simplexNoise1.eval(nx * frequency, ny * frequency);
-        noise = noise / 2.0 + 0.6465;
-        return amplitude * noise;
+        return amplitude * simplexNoise1.eval(nx * frequency, ny * frequency);
     }
 
     public Pixmap toHeightMap() {
@@ -100,25 +80,10 @@ public class WorldGeneratorFromNoise {
         int i = 0;
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                byte greyscale = toGrayScale(elevations[x][y]);
+                byte greyscale = toGrayScale(elevations.get(x, y));
                 pixmap.getPixels().put(i++, greyscale);
                 pixmap.getPixels().put(i++, greyscale);
                 pixmap.getPixels().put(i++, greyscale);
-            }
-        }
-        return pixmap;
-    }
-
-    public Pixmap toBiomeMap() {
-        Pixmap pixmap = new Pixmap(width, height, Pixmap.Format.RGB888);
-        int i = 0;
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                double elevation = elevations[x][y];
-                Color color = Biome.find(elevation).getColor();
-                pixmap.getPixels().put(i++, (byte) color.getRed());
-                pixmap.getPixels().put(i++, (byte) color.getGreen());
-                pixmap.getPixels().put(i++, (byte) color.getBlue());
             }
         }
         return pixmap;
@@ -128,7 +93,17 @@ public class WorldGeneratorFromNoise {
         return (byte) (elevation * 255);
     }
 
-    public double[][] getElevations() {
-        return elevations;
+    public Pixmap toBiomeMap() {
+        Pixmap pixmap = new Pixmap(width, height, Pixmap.Format.RGB888);
+        int i = 0;
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                Color color = Biome.find(elevations.get(x, y)).getColor();
+                pixmap.getPixels().put(i++, (byte) color.getRed());
+                pixmap.getPixels().put(i++, (byte) color.getGreen());
+                pixmap.getPixels().put(i++, (byte) color.getBlue());
+            }
+        }
+        return pixmap;
     }
 }
