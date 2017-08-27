@@ -2,18 +2,29 @@ package com.caletes.game.models.tilesheet;
 
 import com.badlogic.gdx.graphics.Texture;
 
-public abstract class Tilesheet {
+public abstract class Cubesheet {
     private static Texture texture;
+    private static int spriteWidth, spriteHeight;
     private static int tileWidth, tileHeight;
 
-    public Tilesheet(Texture texture, int tileWidth, int tileHeight) {
+    public Cubesheet(Texture texture, int spriteWidth, int spriteHeight, int tileWidth, int tileHeight) {
         this.texture = texture;
+        this.spriteWidth = spriteWidth;
+        this.spriteHeight = spriteHeight;
         this.tileWidth = tileWidth;
         this.tileHeight = tileHeight;
     }
 
     public static Texture getTexture() {
         return texture;
+    }
+
+    public static int getSpriteWidth() {
+        return spriteWidth;
+    }
+
+    public static int getSpriteHeight() {
+        return spriteHeight;
     }
 
     public static int getTileWidth() {
@@ -25,11 +36,11 @@ public abstract class Tilesheet {
     }
 
     public int getOriginX() {
-        return tileWidth / 2;
+        return spriteWidth / 2;
     }
 
     public int getOriginY() {
-        return tileHeight - tileWidth / 2;
+        return spriteHeight - tileHeight / 2;
     }
 
     public abstract int[] getGrass();

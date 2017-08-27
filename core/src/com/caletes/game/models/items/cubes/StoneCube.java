@@ -3,6 +3,6 @@ package com.caletes.game.models.items.cubes;
 
 public class StoneCube extends Cube {
     public StoneCube() {
-        super( tilesheet.getStone()[0], tilesheet.getStone()[1]);
+        super( cubesheet.getStone()[0], cubesheet.getStone()[1]);
     }
 }

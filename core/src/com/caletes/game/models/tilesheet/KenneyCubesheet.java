@@ -2,14 +2,16 @@ package com.caletes.game.models.tilesheet;
 
 import com.badlogic.gdx.graphics.Texture;
 
-public class KenneyTilesheet extends Tilesheet {
+public class KenneyCubesheet extends Cubesheet {
     private static Texture texture = new Texture("assets/spritesets/kenney_tilesheet.png");
+    private static final int SPRITE_WIDTH = 111;
+    private static final int SPRITE_HEIGHT = 128;
     private static final int TILE_WIDTH = 111;
-    private static final int TILE_HEIGHT = 128;
+    private static final int TILE_HEIGHT = 64;
 
 
-    public KenneyTilesheet() {
-        super(texture, TILE_WIDTH, TILE_HEIGHT);
+    public KenneyCubesheet() {
+        super(texture, SPRITE_WIDTH, SPRITE_HEIGHT, TILE_WIDTH, TILE_HEIGHT);
     }
 
     @Override
