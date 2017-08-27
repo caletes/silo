@@ -1,7 +1,7 @@
 package com.caletes.game;
 
 public class IsoConverter {
-    private static final int TILE_WIDTH = 128;
+    private static final int TILE_WIDTH = 111;
     private static final int TILE_HEIGHT = 64;
 
     private IsoConverter() {
