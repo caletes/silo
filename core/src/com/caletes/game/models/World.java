@@ -31,10 +31,4 @@ public class World extends Octree<Item> {
         return node;
     }
 
-    public boolean isVisible(Node node) {
-        return node.getNextOn(Direction.TOP).getObject() == null ||
-                node.getNextOn(Direction.EAST).getObject() == null ||
-                node.getNextOn(Direction.SOUTH).getObject() == null;
-    }
-
 }
