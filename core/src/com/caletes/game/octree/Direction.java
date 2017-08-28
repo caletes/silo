@@ -6,15 +6,16 @@ package com.caletes.game.octree;
  * ansi qu'au bon ordre d'affichage des cubes
  */
 public enum Direction {
-    BOTTOM_NORTH_WEST(-1, -1, 1),
-    BOTTOM_NORTH(0, -1, 1),
-    BOTTOM_NORTH_EAST(1, -1, 1),
-    BOTTOM_WEST(-1, 0, 1),
-    BOTTOM(0, 0, 1),
-    BOTTOM_EAST(1, 0, 1),
-    BOTTOM_SOUTH_WEST(-1, 1, 1),
-    BOTTOM_SOUTH(0, 1, 1),
-    BOTTOM_SOUTH_EAST(1, 1, 1),
+    TOP_NORTH_WEST(-1, -1, 1),
+    TOP_NORTH(0, -1, 1),
+    TOP_NORTH_EAST(1, -1, 1),
+    TOP_WEST(-1, 0, 1),
+    TOP(0, 0, 1),
+    TOP_EAST(1, 0, 1),
+    TOP_SOUTH_WEST(-1, 1, 1),
+    TOP_SOUTH(0, 1, 1),
+    TOP_SOUTH_EAST(1, 1, 1),
+
     NORTH_WEST(-1, -1, 0),
     NORTH(0, -1, 0),
     NORTH_EAST(1, -1, 0),
@@ -24,15 +25,19 @@ public enum Direction {
     SOUTH_WEST(-1, 1, 0),
     SOUTH(0, 1, 0),
     SOUTH_EAST(1, 1, 0),
-    TOP_NORTH_WEST(-1, -1, -1),
-    TOP_NORTH(0, -1, -1),
-    TOP_NORTH_EAST(1, -1, -1),
-    TOP_WEST(-1, 0, -1),
-    TOP(0, 0, -1),
-    TOP_EAST(1, 0, -1),
-    TOP_SOUTH_WEST(-1, 1, -1),
-    TOP_SOUTH(0, 1, -1),
-    TOP_SOUTH_EAST(1, 1, -1);
+
+
+    BOTTOM_NORTH_WEST(-1, -1, -1),
+    BOTTOM_NORTH(0, -1, -1),
+    BOTTOM_NORTH_EAST(1, -1, -1),
+    BOTTOM_WEST(-1, 0, -1),
+    BOTTOM(0, 0, -1),
+    BOTTOM_EAST(1, 0, -1),
+    BOTTOM_SOUTH_WEST(-1, 1, -1),
+    BOTTOM_SOUTH(0, 1, -1),
+    BOTTOM_SOUTH_EAST(1, 1, -1);
+
+
 
     private Delta delta = new Delta();
 
