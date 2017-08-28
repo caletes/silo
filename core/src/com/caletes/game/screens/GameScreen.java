@@ -5,12 +5,11 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.caletes.game.*;
 import com.caletes.game.builders.ElevationsBuilder;
-import com.caletes.game.drawers.ItemDrawer;
+import com.caletes.game.drawers.WorldDrawer;
 import com.caletes.game.models.World;
 import com.caletes.game.models.items.cubes.CubeFactory;
 import com.caletes.game.models.tilesheet.Cubesheet;
 import com.caletes.game.models.tilesheet.KenneyCubesheet;
-import com.caletes.game.octree.Node;
 
 import java.util.Random;
 
@@ -20,7 +19,7 @@ public class GameScreen extends ScreenAdapter {
     private static IsoConverter isoConverter;
     private static Camera camera;
     private static World world;
-    private static ItemDrawer drawer;
+    private static WorldDrawer drawer;
     private static SpriteBatch batch;
     private static Logger logger;
 
@@ -32,8 +31,9 @@ public class GameScreen extends ScreenAdapter {
         this.cubeFactory = new CubeFactory(cubesheet);
         this.world = createWorld();
         this.camera = new Camera(game.getViewportWidth(), game.getViewportHeight(), isoConverter);
-        this.camera.setPositionToWorld(40, 40, 6);
-        this.drawer = new ItemDrawer(world, batch, camera);
+        int peak = world.getPeakNode(127, 127, 0).getPosition().z;
+        this.camera.setPositionToWorld(127, 127, peak + 1);
+        this.drawer = new WorldDrawer(world, batch, camera);
     }
 
     @Override
@@ -53,8 +53,8 @@ public class GameScreen extends ScreenAdapter {
         WorldGeneratorFromNoise generator = new WorldGeneratorFromNoise(256, 256, seed, true);
         ElevationsBuilder builder = new ElevationsBuilder(generator.getElevations(), 15, cubeFactory, isoConverter);
         World world = builder.build();
-        Node peak = world.getPeakNode(40, 40, 0);
-        world.pushObjectAt(cubeFactory.createMarkerCube(), 40, 40, peak.getPosition().z + 1);
+        int peak = world.getPeakNode(127, 127, 0).getPosition().z;
+        world.pushObjectAt(cubeFactory.createMarkerCube(), 127, 127, peak + 1);
         return world;
     }
 
