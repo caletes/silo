@@ -6,10 +6,11 @@ public class IsoConverterTest extends TestCase {
 
     @Test
     public void testConversion() {
-        int[] position2D = IsoConverter.toScreen(4, 3, 0);
+        IsoConverter converter = new IsoConverter(128,64);
+        int[] position2D = converter.toScreen(4, 3, 0);
         assertEquals(64, position2D[0]);
         assertEquals(-224, position2D[1]);
-        int[] position3D = IsoConverter.toWorld(64, -224);
+        int[] position3D = converter.toWorld(64, -224);
         assertEquals(4, position3D[0]);
         assertEquals(3, position3D[1]);
     }
@@ -23,8 +24,9 @@ public class IsoConverterTest extends TestCase {
     }
 
     private void doubleConversion3D(int x, int y, int z) {
-        int[] position2D = IsoConverter.toScreen(x, y, z);
-        int[] position3D = IsoConverter.toWorld(position2D[0], position2D[1]);
+        IsoConverter converter = new IsoConverter(128,64);
+        int[] position2D = converter.toScreen(x, y, z);
+        int[] position3D = converter.toWorld(position2D[0], position2D[1]);
         assertEquals(x, position3D[0]);
         assertEquals(y, position3D[1]);
     }

@@ -1,8 +1,10 @@
 package com.caletes.game.models.items.cubes;
 
 
+import com.caletes.game.models.tilesheet.Cubesheet;
+
 public class GroundCube extends Cube {
-    public GroundCube() {
-        super(3, 0);
+    GroundCube(Cubesheet sheet) {
+        super(sheet, sheet.getGround()[0], sheet.getGround()[1]);
     }
 }
