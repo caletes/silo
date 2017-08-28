@@ -6,6 +6,7 @@ import com.caletes.game.IsoConverter;
 import com.caletes.game.models.World;
 import com.caletes.game.models.items.cubes.Cube;
 import com.caletes.game.models.items.cubes.CubeFactory;
+import com.caletes.game.octree.OctreeOutOfBoundsException;
 
 public class ElevationsBuilder extends Builder {
 
@@ -29,7 +30,11 @@ public class ElevationsBuilder extends Builder {
                 int peak = biome == Biome.OCEAN ? toZ(biome.getElevationMax()) : toZ(elevation);
                 for (int z = 0; z <= peak; z++) {
                     Cube cube = getCubeFromBiome(biome);
-                    world.pushObjectAt(cube, x, y, z);
+                    try {
+                        world.pushObjectAt(cube, x, y, z);
+                    } catch (OctreeOutOfBoundsException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }

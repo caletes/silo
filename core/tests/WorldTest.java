@@ -4,13 +4,14 @@ import com.caletes.game.models.items.cubes.CubeFactory;
 import com.caletes.game.models.tilesheet.Cubesheet;
 import com.caletes.game.models.tilesheet.KenneyCubesheet;
 import com.caletes.game.octree.Node;
+import com.caletes.game.octree.OctreeOutOfBoundsException;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
 public class WorldTest extends GdxTest {
     @Test
-    public void testGetPeakNode() {
+    public void testGetPeakNode() throws OctreeOutOfBoundsException {
         Cubesheet cubesheet = new KenneyCubesheet();
         IsoConverter isoConverter = new IsoConverter(cubesheet.getTileWidth(), cubesheet.getTileHeight());
         CubeFactory cubeFactory = new CubeFactory(cubesheet);

@@ -26,7 +26,7 @@ public class OctreeTest extends TestCase {
     }
 
     @Test
-    public void testPushAndGetObjects() {
+    public void testPushAndGetObjects() throws OctreeOutOfBoundsException {
         Octree<String> octree = new Octree<>(1024);
         octree.pushObjectAt("Item 1", 1, 3, 1);
         octree.pushObjectAt("Item 2", 4, 5, 7);
@@ -42,7 +42,7 @@ public class OctreeTest extends TestCase {
     }
 
     @Test
-    public void testOneMillionObjects() {
+    public void testOneMillionObjects() throws OctreeOutOfBoundsException {
         Octree<String> octree = new Octree(1024);
         int z = 1;
         for (int x = 0; x < 1024; x++) {
@@ -57,7 +57,7 @@ public class OctreeTest extends TestCase {
     }
 
     @Test
-    public void testPopObjectAt() {
+    public void testPopObjectAt() throws OctreeOutOfBoundsException {
         Octree<String> octree = new Octree(1024);
         octree.pushObjectAt("Item 1", 567, 52, 345);
         assertEquals("Item 1", octree.getObjectAt(567, 52, 345));
@@ -67,7 +67,7 @@ public class OctreeTest extends TestCase {
     }
 
     @Test
-    public void testIterator() {
+    public void testIterator() throws OctreeOutOfBoundsException {
         Octree<String> octree = new Octree(128);
         octree.pushObjectAt("Item 1", 0, 0, 0);
         octree.pushObjectAt("Item 2", 0, 1, 0);
@@ -84,7 +84,7 @@ public class OctreeTest extends TestCase {
     }
 
     @Test
-    public void testIteratorOrder() {
+    public void testIteratorOrder() throws OctreeOutOfBoundsException {
         Octree<String> octree = new Octree(2);
         octree.pushObjectAt("Item 0", 0, 0, 0);
         octree.pushObjectAt("Item 1", 1, 0, 0);
@@ -103,7 +103,7 @@ public class OctreeTest extends TestCase {
     }
 
     @Test
-    public void testGetPosition() {
+    public void testGetPosition() throws OctreeOutOfBoundsException {
         Octree<String> octree = new Octree(256);
         octree.pushObjectAt("Item 0", 0, 0, 0);
         octree.pushObjectAt("Item 1", 124, 12, 235);
@@ -120,7 +120,7 @@ public class OctreeTest extends TestCase {
 
 
     @Test
-    public void testFindNeightboors() {
+    public void testFindNeightboors() throws OctreeOutOfBoundsException {
         Octree<String> octree = new Octree(4);
         for (int x = 0; x < 4; x++) {
             for (int y = 0; y < 4; y++) {
@@ -158,8 +158,8 @@ public class OctreeTest extends TestCase {
         assertEquals("Item 233", start.getNextOn(Direction.TOP_SOUTH).getObject());
         assertEquals("Item 333", start.getNextOn(Direction.TOP_SOUTH_EAST).getObject());
 
-        Node end = start.getNextOn(Direction.NORTH).getNextOn(Direction.EAST).getNextOn(Direction.TOP).getNextOn(Direction.TOP_NORTH_WEST).getNextOn(Direction.SOUTH);
-        assertEquals("Item 210", end.getObject());
+        Node end = start.getNextOn(Direction.NORTH).getNextOn(Direction.EAST).getNextOn(Direction.TOP).getNextOn(Direction.BOTTOM_NORTH_WEST).getNextOn(Direction.SOUTH);
+        assertEquals("Item 212", end.getObject());
 
     }
 

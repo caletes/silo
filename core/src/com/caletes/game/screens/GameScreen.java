@@ -11,6 +11,7 @@ import com.caletes.game.models.items.cubes.CubeFactory;
 import com.caletes.game.models.tilesheet.Cubesheet;
 import com.caletes.game.models.tilesheet.KenneyCubesheet;
 import com.caletes.game.octree.Node;
+import com.caletes.game.octree.OctreeOutOfBoundsException;
 
 import java.util.Random;
 
@@ -32,9 +33,14 @@ public class GameScreen extends ScreenAdapter {
         this.cubeFactory = new CubeFactory(cubesheet);
         this.world = createWorld();
         this.camera = new Camera(game.getViewportWidth(), game.getViewportHeight(), isoConverter);
-        int peak = world.getPeakNode(127, 127, 0).getPosition().z;
-        this.camera.setPositionToWorld(127, 127, peak + 1);
-        this.drawer = new WorldDrawer(world, batch, camera);
+        try {
+            int peak = world.getPeakNode(127, 127, 0).getPosition().z;
+            this.camera.setPositionToWorld(127, 127, peak + 1);
+            this.drawer = new WorldDrawer(world, batch, camera);
+        } catch (OctreeOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
@@ -54,8 +60,12 @@ public class GameScreen extends ScreenAdapter {
         WorldGeneratorFromNoise generator = new WorldGeneratorFromNoise(256, 256, seed, true);
         ElevationsBuilder builder = new ElevationsBuilder(generator.getElevations(), 15, cubeFactory, isoConverter);
         World world = builder.build();
-        Node peak = world.getPeakNode(127, 127, 0);
-        world.pushObjectAt(cubeFactory.createMarkerCube(), 127, 127, peak.getPosition().z + 1);
+        try {
+            Node peak = world.getPeakNode(127, 127, 0);
+            world.pushObjectAt(cubeFactory.createMarkerCube(), 127, 127, peak.getPosition().z + 1);
+        } catch (OctreeOutOfBoundsException e) {
+            e.printStackTrace();
+        }
         return world;
     }
 

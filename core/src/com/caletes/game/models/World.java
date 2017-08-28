@@ -6,6 +6,7 @@ import com.caletes.game.models.items.Item;
 import com.caletes.game.octree.Direction;
 import com.caletes.game.octree.Node;
 import com.caletes.game.octree.Octree;
+import com.caletes.game.octree.OctreeOutOfBoundsException;
 
 public class World extends Octree<Item> {
 
@@ -17,7 +18,7 @@ public class World extends Octree<Item> {
     }
 
     @Override
-    public Node pushObjectAt(Item item, int x, int y, int z) {
+    public Node pushObjectAt(Item item, int x, int y, int z) throws OctreeOutOfBoundsException {
         int[] screenPosition = isoConverter.toScreen(x, y, z);
         item.setPosition(screenPosition[0], screenPosition[1]);
         Node node = super.pushObjectAt(item, x, y, z);
@@ -50,7 +51,7 @@ public class World extends Octree<Item> {
         return item != null && item.isVisible();
     }
 
-    public Node getPeakNode(int x, int y, int z) {
+    public Node getPeakNode(int x, int y, int z) throws OctreeOutOfBoundsException {
         Node node = getLeafAt(x, y, z);
         Node peak = null;
         while (true) {

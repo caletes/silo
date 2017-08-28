@@ -23,7 +23,12 @@ public class NodeIterator implements Iterator {
     @Override
     public Node next() {
         currentMorton = morton;
-        Node node = root.getLeaf(morton);
+        Node node = null;
+        try {
+            node = root.getLeaf(morton);
+        } catch (OctreeOutOfBoundsException e) {
+            e.printStackTrace();
+        }
         morton = Node.getNextMorton(morton, node.exponent);
         return node;
     }

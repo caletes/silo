@@ -13,7 +13,7 @@ public class Node<T> implements Iterable<Node> {
     protected Node parent = null;
     protected Node[] children = null;
     protected Node root = null;
-    private Long mortonMax = null;
+    protected Long mortonMax = null;
 
     protected Node(int exponent) {
         this(0, exponent, null);
@@ -54,11 +54,13 @@ public class Node<T> implements Iterable<Node> {
         return 1 << exponent;
     }
 
-    public Node getLeaf(long morton) {
+    public Node getLeaf(long morton) throws OctreeOutOfBoundsException {
         return getCube(morton, 0);
     }
 
-    public Node getCube(long morton, int exponentToStop) {
+    public Node getCube(long morton, int exponentToStop) throws OctreeOutOfBoundsException {
+        if (morton < 0 || morton > getRoot().getMortonMax())
+            throw new OctreeOutOfBoundsException(getMortonMax(), morton);
         Node node = this;
         int currentExponent = exponent;
         while (!node.isLeaf() && node.exponent != exponentToStop) {
@@ -67,6 +69,11 @@ public class Node<T> implements Iterable<Node> {
             node = node.children[node.getIndex(morton, currentExponent)];
         }
         return node;
+    }
+
+    public boolean isWithinBounds(int x, int y, int z) {
+        long morton = MortonCode.pack(x, y, z);
+        return morton > 0 && morton < getMortonMax();
     }
 
     public long getMortonMax() {
@@ -83,12 +90,12 @@ public class Node<T> implements Iterable<Node> {
         return morton;
     }
 
-    public Node pushObjectAt(T object, int x, int y, int z) {
+    public Node pushObjectAt(T object, int x, int y, int z) throws OctreeOutOfBoundsException {
         long morton = MortonCode.pack(x, y, z);
         return pushObjectAt(object, morton);
     }
 
-    public Node pushObjectAt(T object, long morton) {
+    public Node pushObjectAt(T object, long morton) throws OctreeOutOfBoundsException {
         if (!isFinalLeaf()) {
             if (isLeaf())
                 split();
@@ -98,15 +105,15 @@ public class Node<T> implements Iterable<Node> {
         return this;
     }
 
-    public T getObjectAt(int x, int y, int z) {
+    public T getObjectAt(int x, int y, int z) throws OctreeOutOfBoundsException {
         return (T) getLeafAt(x, y, z).object;
     }
 
-    public Node getLeafAt(int x, int y, int z) {
+    public Node getLeafAt(int x, int y, int z) throws OctreeOutOfBoundsException {
         return getLeaf(MortonCode.pack(x, y, z));
     }
 
-    public T popObjectAt(int x, int y, int z) {
+    public T popObjectAt(int x, int y, int z) throws OctreeOutOfBoundsException {
         long morton = MortonCode.pack(x, y, z);
         Node leaf = getLeaf(morton);
         T object = (T) leaf.object;
@@ -185,7 +192,7 @@ public class Node<T> implements Iterable<Node> {
         return new NodeIterator(this);
     }
 
-    public Node substract(int x, int y, int z, int exponent) {
+    public Node substract(int x, int y, int z, int exponent) throws OctreeOutOfBoundsException {
         Node node = getLeafAt(x, y, z);
         while (node.exponent < exponent) {
             node = node.parent;
@@ -196,14 +203,21 @@ public class Node<T> implements Iterable<Node> {
     public List<Node> withNeighbors() {
         List<Node> neighbors = new ArrayList<>();
         for (Direction direction : Direction.values()) {
-            neighbors.add(getNextOn(direction));
+            Node neighbor = getNextOn(direction);
+            if (neighbor != null) {
+                neighbors.add(neighbor);
+            }
         }
         return neighbors;
     }
 
     public Node getNextOn(Direction direction) {
         //TODO: peut peut-être être optimiser en ne repartant pas de root mais du parent commun le plus prôche
-        return getRoot().getCube(getNextMortonOn(direction), exponent);
+        try {
+            return getRoot().getCube(getNextMortonOn(direction), exponent);
+        } catch (OctreeOutOfBoundsException e) {
+            return null;
+        }
     }
 
     public long getNextMortonOn(Direction direction) {
