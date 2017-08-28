@@ -5,8 +5,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 public abstract class Item {
 
     protected Sprite sprite;
-    int originX, originY = 0;
-
+    private int originX, originY = 0;
+    private boolean visible = true;
 
     protected void setSprite(Sprite sprite) {
         this.sprite = sprite;
@@ -25,4 +25,11 @@ public abstract class Item {
         sprite.setPosition(x - originX, y - originY);
     }
 
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
 }

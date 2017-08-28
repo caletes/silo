@@ -34,7 +34,7 @@ public class WorldDrawer implements Drawer {
                 Node<Cube> node = it.next();
                 if (node != null) {
                     Item item = node.getObject();
-                    if (item != null) {
+                    if (item != null && item.isVisible()) {
                         item.getSprite().draw(batch);
                     }
                 }

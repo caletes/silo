@@ -20,6 +20,6 @@ public class WorldTest extends GdxTest {
         }
 
         Node peak = world.getPeakNode(8, 8, 0);
-        assertEquals(25, peak.getPosition().z);
+        assertEquals(24, peak.getPosition().z);
     }
 }

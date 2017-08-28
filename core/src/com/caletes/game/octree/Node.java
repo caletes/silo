@@ -83,19 +83,19 @@ public class Node<T> implements Iterable<Node> {
         return morton;
     }
 
-    public void pushObjectAt(T object, int x, int y, int z) {
+    public Node pushObjectAt(T object, int x, int y, int z) {
         long morton = MortonCode.pack(x, y, z);
-        pushObjectAt(object, morton);
+        return pushObjectAt(object, morton);
     }
 
-    public void pushObjectAt(T object, long morton) {
+    public Node pushObjectAt(T object, long morton) {
         if (!isFinalLeaf()) {
             if (isLeaf())
                 split();
-            getLeaf(morton).pushObjectAt(object, morton);
-        } else {
-            this.object = object;
+            return getLeaf(morton).pushObjectAt(object, morton);
         }
+        this.object = object;
+        return this;
     }
 
     public T getObjectAt(int x, int y, int z) {
@@ -202,6 +202,7 @@ public class Node<T> implements Iterable<Node> {
     }
 
     public Node getNextOn(Direction direction) {
+        //TODO: peut peut-être être optimiser en ne repartant pas de root mais du parent commun le plus prôche
         return getRoot().getCube(getNextMortonOn(direction), exponent);
     }
 
