@@ -10,6 +10,7 @@ import com.caletes.game.models.World;
 import com.caletes.game.models.items.cubes.CubeFactory;
 import com.caletes.game.models.tilesheet.Cubesheet;
 import com.caletes.game.models.tilesheet.KenneyCubesheet;
+import com.caletes.game.octree.Node;
 
 import java.util.Random;
 
@@ -52,7 +53,8 @@ public class GameScreen extends ScreenAdapter {
         WorldGeneratorFromNoise generator = new WorldGeneratorFromNoise(256, 256, seed, true);
         ElevationsBuilder builder = new ElevationsBuilder(generator.getElevations(), 15, cubeFactory, isoConverter);
         World world = builder.build();
-        world.pushObjectAt(cubeFactory.createMarkerCube(), 40, 40, 6);
+        Node peak = world.getPeakNode(40, 40, 0);
+        world.pushObjectAt(cubeFactory.createMarkerCube(), 40, 40, peak.getPosition().z + 1);
         return world;
     }
 
