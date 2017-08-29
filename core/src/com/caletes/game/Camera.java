@@ -8,6 +8,7 @@ public class Camera extends OrthographicCamera {
 
     private static final int TRANSLATION_VELOCITY = 7;
     private static final int ZOOM_MAX = 1;
+    private static final int ZOOM_DEFAULT = 2;
     private static final int ZOOM_MIN = 20;
     private static final float ZOOM_VELOCITY = 0.25f;
     private static IsoConverter isoConverter;
@@ -15,6 +16,7 @@ public class Camera extends OrthographicCamera {
     public Camera(float viewportWidth, float viewportHeight, IsoConverter isoConverter) {
         super(viewportWidth, viewportHeight);
         this.isoConverter = isoConverter;
+        zoomDefault();
     }
 
     public void handleInput() {
@@ -39,6 +41,8 @@ public class Camera extends OrthographicCamera {
             zoomOut();
         } else if (Gdx.input.isKeyPressed(Input.Keys.PAGE_DOWN)) {
             zoomIn();
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_RIGHT)) {
+            zoomDefault();
         }
     }
 
@@ -85,6 +89,10 @@ public class Camera extends OrthographicCamera {
         if (zoom > ZOOM_MAX)
             zoom -= ZOOM_VELOCITY;
         else zoom = ZOOM_MAX;
+    }
+
+    private void zoomDefault() {
+        zoom = ZOOM_DEFAULT;
     }
 
     private float getVelocity() {
