@@ -49,9 +49,7 @@ public class GameScreen extends ScreenAdapter {
         camera.handleInput();
         camera.update();
         batch.setProjectionMatrix(camera.combined);
-        batch.begin();
         drawer.draw();
-        batch.end();
     }
 
     private World createWorld() {

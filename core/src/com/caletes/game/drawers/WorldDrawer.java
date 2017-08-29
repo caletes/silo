@@ -18,15 +18,22 @@ public class WorldDrawer implements Drawer {
     private static World world;
     private static SpriteBatch batch;
     private static Camera camera;
+    private static ShaderSwitcher shaders;
+
 
     public WorldDrawer(World world, SpriteBatch batch, Camera camera) {
         this.world = world;
         this.batch = batch;
         this.camera = camera;
+        this.shaders = new ShaderSwitcher(batch);
     }
 
     public void draw() {
         int[] cameraPosition = camera.getPositionFromWorld();
+
+        shaders.process();
+
+        batch.begin();
         try {
             int cameraX = cameraPosition[0];
             int cameraY = cameraPosition[1];
@@ -41,6 +48,7 @@ public class WorldDrawer implements Drawer {
                         if (node != null) {
                             Item item = node.getObject();
                             if (item != null && item.isVisible()) {
+                                shaders.switchFor(item);
                                 item.getSprite().draw(batch);
                             }
                         }
@@ -50,6 +58,8 @@ public class WorldDrawer implements Drawer {
         } catch (OctreeOutOfBoundsException e) {
             e.printStackTrace();
         }
+        batch.end();
+        shaders.backToDefault();
     }
 
     private int getSubstractExponent() {
