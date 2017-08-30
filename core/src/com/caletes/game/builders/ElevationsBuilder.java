@@ -31,7 +31,7 @@ public class ElevationsBuilder extends Builder {
                 for (int z = 0; z <= peak; z++) {
                     Cube cube = getCubeFromBiome(biome);
                     try {
-                        world.pushObjectAt(cube, x, y, z);
+                        world.pushObjectAt(cube, x, y, peak);
                     } catch (OctreeOutOfBoundsException e) {
                         e.printStackTrace();
                     }

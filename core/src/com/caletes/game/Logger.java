@@ -36,7 +36,9 @@ public class Logger {
 
     public void render() {
         String message = fps + " fps";
-        message += "\nCamera position " + cameraWorldPosition[0] + "," + cameraWorldPosition[1];
+        if (cameraWorldPosition != null) {
+            message += "\nCamera position " + cameraWorldPosition[0] + "," + cameraWorldPosition[1];
+        }
         font.draw(batch, message, -viewportWidth / 2 + PADDING, viewportHeight / 2 - PADDING);
     }
 

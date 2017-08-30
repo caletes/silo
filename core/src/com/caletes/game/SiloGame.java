@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.caletes.game.screens.GameScreen;
+import com.caletes.game.screens.GameScreen3D;
 
 public class SiloGame extends Game {
 
@@ -20,7 +21,8 @@ public class SiloGame extends Game {
         this.batch = new SpriteBatch();
         this.camera = new OrthographicCamera(viewportWidth, viewportHeight);
         this.logger = new Logger(this.batch);
-        this.setScreen(new GameScreen(this));
+        //this.setScreen(new GameScreen(this));
+        this.setScreen(new GameScreen3D(this));
     }
 
     @Override
