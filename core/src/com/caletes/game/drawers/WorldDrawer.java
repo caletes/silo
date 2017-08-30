@@ -39,7 +39,7 @@ public class WorldDrawer implements Drawer {
             int cameraY = cameraPosition[1];
             int cameraZ = (int) camera.position.z;
             if (world.isWithinBounds(cameraX, cameraY, cameraZ)) {
-                Node sub = world.substract(cameraPosition[0], cameraPosition[1], (int) camera.position.z, getSubstractExponent());
+                Node sub = world.substract(cameraX, cameraY, cameraZ, getSubstractExponent());
                 List<Node> nodes = sub.withNeighbors();
                 for (Node octree : nodes) {
                     NodeIterator it = octree.iterator();
