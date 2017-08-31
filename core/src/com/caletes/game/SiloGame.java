@@ -40,10 +40,6 @@ public class SiloGame extends Game {
         batch.dispose();
     }
 
-    public SpriteBatch getBatch() {
-        return batch;
-    }
-
     public Logger getLogger() {
         return logger;
     }

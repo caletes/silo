@@ -27,15 +27,17 @@ public class ElevationsBuilder extends Builder {
             for (int x = 0; x < elevations.getWidth(); x++) {
                 double elevation = elevations.get(x, y);
                 Biome biome = Biome.find(elevation);
-                int peak = biome == Biome.OCEAN ? toZ(biome.getElevationMax()) : toZ(elevation);
-                for (int z = 0; z <= peak; z++) {
-                    Cube cube = getCubeFromBiome(biome);
-                    try {
+                int zMax = biome == Biome.OCEAN ? toZ(biome.getElevationMax()) : toZ(elevation);
+                int zMin = biome == Biome.OCEAN ? zMax : toZ(elevations.getMinAround(x, y));
+                try {
+                    for (int z = zMin; z <= zMax; z++) {
+                        Cube cube = getCubeFromBiome(biome);
                         world.pushObjectAt(cube, x, y, z);
-                    } catch (OctreeOutOfBoundsException e) {
-                        e.printStackTrace();
                     }
+                } catch (OctreeOutOfBoundsException e) {
+                    e.printStackTrace();
                 }
+
             }
         }
         return world;

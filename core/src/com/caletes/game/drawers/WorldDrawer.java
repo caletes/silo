@@ -13,7 +13,7 @@ import java.util.List;
 
 public class WorldDrawer implements Drawer {
 
-    public static final int SUBSTRACT_EXPONENT = 5;
+    public static final int SUBSTRACT_EXPONENT = 6;
 
     private static World world;
     private static SpriteBatch batch;
@@ -47,7 +47,7 @@ public class WorldDrawer implements Drawer {
                         Node<Cube> node = it.next();
                         if (node != null) {
                             Item item = node.getObject();
-                            if (item != null && item.isVisible()) {
+                            if (item != null) {
                                 shaders.switchFor(item);
                                 item.getSprite().draw(batch);
                             }

@@ -60,4 +60,13 @@ public class Elevations {
     private double normalize(double value, double min, double max) {
         return (value - min) / (max - min);
     }
+
+    public double getMinAround(int x, int y) {
+        double inf = 9999;
+        double north = (y > 0) ? get(x, y - 1) : inf;
+        double east = (x < width - 1) ? get(x + 1, y) : inf;
+        double south = (y < height - 1) ? get(x, y + 1) : inf;
+        double west = (x > 0) ? get(x - 1, y) : inf;
+        return Math.min(Math.min(north, east), Math.min(south, west));
+    }
 }

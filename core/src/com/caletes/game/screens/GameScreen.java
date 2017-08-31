@@ -10,8 +10,6 @@ import com.caletes.game.models.World;
 import com.caletes.game.models.items.cubes.CubeFactory;
 import com.caletes.game.models.tilesheet.CubeSheet;
 import com.caletes.game.models.tilesheet.KenneyCubeSheet;
-import com.caletes.game.octree.Node;
-import com.caletes.game.octree.OctreeOutOfBoundsException;
 
 import java.util.Random;
 
@@ -26,21 +24,15 @@ public class GameScreen extends ScreenAdapter {
     private static Logger logger;
 
     public GameScreen(SiloGame game) {
-        this.batch = game.getBatch();
+        this.batch = new SpriteBatch();
         this.logger = game.getLogger();
         CubeSheet cubeSheet = new KenneyCubeSheet();
         this.isoConverter = new IsoConverter(cubeSheet.getTileWidth(), cubeSheet.getTileHeight());
         this.cubeFactory = new CubeFactory(cubeSheet);
         this.world = createWorld();
         this.camera = new Camera(game.getViewportWidth(), game.getViewportHeight(), isoConverter);
-        try {
-            int peak = world.getPeakNode(127, 127, 0).getPosition().z;
-            this.camera.setPositionToWorld(127, 127, peak + 1);
-            this.drawer = new WorldDrawer(world, batch, camera);
-        } catch (OctreeOutOfBoundsException e) {
-            e.printStackTrace();
-        }
-
+        this.camera.setPositionToWorld(127, 127, 1);
+        this.drawer = new WorldDrawer(world, batch, camera);
     }
 
     @Override
@@ -57,14 +49,7 @@ public class GameScreen extends ScreenAdapter {
         long seed = random.nextLong();
         WorldGeneratorFromNoise generator = new WorldGeneratorFromNoise(256, 256, seed, true);
         ElevationsBuilder builder = new ElevationsBuilder(generator.getElevations(), 15, cubeFactory, isoConverter);
-        World world = builder.build();
-        try {
-            Node peak = world.getPeakNode(127, 127, 0);
-            world.pushObjectAt(cubeFactory.createMarkerCube(), 127, 127, peak.getPosition().z + 1);
-        } catch (OctreeOutOfBoundsException e) {
-            e.printStackTrace();
-        }
-        return world;
+        return builder.build();
     }
 
     @Override
@@ -72,6 +57,11 @@ public class GameScreen extends ScreenAdapter {
         camera.viewportWidth = width;
         camera.viewportHeight = height;
         camera.update();
+    }
+
+    @Override
+    public void dispose() {
+        batch.dispose();
     }
 
 }

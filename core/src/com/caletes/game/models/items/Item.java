@@ -6,7 +6,6 @@ public abstract class Item {
 
     protected Sprite sprite;
     private int originX, originY = 0;
-    private boolean visible = true;
 
     protected void setSprite(Sprite sprite) {
         this.sprite = sprite;
@@ -23,13 +22,5 @@ public abstract class Item {
 
     public void setPosition(int x, int y) {
         sprite.setPosition(x - originX, y - originY);
-    }
-
-    public boolean isVisible() {
-        return visible;
-    }
-
-    public void setVisible(boolean visible) {
-        this.visible = visible;
     }
 }
