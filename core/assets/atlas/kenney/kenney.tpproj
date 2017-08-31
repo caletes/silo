@@ -7,7 +7,7 @@ alphaThreshold=0
 debug=false
 duplicatePadding=false
 edgePadding=true
-fast=false
+fast=true
 filterMag=Nearest
 filterMin=Nearest
 ignoreBlankImages=true
@@ -38,5 +38,5 @@ inputFiles=[{path:blocks,type:Input,dirFilePrefix:null,recursive:false,flattenPa
 
 version=4.5.0
 fileTypeType=png
-fileTypeData={encoding:RGBA8888}
+fileTypeData={encoding:RGBA8888,compType:PNGTASTIC,compData:"{level:5,removeGamma:false}"}
 previewBackgroundColor=ffffffff
