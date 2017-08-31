@@ -1,10 +1,10 @@
 package com.caletes.game.models.items.cubes;
 
 
-import com.caletes.game.models.tilesheet.Cubesheet;
+import com.caletes.game.models.tilesheet.CubeSheet;
 
 public class MarkerCube extends Cube {
-    MarkerCube(Cubesheet sheet) {
-        super(sheet, sheet.getMarker()[0], sheet.getMarker()[1]);
+    MarkerCube(CubeSheet cubeSheet) {
+        super(cubeSheet, "marker");
     }
 }

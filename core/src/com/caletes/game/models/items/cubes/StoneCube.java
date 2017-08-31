@@ -1,10 +1,10 @@
 package com.caletes.game.models.items.cubes;
 
 
-import com.caletes.game.models.tilesheet.Cubesheet;
+import com.caletes.game.models.tilesheet.CubeSheet;
 
 public class StoneCube extends Cube {
-    StoneCube(Cubesheet sheet) {
-        super(sheet, sheet.getStone()[0], sheet.getStone()[1]);
+    StoneCube(CubeSheet cubeSheet) {
+        super(cubeSheet, "stone");
     }
 }

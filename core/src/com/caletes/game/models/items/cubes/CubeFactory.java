@@ -1,40 +1,40 @@
 package com.caletes.game.models.items.cubes;
 
-import com.caletes.game.models.tilesheet.Cubesheet;
+import com.caletes.game.models.tilesheet.CubeSheet;
 
 public class CubeFactory {
 
-    protected static Cubesheet sheet;
+    protected static CubeSheet cubeSheet;
 
-    public CubeFactory(Cubesheet sheet) {
-        this.sheet = sheet;
+    public CubeFactory(CubeSheet atlas) {
+        this.cubeSheet = atlas;
     }
 
     public GrassCube createGrassCube() {
-        return new GrassCube(sheet);
+        return new GrassCube(cubeSheet);
     }
 
     public GroundCube createGroundCube() {
-        return new GroundCube(sheet);
+        return new GroundCube(cubeSheet);
     }
 
     public SandCube createSandCube() {
-        return new SandCube(sheet);
+        return new SandCube(cubeSheet);
     }
 
     public SnowCube createSnowCube() {
-        return new SnowCube(sheet);
+        return new SnowCube(cubeSheet);
     }
 
     public StoneCube createStoneCube() {
-        return new StoneCube(sheet);
+        return new StoneCube(cubeSheet);
     }
 
     public WaterCube createWaterCube() {
-        return new WaterCube(sheet);
+        return new WaterCube(cubeSheet);
     }
 
     public MarkerCube createMarkerCube() {
-        return new MarkerCube(sheet);
+        return new MarkerCube(cubeSheet);
     }
 }

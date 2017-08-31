@@ -8,8 +8,8 @@ import com.caletes.game.builders.ElevationsBuilder;
 import com.caletes.game.drawers.WorldDrawer;
 import com.caletes.game.models.World;
 import com.caletes.game.models.items.cubes.CubeFactory;
-import com.caletes.game.models.tilesheet.Cubesheet;
-import com.caletes.game.models.tilesheet.KenneyCubesheet;
+import com.caletes.game.models.tilesheet.CubeSheet;
+import com.caletes.game.models.tilesheet.KenneyCubeSheet;
 import com.caletes.game.octree.Node;
 import com.caletes.game.octree.OctreeOutOfBoundsException;
 
@@ -28,9 +28,9 @@ public class GameScreen extends ScreenAdapter {
     public GameScreen(SiloGame game) {
         this.batch = game.getBatch();
         this.logger = game.getLogger();
-        Cubesheet cubesheet = new KenneyCubesheet();
-        this.isoConverter = new IsoConverter(cubesheet.getTileWidth(), cubesheet.getTileHeight());
-        this.cubeFactory = new CubeFactory(cubesheet);
+        CubeSheet cubeSheet = new KenneyCubeSheet();
+        this.isoConverter = new IsoConverter(cubeSheet.getTileWidth(), cubeSheet.getTileHeight());
+        this.cubeFactory = new CubeFactory(cubeSheet);
         this.world = createWorld();
         this.camera = new Camera(game.getViewportWidth(), game.getViewportHeight(), isoConverter);
         try {
