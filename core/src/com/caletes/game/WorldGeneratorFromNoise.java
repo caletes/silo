@@ -12,12 +12,14 @@ public class WorldGeneratorFromNoise {
     private static OpenSimplexNoise simplexNoise1;
     private int width, height;
     private boolean island;
+    private boolean normalize;
     private Elevations elevations;
 
-    public WorldGeneratorFromNoise(int width, int height, long seed, boolean island) {
+    public WorldGeneratorFromNoise(int width, int height, long seed, boolean island, boolean normalize) {
         this.width = width;
         this.height = height;
         this.island = island;
+        this.normalize = normalize;
         simplexNoise1 = new OpenSimplexNoise(seed);
         generateElevations();
     }
@@ -41,13 +43,13 @@ public class WorldGeneratorFromNoise {
                 elevation /= 1 + 0.5 + 0.25 + 0.12 + 0.06 + 0.03;
 
                 elevation = redistribute(elevation);
-                if (island) {
+                if (island)
                     elevation = toIsland(elevation, nx, ny);
-                }
                 elevations.pushTo(elevation, x, y);
             }
         }
-        elevations = elevations.normalize();
+        if (normalize)
+            elevations = elevations.normalize();
     }
 
 

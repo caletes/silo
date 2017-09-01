@@ -47,7 +47,7 @@ public class GameScreen extends ScreenAdapter {
     private World createWorld() {
         Random random = new Random();
         long seed = random.nextLong();
-        WorldGeneratorFromNoise generator = new WorldGeneratorFromNoise(256, 256, seed, true);
+        WorldGeneratorFromNoise generator = new WorldGeneratorFromNoise(256, 256, seed, true, true);
         ElevationsBuilder builder = new ElevationsBuilder(generator.getElevations(), 15, cubeFactory, isoConverter);
         return builder.build();
     }
