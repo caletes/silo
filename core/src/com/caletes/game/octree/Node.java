@@ -192,7 +192,7 @@ public class Node<T> implements Iterable<Node> {
         return new NodeIterator(this);
     }
 
-    public Node substract(int x, int y, int z, int exponent) throws OctreeOutOfBoundsException {
+    public Node getBranch(int x, int y, int z, int exponent) throws OctreeOutOfBoundsException {
         Node node = getLeafAt(x, y, z);
         while (node.exponent < exponent) {
             node = node.parent;

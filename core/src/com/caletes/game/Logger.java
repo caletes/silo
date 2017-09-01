@@ -9,6 +9,7 @@ public class Logger {
     private static SpriteBatch batch;
     private int viewportWidth, viewportHeight;
     private int fps;
+    private int branchExponent;
     private int[] cameraWorldPosition;
 
     private static BitmapFont font;
@@ -30,6 +31,10 @@ public class Logger {
         this.fps = fps;
     }
 
+    public void setBranchExponent(int exponent) {
+        this.branchExponent = exponent;
+    }
+
     public void setCameraWorldPosition(int[] cameraWorldPosition) {
         this.cameraWorldPosition = cameraWorldPosition;
     }
@@ -37,6 +42,7 @@ public class Logger {
     public void render() {
         String message = fps + " fps";
         message += "\nCamera position " + cameraWorldPosition[0] + "," + cameraWorldPosition[1];
+        message += "\nBranch exponent " + branchExponent;
         font.draw(batch, message, -viewportWidth / 2 + PADDING, viewportHeight / 2 - PADDING);
     }
 

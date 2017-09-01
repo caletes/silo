@@ -1,6 +1,8 @@
 package com.caletes.game.screens;
 
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.caletes.game.*;
@@ -38,6 +40,8 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         logger.setCameraWorldPosition(camera.getPositionFromWorld());
+        logger.setBranchExponent(drawer.getBranchExponent());
+        handleInput();
         camera.handleInput();
         camera.update();
         batch.setProjectionMatrix(camera.combined);
@@ -64,4 +68,10 @@ public class GameScreen extends ScreenAdapter {
         batch.dispose();
     }
 
+    private void handleInput() {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.PLUS))
+            drawer.setBranchExponent(drawer.getBranchExponent() + 1);
+        if (Gdx.input.isKeyJustPressed(Input.Keys.MINUS))
+            drawer.setBranchExponent(drawer.getBranchExponent() - 1);
+    }
 }

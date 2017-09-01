@@ -13,7 +13,8 @@ import java.util.List;
 
 public class WorldDrawer implements Drawer {
 
-    public static final int SUBSTRACT_EXPONENT = 6;
+    public static final int DEFAULT_BRANCH_EXPONENT = 5;
+    public static int branchExponent;
 
     private static World world;
     private static SpriteBatch batch;
@@ -26,6 +27,7 @@ public class WorldDrawer implements Drawer {
         this.batch = batch;
         this.camera = camera;
         this.shaders = new ShaderSwitcher(batch);
+        this.setBranchExponent(DEFAULT_BRANCH_EXPONENT);
     }
 
     public void draw() {
@@ -39,7 +41,7 @@ public class WorldDrawer implements Drawer {
             int cameraY = cameraPosition[1];
             int cameraZ = (int) camera.position.z;
             if (world.isWithinBounds(cameraX, cameraY, cameraZ)) {
-                Node sub = world.substract(cameraX, cameraY, cameraZ, getSubstractExponent());
+                Node sub = world.getBranch(cameraX, cameraY, cameraZ, getBranchExponent());
                 List<Node> nodes = sub.withNeighbors();
                 for (Node octree : nodes) {
                     NodeIterator it = octree.iterator();
@@ -62,8 +64,12 @@ public class WorldDrawer implements Drawer {
         shaders.backToDefault();
     }
 
-    private int getSubstractExponent() {
-        return Math.min(SUBSTRACT_EXPONENT, world.getExponent());
+    public int getBranchExponent() {
+        return branchExponent;
     }
 
+
+    public void setBranchExponent(int exponent) {
+        this.branchExponent = Math.max(0, Math.min(exponent, world.getExponent()));
+    }
 }
