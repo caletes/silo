@@ -27,8 +27,12 @@ public class ElevationsBuilder extends Builder {
             for (int x = 0; x < elevations.getWidth(); x++) {
                 double elevation = elevations.get(x, y);
                 Biome biome = Biome.find(elevation);
-                int zMax = biome == Biome.OCEAN ? toZ(biome.getElevationMax()) : toZ(elevation);
-                int zMin = biome == Biome.OCEAN ? zMax : toZ(elevations.getMinAround(x, y));
+                boolean ocean = biome == Biome.OCEAN;
+                int zMax = ocean ? toZ(biome.getElevationMax()) : toZ(elevation);
+                // On cherche l'élévation la plus basse autour de x,y pour trouver le zMin
+                int zMin = ocean ? zMax : toZ(elevations.getMinAround(x, y));
+                // puis on commence juste au dessus pour avoir le moins de cubes possibles tout en gardant un ensemble continu
+                if (zMin < zMax) zMin++;
                 try {
                     for (int z = zMin; z <= zMax; z++) {
                         Cube cube = getCubeFromBiome(biome);
@@ -37,7 +41,6 @@ public class ElevationsBuilder extends Builder {
                 } catch (OctreeOutOfBoundsException e) {
                     e.printStackTrace();
                 }
-
             }
         }
         return world;
