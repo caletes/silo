@@ -1,6 +1,8 @@
-package com.caletes.game;
+package com.caletes.game.generators;
 
 import com.badlogic.gdx.graphics.Pixmap;
+import com.caletes.game.Biome;
+import com.caletes.game.Elevations;
 
 import java.awt.*;
 
@@ -11,13 +13,24 @@ public class WorldGeneratorFromNoise {
 
     private static OpenSimplexNoise simplexNoise1;
     private int width, height;
+    private int startX, startY;
     private boolean island;
     private boolean normalize;
     private Elevations elevations;
 
+    public WorldGeneratorFromNoise(int width, int height, long seed) {
+        this(width, height, 0, 0, seed, true, true);
+    }
+
     public WorldGeneratorFromNoise(int width, int height, long seed, boolean island, boolean normalize) {
+        this(width, height, 0, 0, seed, island, normalize);
+    }
+
+    public WorldGeneratorFromNoise(int width, int height, int startX, int startY, long seed, boolean island, boolean normalize) {
         this.width = width;
         this.height = height;
+        this.startX = startX;
+        this.startY = startY;
         this.island = island;
         this.normalize = normalize;
         simplexNoise1 = new OpenSimplexNoise(seed);
@@ -32,7 +45,8 @@ public class WorldGeneratorFromNoise {
         elevations = new Elevations(width, height);
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                double nx = x / (double) width - 0.5, ny = y / (double) height - 0.5;
+                double nx = (x + startX) / (double) width - 0.5;
+                double ny = (y + startY) / (double) height - 0.5;
                 double elevation = 0;
                 elevation += heightNoise(nx, ny, 4, 1);
                 elevation += heightNoise(nx, ny, 8, 0.5);

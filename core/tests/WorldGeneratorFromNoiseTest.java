@@ -1,7 +1,7 @@
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.PixmapIO;
-import com.caletes.game.WorldGeneratorFromNoise;
+import com.caletes.game.generators.WorldGeneratorFromNoise;
 import org.junit.Test;
 
 import java.util.Random;
