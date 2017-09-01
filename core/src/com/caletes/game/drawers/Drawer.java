@@ -1,5 +1,7 @@
 package com.caletes.game.drawers;
 
+import com.caletes.game.models.Region;
+
 public interface Drawer {
-    void draw();
+    void draw(Region region);
 }

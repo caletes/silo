@@ -1,18 +1,18 @@
 package com.caletes.game.builders;
 
 import com.caletes.game.IsoConverter;
-import com.caletes.game.models.World;
+import com.caletes.game.models.Region;
 
 public abstract class Builder {
 
     protected int width, height;
-    protected World world;
+    protected Region region;
 
 
     public Builder(int width, int height, IsoConverter isoConverter) {
         this.width = width;
         this.height = height;
-        this.world = new World(computeWorldSize(), isoConverter);
+        this.region = new Region(computeWorldSize(), isoConverter);
     }
 
     public int computeWorldSize() {
@@ -25,5 +25,5 @@ public abstract class Builder {
         return nextPow;
     }
 
-    public abstract World build();
+    public abstract Region build();
 }

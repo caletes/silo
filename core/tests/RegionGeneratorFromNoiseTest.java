@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import java.util.Random;
 
-public class WorldGeneratorFromNoiseTest extends GdxTest {
+public class RegionGeneratorFromNoiseTest extends GdxTest {
 
     private static Random random = new Random();
 

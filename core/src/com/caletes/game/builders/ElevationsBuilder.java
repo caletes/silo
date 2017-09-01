@@ -3,7 +3,7 @@ package com.caletes.game.builders;
 import com.caletes.game.Biome;
 import com.caletes.game.Elevations;
 import com.caletes.game.IsoConverter;
-import com.caletes.game.models.World;
+import com.caletes.game.models.Region;
 import com.caletes.game.models.items.cubes.Cube;
 import com.caletes.game.models.items.cubes.CubeFactory;
 import com.caletes.game.octree.OctreeOutOfBoundsException;
@@ -22,7 +22,7 @@ public class ElevationsBuilder extends Builder {
     }
 
     @Override
-    public World build() {
+    public Region build() {
         for (int y = 0; y < elevations.getHeight(); y++) {
             for (int x = 0; x < elevations.getWidth(); x++) {
                 double elevation = elevations.get(x, y);
@@ -36,14 +36,14 @@ public class ElevationsBuilder extends Builder {
                 try {
                     for (int z = zMin; z <= zMax; z++) {
                         Cube cube = getCubeFromBiome(biome);
-                        world.pushObjectAt(cube, x, y, z);
+                        region.pushObjectAt(cube, x, y, z);
                     }
                 } catch (OctreeOutOfBoundsException e) {
                     e.printStackTrace();
                 }
             }
         }
-        return world;
+        return region;
     }
 
     private int toZ(double elevation) {

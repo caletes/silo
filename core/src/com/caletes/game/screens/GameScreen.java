@@ -10,9 +10,9 @@ import com.caletes.game.IsoConverter;
 import com.caletes.game.Logger;
 import com.caletes.game.SiloGame;
 import com.caletes.game.builders.ElevationsBuilder;
-import com.caletes.game.drawers.WorldDrawer;
+import com.caletes.game.drawers.RegionDrawer;
 import com.caletes.game.generators.WorldGeneratorFromNoise;
-import com.caletes.game.models.World;
+import com.caletes.game.models.Region;
 import com.caletes.game.models.items.cubes.CubeFactory;
 import com.caletes.game.models.tilesheet.CubeSheet;
 import com.caletes.game.models.tilesheet.KenneyCubeSheet;
@@ -22,8 +22,8 @@ public class GameScreen extends ScreenAdapter {
     private static CubeFactory cubeFactory;
     private static IsoConverter isoConverter;
     private static Camera camera;
-    private static World world;
-    private static WorldDrawer drawer;
+    private static Region region;
+    private static RegionDrawer drawer;
     private static SpriteBatch batch;
     private static Logger logger;
 
@@ -33,10 +33,10 @@ public class GameScreen extends ScreenAdapter {
         CubeSheet cubeSheet = new KenneyCubeSheet();
         this.isoConverter = new IsoConverter(cubeSheet.getTileWidth(), cubeSheet.getTileHeight());
         this.cubeFactory = new CubeFactory(cubeSheet);
-        this.world = createWorld();
+        this.region = createRegion();
         this.camera = new Camera(game.getViewportWidth(), game.getViewportHeight(), isoConverter);
         this.camera.setPositionToWorld(127, 127, 1);
-        this.drawer = new WorldDrawer(world, batch, camera);
+        this.drawer = new RegionDrawer(batch, camera);
     }
 
     @Override
@@ -47,10 +47,10 @@ public class GameScreen extends ScreenAdapter {
         camera.handleInput();
         camera.update();
         batch.setProjectionMatrix(camera.combined);
-        drawer.draw();
+        drawer.draw(region);
     }
 
-    private World createWorld() {
+    private Region createRegion() {
         WorldGeneratorFromNoise generator = new WorldGeneratorFromNoise(256, 256, 0, 0, 0, false, false);
         ElevationsBuilder builder = new ElevationsBuilder(generator.getElevations(), 15, cubeFactory, isoConverter);
         return builder.build();
@@ -69,9 +69,9 @@ public class GameScreen extends ScreenAdapter {
     }
 
     private void handleInput() {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.PLUS))
+        if (Gdx.input.isKeyJustPressed(Input.Keys.P))
             drawer.setBranchExponent(drawer.getBranchExponent() + 1);
-        if (Gdx.input.isKeyJustPressed(Input.Keys.MINUS))
+        if (Gdx.input.isKeyJustPressed(Input.Keys.M))
             drawer.setBranchExponent(drawer.getBranchExponent() - 1);
     }
 }

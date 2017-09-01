@@ -8,11 +8,11 @@ import com.caletes.game.octree.Node;
 import com.caletes.game.octree.Octree;
 import com.caletes.game.octree.OctreeOutOfBoundsException;
 
-public class World extends Octree<Item> {
+public class Region extends Octree<Item> {
 
     private final IsoConverter isoConverter;
 
-    public World(int size, IsoConverter isoConverter) {
+    public Region(int size, IsoConverter isoConverter) {
         super(size);
         this.isoConverter = isoConverter;
     }
