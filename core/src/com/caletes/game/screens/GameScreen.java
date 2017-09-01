@@ -17,8 +17,6 @@ import com.caletes.game.models.items.cubes.CubeFactory;
 import com.caletes.game.models.tilesheet.CubeSheet;
 import com.caletes.game.models.tilesheet.KenneyCubeSheet;
 
-import java.util.Random;
-
 public class GameScreen extends ScreenAdapter {
 
     private static CubeFactory cubeFactory;
@@ -53,9 +51,7 @@ public class GameScreen extends ScreenAdapter {
     }
 
     private World createWorld() {
-        Random random = new Random();
-        long seed = random.nextLong();
-        WorldGeneratorFromNoise generator = new WorldGeneratorFromNoise(256, 256, seed, true, true);
+        WorldGeneratorFromNoise generator = new WorldGeneratorFromNoise(256, 256, 0, 0, 0, false, false);
         ElevationsBuilder builder = new ElevationsBuilder(generator.getElevations(), 15, cubeFactory, isoConverter);
         return builder.build();
     }
