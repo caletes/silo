@@ -1,7 +1,6 @@
 package com.caletes.game.drawers;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.caletes.game.Camera;
 import com.caletes.game.models.Region;
 import com.caletes.game.models.items.Item;
 import com.caletes.game.models.items.cubes.Cube;
@@ -18,30 +17,24 @@ public class RegionDrawer implements Drawer {
 
     private static Region region;
     private static SpriteBatch batch;
-    private static Camera camera;
     private static ShaderSwitcher shaders;
 
 
-    public RegionDrawer(SpriteBatch batch, Camera camera) {
+    public RegionDrawer(SpriteBatch batch) {
         this.batch = batch;
-        this.camera = camera;
         this.shaders = new ShaderSwitcher(batch);
         this.branchExponent = DEFAULT_BRANCH_EXPONENT;
     }
 
-    public void draw(Region region) {
+    public void draw(Region region, int x, int y, int z) {
         this.region = region;
-        int[] cameraPosition = camera.getPositionFromWorld();
 
         shaders.process();
 
         batch.begin();
         try {
-            int cameraX = cameraPosition[0];
-            int cameraY = cameraPosition[1];
-            int cameraZ = (int) camera.position.z;
-            if (region.isWithinBounds(cameraX, cameraY, cameraZ)) {
-                Node sub = region.getBranch(cameraX, cameraY, cameraZ, getBranchExponent());
+            if (region.isWithinBounds(x, y, z)) {
+                Node sub = region.getBranch(x, y, z, getBranchExponent());
                 List<Node> nodes = sub.withNeighbors();
                 for (Node octree : nodes) {
                     NodeIterator it = octree.iterator();

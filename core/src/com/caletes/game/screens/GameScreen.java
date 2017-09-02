@@ -38,7 +38,7 @@ public class GameScreen extends ScreenAdapter {
         this.world = createWorld();
         this.camera = new Camera(game.getViewportWidth(), game.getViewportHeight(), isoConverter);
         this.camera.setPositionToWorld(127, 127, 1);
-        this.drawer = new RegionDrawer(batch, camera);
+        this.drawer = new RegionDrawer(batch);
     }
 
     @Override
@@ -51,11 +51,13 @@ public class GameScreen extends ScreenAdapter {
         batch.setProjectionMatrix(camera.combined);
         Region region = null;
         try {
-            region = this.world.getObjectAt(0,0,0);
+            region = this.world.getObjectAt(0, 0, 0);
         } catch (OctreeOutOfBoundsException e) {
             e.printStackTrace();
         }
-        drawer.draw(region);
+
+        int[] cameraPosition = camera.getPositionFromWorld();
+        drawer.draw(region, cameraPosition[0], cameraPosition[1], (int) camera.position.z);
     }
 
     private World createWorld() {
@@ -64,7 +66,7 @@ public class GameScreen extends ScreenAdapter {
         Region region = builder.build();
         World world = new World(16);
         try {
-            world.pushObjectAt(region, 0,0,0);
+            world.pushObjectAt(region, 0, 0, 0);
         } catch (OctreeOutOfBoundsException e) {
             e.printStackTrace();
         }
