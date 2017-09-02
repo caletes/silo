@@ -25,5 +25,5 @@ public abstract class Builder {
         return nextPow;
     }
 
-    public abstract Region build();
+    public abstract Region build(int x, int y);
 }

@@ -28,6 +28,8 @@ public class GameScreen extends ScreenAdapter {
     private static RegionDrawer drawer;
     private static SpriteBatch batch;
     private static Logger logger;
+    private static final int WORLD_SIZE = 16;
+    private static final int REGION_SIZE = 256;
 
     public GameScreen(SiloGame game) {
         this.batch = new SpriteBatch();
@@ -35,7 +37,7 @@ public class GameScreen extends ScreenAdapter {
         CubeSheet cubeSheet = new KenneyCubeSheet();
         this.isoConverter = new IsoConverter(cubeSheet.getTileWidth(), cubeSheet.getTileHeight());
         this.cubeFactory = new CubeFactory(cubeSheet);
-        this.world = createWorld();
+        this.world = new World(WORLD_SIZE);
         this.camera = new Camera(game.getViewportWidth(), game.getViewportHeight(), isoConverter);
         this.camera.setPositionToWorld(127, 127, 1);
         this.drawer = new RegionDrawer(batch);
@@ -49,28 +51,32 @@ public class GameScreen extends ScreenAdapter {
         camera.handleInput();
         camera.update();
         batch.setProjectionMatrix(camera.combined);
-        Region region = null;
+
+
+        int[] camPos = camera.getPositionFromWorld();
+        int camX = camPos[0];
+        int camY = camPos[1];
+        int camZ = (int) camera.position.z;
+        int worldX = camX / REGION_SIZE;
+        int worldY = camY / REGION_SIZE;
+        int worldZ = camZ / REGION_SIZE;
         try {
-            region = this.world.getObjectAt(0, 0, 0);
+            Region region = world.getObjectAt(worldX, worldY, worldZ);
+            if (region == null) {
+                region = generateRegion(REGION_SIZE, worldX, worldY);
+                world.pushObjectAt(region, worldX, worldY, worldZ);
+            }
+            drawer.draw(region, camX - (worldX * REGION_SIZE), camY - (worldY * REGION_SIZE), camZ);
+
         } catch (OctreeOutOfBoundsException e) {
             e.printStackTrace();
         }
-
-        int[] cameraPosition = camera.getPositionFromWorld();
-        drawer.draw(region, cameraPosition[0], cameraPosition[1], (int) camera.position.z);
     }
 
-    private World createWorld() {
-        WorldGeneratorFromNoise generator = new WorldGeneratorFromNoise(256, 256, 0, 0, 0, false, false);
-        ElevationsBuilder builder = new ElevationsBuilder(generator.getElevations(), 15, cubeFactory, isoConverter);
-        Region region = builder.build();
-        World world = new World(16);
-        try {
-            world.pushObjectAt(region, 0, 0, 0);
-        } catch (OctreeOutOfBoundsException e) {
-            e.printStackTrace();
-        }
-        return world;
+    private Region generateRegion(int regionSize, int worldX, int worldY) {
+        WorldGeneratorFromNoise generator = new WorldGeneratorFromNoise(regionSize, regionSize, worldX * regionSize, worldY * regionSize, 0, false, true);
+        ElevationsBuilder builder = new ElevationsBuilder(generator.getElevations(), 15, cubeFactory, isoConverter, REGION_SIZE);
+        return builder.build(worldX, worldY);
     }
 
     @Override

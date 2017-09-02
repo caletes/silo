@@ -13,16 +13,18 @@ public class ElevationsBuilder extends Builder {
     private Elevations elevations;
     private int maxHeight;
     private CubeFactory cubeFactory;
+    private int regionSize;
 
-    public ElevationsBuilder(Elevations elevations, int maxHeight, CubeFactory cubeFactory, IsoConverter isoConverter) {
+    public ElevationsBuilder(Elevations elevations, int maxHeight, CubeFactory cubeFactory, IsoConverter isoConverter, int regionSize) {
         super(elevations.getWidth(), elevations.getHeight(), isoConverter);
         this.elevations = elevations;
         this.maxHeight = maxHeight;
         this.cubeFactory = cubeFactory;
+        this.regionSize = regionSize;
     }
 
     @Override
-    public Region build() {
+    public Region build(int worldX, int worldY) {
         for (int y = 0; y < elevations.getHeight(); y++) {
             for (int x = 0; x < elevations.getWidth(); x++) {
                 double elevation = elevations.get(x, y);
@@ -36,7 +38,7 @@ public class ElevationsBuilder extends Builder {
                 try {
                     for (int z = zMin; z <= zMax; z++) {
                         Cube cube = getCubeFromBiome(biome);
-                        region.pushObjectAt(cube, x, y, z);
+                        region.pushObjectAt(cube, x, y, z, regionSize, worldX, worldY);
                     }
                 } catch (OctreeOutOfBoundsException e) {
                     e.printStackTrace();
