@@ -11,6 +11,7 @@ import java.awt.*;
  */
 public class WorldGeneratorFromNoise {
 
+    public static final int UNIVERSAL_CONSTANT = 256;
     private static OpenSimplexNoise simplexNoise1;
     private int width, height;
     private int startX, startY;
@@ -45,8 +46,8 @@ public class WorldGeneratorFromNoise {
         elevations = new Elevations(width, height);
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                double nx = (x + startX) / (double) width - 0.5;
-                double ny = (y + startY) / (double) height - 0.5;
+                double nx = (x + startX) / (double) UNIVERSAL_CONSTANT - 0.5;
+                double ny = (y + startY) / (double) UNIVERSAL_CONSTANT - 0.5;
                 double elevation = 0;
                 elevation += heightNoise(nx, ny, 4, 1);
                 elevation += heightNoise(nx, ny, 8, 0.5);
