@@ -1,5 +1,8 @@
 package com.caletes.game.octree;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Ne pas changer l'ordre de l'énumération
  * Celui ci correspond à l'odre de lecture de l'octree
@@ -36,7 +39,6 @@ public enum Direction {
     BOTTOM_SOUTH_WEST(-1, 1, -1),
     BOTTOM_SOUTH(0, 1, -1),
     BOTTOM_SOUTH_EAST(1, 1, -1);
-
 
 
     private Delta delta = new Delta();
@@ -82,5 +84,19 @@ public enum Direction {
         public int x;
         public int y;
         public int z;
+    }
+
+    public static List<Direction> getCardinals() {
+        List<Direction> cardinals = new ArrayList<>();
+        cardinals.add(NORTH_WEST);
+        cardinals.add(NORTH);
+        cardinals.add(NORTH_EAST);
+        cardinals.add(WEST);
+        cardinals.add(NONE);
+        cardinals.add(EAST);
+        cardinals.add(SOUTH_WEST);
+        cardinals.add(SOUTH);
+        cardinals.add(SOUTH_EAST);
+        return cardinals;
     }
 }

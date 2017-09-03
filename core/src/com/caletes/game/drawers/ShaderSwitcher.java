@@ -55,7 +55,7 @@ public class ShaderSwitcher {
 
     private void setShader(ShaderProgram shader) {
         if (currentShader != shader) {
-            batch.flush();
+           // batch.flush();
             batch.setShader(shader);
             currentShader = shader;
         }

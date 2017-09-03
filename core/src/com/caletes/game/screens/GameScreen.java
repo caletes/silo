@@ -1,8 +1,6 @@
 package com.caletes.game.screens;
 
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.caletes.game.Camera;
@@ -17,7 +15,11 @@ import com.caletes.game.models.World;
 import com.caletes.game.models.items.cubes.CubeFactory;
 import com.caletes.game.models.tilesheet.CubeSheet;
 import com.caletes.game.models.tilesheet.KenneyCubeSheet;
+import com.caletes.game.octree.Direction;
+import com.caletes.game.octree.Node;
 import com.caletes.game.octree.OctreeOutOfBoundsException;
+
+import java.util.List;
 
 public class GameScreen extends ScreenAdapter {
 
@@ -28,8 +30,8 @@ public class GameScreen extends ScreenAdapter {
     private static ChunkDrawer drawer;
     private static SpriteBatch batch;
     private static Logger logger;
-    private static final int WORLD_SIZE = 16;
-    private static final int CHUNK_SIZE = 32;
+    private static final int WORLD_SIZE = 1024;
+    private static final int CHUNK_SIZE = 40;
 
     public GameScreen(SiloGame game) {
         this.batch = new SpriteBatch();
@@ -46,8 +48,6 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         logger.setCameraWorldPosition(camera.getPositionFromWorld());
-        logger.setBranchExponent(drawer.getBranchExponent());
-        handleInput();
         camera.handleInput();
         camera.update();
         batch.setProjectionMatrix(camera.combined);
@@ -61,12 +61,31 @@ public class GameScreen extends ScreenAdapter {
         int worldY = camY / CHUNK_SIZE;
         int worldZ = camZ / CHUNK_SIZE;
         try {
-            Chunk chunk = world.getObjectAt(worldX, worldY, worldZ);
-            if (chunk == null) {
-                chunk = generateChunk(CHUNK_SIZE, worldX, worldY);
-                world.pushObjectAt(chunk, worldX, worldY, worldZ);
+            if (world.isWithinBounds(worldX, worldY, worldZ)) {
+                drawer.processShaders();
+                Node chunkNode = world.getLeafAt(worldX, worldY, worldZ);
+                List<Direction> cardinals = Direction.getCardinals();
+                for (Direction direction : cardinals) {
+                    Node nextNode = chunkNode.getNextOn(direction);
+                    Chunk nextChunk = null;
+                    if (nextNode != null) {
+                        nextChunk = (Chunk) nextNode.getObject();
+                    }
+                    if (nextChunk == null) {
+                        Direction.Delta delta1 = direction.getDelta();
+                        int nextX = worldX + delta1.x;
+                        int nextY = worldY + delta1.y;
+                        int nextZ = worldZ + delta1.z;
+                        if (world.isWithinBounds(nextX, nextY, nextZ)) {
+                            nextChunk = generateChunk(CHUNK_SIZE, worldX + delta1.x, worldY + delta1.y);
+                            world.pushObjectAt(nextChunk, worldX + delta1.x, worldY + delta1.y, worldZ + delta1.z);
+                        }
+                    }
+                    if (nextChunk != null) {
+                        drawer.draw(nextChunk);
+                    }
+                }
             }
-            drawer.draw(chunk, camX - (worldX * CHUNK_SIZE), camY - (worldY * CHUNK_SIZE), camZ);
 
         } catch (OctreeOutOfBoundsException e) {
             e.printStackTrace();
@@ -74,7 +93,7 @@ public class GameScreen extends ScreenAdapter {
     }
 
     private Chunk generateChunk(int chunkSize, int worldX, int worldY) {
-        WorldGeneratorFromNoise generator = new WorldGeneratorFromNoise(chunkSize, chunkSize, worldX * chunkSize, worldY * chunkSize, 0, false, false);
+        WorldGeneratorFromNoise generator = new WorldGeneratorFromNoise(chunkSize, chunkSize, worldX * chunkSize, worldY * chunkSize, 0);
         ElevationsBuilder builder = new ElevationsBuilder(generator.getElevations(), 15, cubeFactory, isoConverter, CHUNK_SIZE);
         return builder.build(worldX, worldY);
     }
@@ -89,12 +108,5 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void dispose() {
         batch.dispose();
-    }
-
-    private void handleInput() {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.P))
-            drawer.setBranchExponent(drawer.getBranchExponent() + 1);
-        if (Gdx.input.isKeyJustPressed(Input.Keys.M))
-            drawer.setBranchExponent(drawer.getBranchExponent() - 1);
     }
 }

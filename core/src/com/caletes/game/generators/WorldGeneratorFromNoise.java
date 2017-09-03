@@ -15,25 +15,18 @@ public class WorldGeneratorFromNoise {
     private static OpenSimplexNoise simplexNoise1;
     private int width, height;
     private int startX, startY;
-    private boolean island;
-    private boolean normalize;
     private Elevations elevations;
 
+
     public WorldGeneratorFromNoise(int width, int height, long seed) {
-        this(width, height, 0, 0, seed, true, true);
+        this(width, height, 0, 0, seed);
     }
 
-    public WorldGeneratorFromNoise(int width, int height, long seed, boolean island, boolean normalize) {
-        this(width, height, 0, 0, seed, island, normalize);
-    }
-
-    public WorldGeneratorFromNoise(int width, int height, int startX, int startY, long seed, boolean island, boolean normalize) {
+    public WorldGeneratorFromNoise(int width, int height, int startX, int startY, long seed) {
         this.width = width;
         this.height = height;
         this.startX = startX;
         this.startY = startY;
-        this.island = island;
-        this.normalize = normalize;
         simplexNoise1 = new OpenSimplexNoise(seed);
         generateElevations();
     }
@@ -58,30 +51,9 @@ public class WorldGeneratorFromNoise {
                 elevation /= 1 + 0.5 + 0.25 + 0.12 + 0.06 + 0.03;
 
                 elevation = redistribute(elevation);
-                if (island)
-                    elevation = toIsland(elevation, nx, ny);
                 elevations.pushTo(elevation, x, y);
             }
         }
-        if (normalize)
-            elevations = elevations.normalize();
-    }
-
-
-    private double toIsland(double elevation, double nx, double ny) {
-        double distance = getManhattanDistance(nx, ny);
-        double a = 0.05;
-        double b = 2;
-        double c = 1;
-        return (elevation + a) * (1 - b * Math.pow(distance, c));
-    }
-
-    private double getManhattanDistance(double nx, double ny) {
-        return Math.max(Math.abs(nx), Math.abs(ny));
-    }
-
-    private double getEuclideanDistance(double nx, double ny) {
-        return Math.sqrt(nx * nx + ny * ny);
     }
 
     private double redistribute(double elevation) {

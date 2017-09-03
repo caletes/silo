@@ -13,7 +13,7 @@ public class ChunkGeneratorFromNoiseTest extends GdxTest {
     @Test
     public void testGenerateM() {
         long seed = random.nextLong();
-        WorldGeneratorFromNoise generator = new WorldGeneratorFromNoise(256, 256, seed, true, true);
+        WorldGeneratorFromNoise generator = new WorldGeneratorFromNoise(256, 256, seed);
         Pixmap heightmap = generator.toHeightMap();
         PixmapIO.writePNG(new FileHandle("assets/heightmaps/_generated_heightmap_m.png"), heightmap);
         Pixmap biomeMap = generator.toBiomeMap();
@@ -24,7 +24,7 @@ public class ChunkGeneratorFromNoiseTest extends GdxTest {
     public void testGenerateXS() {
 
         long seed = random.nextLong();
-        WorldGeneratorFromNoise generator = new WorldGeneratorFromNoise(8, 8, seed, true, true);
+        WorldGeneratorFromNoise generator = new WorldGeneratorFromNoise(8, 8, seed);
         Pixmap heightmap = generator.toHeightMap();
         PixmapIO.writePNG(new FileHandle("assets/heightmaps/_generated_heightmap_xs.png"), heightmap);
         Pixmap biomeMap = generator.toBiomeMap();
