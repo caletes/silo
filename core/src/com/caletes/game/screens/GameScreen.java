@@ -31,7 +31,7 @@ public class GameScreen extends ScreenAdapter {
     private static SpriteBatch batch;
     private static Logger logger;
     private static final int WORLD_SIZE = 1024;
-    private static final int CHUNK_SIZE = 40;
+    private static final int CHUNK_SIZE = 50;
 
     public GameScreen(SiloGame game) {
         this.batch = new SpriteBatch();
@@ -41,7 +41,7 @@ public class GameScreen extends ScreenAdapter {
         this.cubeFactory = new CubeFactory(cubeSheet);
         this.world = new World(WORLD_SIZE);
         this.camera = new Camera(game.getViewportWidth(), game.getViewportHeight(), isoConverter);
-        this.camera.setPositionToWorld(1, 1, 1);
+        this.camera.setPositionToWorld(2371, 1416, 1);
         this.drawer = new ChunkDrawer(batch);
     }
 
@@ -94,7 +94,7 @@ public class GameScreen extends ScreenAdapter {
 
     private Chunk generateChunk(int chunkSize, int worldX, int worldY) {
         WorldGeneratorFromNoise generator = new WorldGeneratorFromNoise(chunkSize, chunkSize, worldX * chunkSize, worldY * chunkSize, 0);
-        ElevationsBuilder builder = new ElevationsBuilder(generator.getElevations(), 15, cubeFactory, isoConverter, CHUNK_SIZE);
+        ElevationsBuilder builder = new ElevationsBuilder(generator.getElevations(), 100, cubeFactory, isoConverter, CHUNK_SIZE);
         return builder.build(worldX, worldY);
     }
 

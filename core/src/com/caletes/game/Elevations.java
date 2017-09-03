@@ -31,25 +31,6 @@ public class Elevations {
     }
 
     /**
-     * Normalize elevations between 0 and 1
-     *
-     * @return
-     */
-    public Elevations normalize() {
-        Elevations normalized = new Elevations(width, height);
-        DoubleStream maxStream = Arrays.stream(elevations).flatMapToDouble(Arrays::stream);
-        double max = maxStream.max().getAsDouble();
-        DoubleStream minStream = Arrays.stream(elevations).flatMapToDouble(Arrays::stream);
-        double min = minStream.min().getAsDouble();
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                normalized.pushTo(normalize(elevations[x][y], min, max), x, y);
-            }
-        }
-        return normalized;
-    }
-
-    /**
      * Normalize a value between 0 and 1
      *
      * @param value
@@ -57,7 +38,7 @@ public class Elevations {
      * @param max
      * @return
      */
-    private double normalize(double value, double min, double max) {
+    public static double normalize(double value, double min, double max) {
         return (value - min) / (max - min);
     }
 

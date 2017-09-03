@@ -11,7 +11,8 @@ import java.awt.*;
  */
 public class WorldGeneratorFromNoise {
 
-    public static final int UNIVERSAL_CONSTANT = 256;
+    public static final int UNIVERSAL_CONSTANT = 1000;
+    public static final int REDISTRIBUTION_COEFFICIENT = 5;
     private static OpenSimplexNoise simplexNoise1;
     private int width, height;
     private int startX, startY;
@@ -39,16 +40,18 @@ public class WorldGeneratorFromNoise {
         elevations = new Elevations(width, height);
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                double nx = (x + startX) / (double) UNIVERSAL_CONSTANT - 0.5;
-                double ny = (y + startY) / (double) UNIVERSAL_CONSTANT - 0.5;
+                double nx = (x + startX) / (double) UNIVERSAL_CONSTANT;
+                double ny = (y + startY) / (double) UNIVERSAL_CONSTANT;
                 double elevation = 0;
+
+
                 elevation += heightNoise(nx, ny, 4, 1);
                 elevation += heightNoise(nx, ny, 8, 0.5);
                 elevation += heightNoise(nx, ny, 16, 0.25);
                 elevation += heightNoise(nx, ny, 32, 0.12);
                 elevation += heightNoise(nx, ny, 64, 0.06);
                 elevation += heightNoise(nx, ny, 128, 0.03);
-                elevation /= 1 + 0.5 + 0.25 + 0.12 + 0.06 + 0.03;
+                elevation /= 1 + 0.5 + 0.25 + 0.12 + 0.06 + 0.03 ;
 
                 elevation = redistribute(elevation);
                 elevations.pushTo(elevation, x, y);
@@ -57,10 +60,10 @@ public class WorldGeneratorFromNoise {
     }
 
     private double redistribute(double elevation) {
-        return Math.pow(elevation / 2.0 + 0.5, 2.4);
+        return Math.pow(elevation / 2.0 + 0.5, REDISTRIBUTION_COEFFICIENT);
     }
 
-    private double heightNoise(double nx, double ny, int frequency, double amplitude) {
+    private double heightNoise(double nx, double ny, double frequency, double amplitude) {
         return amplitude * simplexNoise1.eval(nx * frequency, ny * frequency);
     }
 
