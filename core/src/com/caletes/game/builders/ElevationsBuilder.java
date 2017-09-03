@@ -3,7 +3,7 @@ package com.caletes.game.builders;
 import com.caletes.game.Biome;
 import com.caletes.game.Elevations;
 import com.caletes.game.IsoConverter;
-import com.caletes.game.models.Region;
+import com.caletes.game.models.Chunk;
 import com.caletes.game.models.items.cubes.Cube;
 import com.caletes.game.models.items.cubes.CubeFactory;
 import com.caletes.game.octree.OctreeOutOfBoundsException;
@@ -13,18 +13,18 @@ public class ElevationsBuilder extends Builder {
     private Elevations elevations;
     private int maxHeight;
     private CubeFactory cubeFactory;
-    private int regionSize;
+    private int chunkSize;
 
-    public ElevationsBuilder(Elevations elevations, int maxHeight, CubeFactory cubeFactory, IsoConverter isoConverter, int regionSize) {
+    public ElevationsBuilder(Elevations elevations, int maxHeight, CubeFactory cubeFactory, IsoConverter isoConverter, int chunkSize) {
         super(elevations.getWidth(), elevations.getHeight(), isoConverter);
         this.elevations = elevations;
         this.maxHeight = maxHeight;
         this.cubeFactory = cubeFactory;
-        this.regionSize = regionSize;
+        this.chunkSize = chunkSize;
     }
 
     @Override
-    public Region build(int worldX, int worldY) {
+    public Chunk build(int worldX, int worldY) {
         for (int y = 0; y < elevations.getHeight(); y++) {
             for (int x = 0; x < elevations.getWidth(); x++) {
                 double elevation = elevations.get(x, y);
@@ -38,14 +38,14 @@ public class ElevationsBuilder extends Builder {
                 try {
                     for (int z = zMin; z <= zMax; z++) {
                         Cube cube = getCubeFromBiome(biome);
-                        region.pushObjectAt(cube, x, y, z, regionSize, worldX, worldY);
+                        chunk.pushObjectAt(cube, x, y, z, chunkSize, worldX, worldY);
                     }
                 } catch (OctreeOutOfBoundsException e) {
                     e.printStackTrace();
                 }
             }
         }
-        return region;
+        return chunk;
     }
 
     private int toZ(double elevation) {

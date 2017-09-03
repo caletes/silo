@@ -1,7 +1,7 @@
 package com.caletes.game.drawers;
 
-import com.caletes.game.models.Region;
+import com.caletes.game.models.Chunk;
 
 public interface Drawer {
-    void draw(Region region, int x, int y, int z);
+    void draw(Chunk chunk, int x, int y, int z);
 }
