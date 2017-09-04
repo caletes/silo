@@ -41,7 +41,8 @@ public class GameScreen extends ScreenAdapter {
         this.cubeFactory = new CubeFactory(cubeSheet);
         this.world = new World(WORLD_SIZE);
         this.camera = new Camera(game.getViewportWidth(), game.getViewportHeight(), isoConverter);
-        this.camera.setPositionToWorld(2371, 1416, 1);
+        //this.camera.setPositionToWorld(2371, 1416, 1);
+        this.camera.setPositionToWorld(1, 1, 1);
         this.drawer = new ChunkDrawer(batch);
     }
 
@@ -94,7 +95,7 @@ public class GameScreen extends ScreenAdapter {
 
     private Chunk generateChunk(int chunkSize, int worldX, int worldY) {
         WorldGeneratorFromNoise generator = new WorldGeneratorFromNoise(chunkSize, chunkSize, worldX * chunkSize, worldY * chunkSize, 0);
-        ElevationsBuilder builder = new ElevationsBuilder(generator.getElevations(), 100, cubeFactory, isoConverter, CHUNK_SIZE);
+        ElevationsBuilder builder = new ElevationsBuilder(generator.getElevations(), 20, cubeFactory, isoConverter, CHUNK_SIZE);
         return builder.build(worldX, worldY);
     }
 

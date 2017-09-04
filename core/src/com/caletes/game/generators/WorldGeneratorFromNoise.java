@@ -8,11 +8,10 @@ import java.awt.*;
 
 /**
  * cf. http://www.redblobgames.com/maps/terrain-from-noise/
+ * https://cmaher.github.io/posts/working-with-simplex-noise/
  */
 public class WorldGeneratorFromNoise {
 
-    public static final int UNIVERSAL_CONSTANT = 1000;
-    public static final int REDISTRIBUTION_COEFFICIENT = 5;
     private static OpenSimplexNoise simplexNoise1;
     private int width, height;
     private int startX, startY;
@@ -36,36 +35,61 @@ public class WorldGeneratorFromNoise {
         return elevations;
     }
 
+
+    double minNoise = 999;
+    double maxNoise = -999;
+    static double absoluteMin = 999;
+    static double absoluteMax = -999;
+
     private void generateElevations() {
         elevations = new Elevations(width, height);
+        double persistence = 0.5;
+        double scale = 0.008;
+        int octaveCount = 6;
+        int low = 0;
+        int high = 15;
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                double nx = (x + startX) / (double) UNIVERSAL_CONSTANT;
-                double ny = (y + startY) / (double) UNIVERSAL_CONSTANT;
-                double elevation = 0;
+                double elevation = sumOctave(octaveCount, x + startX, y + startY, persistence, scale, low, high);
 
-
-                elevation += heightNoise(nx, ny, 4, 1);
-                elevation += heightNoise(nx, ny, 8, 0.5);
-                elevation += heightNoise(nx, ny, 16, 0.25);
-                elevation += heightNoise(nx, ny, 32, 0.12);
-                elevation += heightNoise(nx, ny, 64, 0.06);
-                elevation += heightNoise(nx, ny, 128, 0.03);
-                elevation /= 1 + 0.5 + 0.25 + 0.12 + 0.06 + 0.03 ;
-
-                elevation = redistribute(elevation);
+                minNoise = Math.min(minNoise, elevation);
+                maxNoise = Math.max(maxNoise, elevation);
                 elevations.pushTo(elevation, x, y);
             }
         }
+        if (minNoise < absoluteMin) {
+            absoluteMin = minNoise;
+            System.out.println("MIN " + absoluteMin);
+        }
+        if (maxNoise > absoluteMax) {
+            absoluteMax = maxNoise;
+            System.out.println("MAX " + absoluteMax);
+        }
     }
 
-    private double redistribute(double elevation) {
-        return Math.pow(elevation / 2.0 + 0.5, REDISTRIBUTION_COEFFICIENT);
+    private double sumOctave(int octaveCount, double x, double y, double persistence, double scale, int low, int high) {
+        double maxAmp = 0;
+        double amp = 1;
+        double freq = scale;
+        double noise = 0;
+        //add successively smaller, higher-frequency terms
+        for (int i = 0; i < octaveCount; ++i) {
+            noise += amp * simplexNoise1.eval(x * freq, y * freq);
+            maxAmp += amp;
+            amp *= persistence;
+            freq *= 2;
+        }
+        //take the average value of the iterations
+        noise /= maxAmp;
+       // noise += 4 * simplexNoise1.eval(x * 0.0005, y * 0.0005);
+        // the 2D noise is trapped within ±½√2 ≈ ±0.707
+        //normalize the result between 0 and 1
+        double min = -0.6;
+        double max = 0.6;
+        noise = (noise - min) / (max - min);
+        return noise;
     }
 
-    private double heightNoise(double nx, double ny, double frequency, double amplitude) {
-        return amplitude * simplexNoise1.eval(nx * frequency, ny * frequency);
-    }
 
     public Pixmap toHeightMap() {
         Pixmap pixmap = new Pixmap(width, height, Pixmap.Format.RGB888);
