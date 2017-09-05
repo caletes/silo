@@ -17,9 +17,18 @@ public class WorldGeneratorFromNoise {
     private int startX, startY;
     private Elevations elevations;
 
+    private boolean debug;
+    double minNoiseDebug = 999;
+    double maxNoiseDebug = -999;
+    static double absoluteMinDebug = 999;
+    static double absoluteMaxDebug = -999;
 
     public WorldGeneratorFromNoise(int width, int height, long seed) {
         this(width, height, 0, 0, seed);
+    }
+
+    public void setDebug(boolean debug) {
+        this.debug = debug;
     }
 
     public WorldGeneratorFromNoise(int width, int height, int startX, int startY, long seed) {
@@ -28,43 +37,36 @@ public class WorldGeneratorFromNoise {
         this.startX = startX;
         this.startY = startY;
         simplexNoise1 = new OpenSimplexNoise(seed);
-        generateElevations();
     }
 
-    public Elevations getElevations() {
-        return elevations;
-    }
-
-
-    double minNoise = 999;
-    double maxNoise = -999;
-    static double absoluteMin = 999;
-    static double absoluteMax = -999;
-
-    private void generateElevations() {
+    public Elevations generate() {
         elevations = new Elevations(width, height);
         double persistence = 0.5;
-        double scale = 0.008;
-        int octaveCount = 6;
+        double scale = 0.002;
+        int octaveCount = 12;
         int low = 0;
         int high = 15;
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 double elevation = sumOctave(octaveCount, x + startX, y + startY, persistence, scale, low, high);
-
-                minNoise = Math.min(minNoise, elevation);
-                maxNoise = Math.max(maxNoise, elevation);
+                if (debug) {
+                    minNoiseDebug = Math.min(minNoiseDebug, elevation);
+                    maxNoiseDebug = Math.max(maxNoiseDebug, elevation);
+                }
                 elevations.pushTo(elevation, x, y);
             }
         }
-        if (minNoise < absoluteMin) {
-            absoluteMin = minNoise;
-            System.out.println("MIN " + absoluteMin);
+        if (debug) {
+            if (minNoiseDebug < absoluteMinDebug) {
+                absoluteMinDebug = minNoiseDebug;
+                System.out.println("MIN " + absoluteMinDebug);
+            }
+            if (maxNoiseDebug > absoluteMaxDebug) {
+                absoluteMaxDebug = maxNoiseDebug;
+                System.out.println("MAX " + absoluteMaxDebug);
+            }
         }
-        if (maxNoise > absoluteMax) {
-            absoluteMax = maxNoise;
-            System.out.println("MAX " + absoluteMax);
-        }
+        return elevations;
     }
 
     private double sumOctave(int octaveCount, double x, double y, double persistence, double scale, int low, int high) {
@@ -81,7 +83,7 @@ public class WorldGeneratorFromNoise {
         }
         //take the average value of the iterations
         noise /= maxAmp;
-       // noise += 4 * simplexNoise1.eval(x * 0.0005, y * 0.0005);
+        // noise += 4 * simplexNoise1.eval(x * 0.0005, y * 0.0005);
         // the 2D noise is trapped within ±½√2 ≈ ±0.707
         //normalize the result between 0 and 1
         double min = -0.6;

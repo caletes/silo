@@ -2,7 +2,7 @@ package com.caletes.game.models.tilesheet;
 
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-
+//TODO ne plus hériter de textureAtlas mais faire une composition
 public abstract class CubeSheet extends TextureAtlas {
 
     private static int spriteWidth, spriteHeight;

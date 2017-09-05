@@ -3,10 +3,7 @@ package com.caletes.game.screens;
 
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.caletes.game.Camera;
-import com.caletes.game.IsoConverter;
-import com.caletes.game.Logger;
-import com.caletes.game.SiloGame;
+import com.caletes.game.*;
 import com.caletes.game.builders.ElevationsBuilder;
 import com.caletes.game.drawers.ChunkDrawer;
 import com.caletes.game.generators.WorldGeneratorFromNoise;
@@ -95,7 +92,8 @@ public class GameScreen extends ScreenAdapter {
 
     private Chunk generateChunk(int chunkSize, int worldX, int worldY) {
         WorldGeneratorFromNoise generator = new WorldGeneratorFromNoise(chunkSize, chunkSize, worldX * chunkSize, worldY * chunkSize, 0);
-        ElevationsBuilder builder = new ElevationsBuilder(generator.getElevations(), 20, cubeFactory, isoConverter, CHUNK_SIZE);
+        Elevations elevations = generator.generate();
+        ElevationsBuilder builder = new ElevationsBuilder(elevations, 30, cubeFactory, isoConverter, CHUNK_SIZE);
         return builder.build(worldX, worldY);
     }
 
