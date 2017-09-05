@@ -41,14 +41,11 @@ public class WorldGeneratorFromNoise {
 
     public Elevations generate() {
         elevations = new Elevations(width, height);
-        double persistence = 0.5;
-        double scale = 0.002;
-        int octaveCount = 12;
-        int low = 0;
-        int high = 15;
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                double elevation = sumOctave(octaveCount, x + startX, y + startY, persistence, scale, low, high);
+                double elevation = sumOctave(12, x + startX, y + startY, 0.002, 1, 0.5);
+                elevation += sumOctave(1, x + startX, y + startY, 0.001, 1, 0.5);
+                elevation /= 2;
                 if (debug) {
                     minNoiseDebug = Math.min(minNoiseDebug, elevation);
                     maxNoiseDebug = Math.max(maxNoiseDebug, elevation);
@@ -69,20 +66,18 @@ public class WorldGeneratorFromNoise {
         return elevations;
     }
 
-    private double sumOctave(int octaveCount, double x, double y, double persistence, double scale, int low, int high) {
-        double maxAmp = 0;
-        double amp = 1;
-        double freq = scale;
+    private double sumOctave(int octaveCount, double x, double y, double frequency, double amplitude, double persistence) {
+        double amplitudesSum = 0;
         double noise = 0;
         //add successively smaller, higher-frequency terms
         for (int i = 0; i < octaveCount; ++i) {
-            noise += amp * simplexNoise1.eval(x * freq, y * freq);
-            maxAmp += amp;
-            amp *= persistence;
-            freq *= 2;
+            noise += amplitude * simplexNoise1.eval(x * frequency, y * frequency);
+            amplitudesSum += amplitude;
+            amplitude *= persistence;
+            frequency *= 2;
         }
         //take the average value of the iterations
-        noise /= maxAmp;
+        noise /= amplitudesSum;
         // noise += 4 * simplexNoise1.eval(x * 0.0005, y * 0.0005);
         // the 2D noise is trapped within ±½√2 ≈ ±0.707
         //normalize the result between 0 and 1

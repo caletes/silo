@@ -12,7 +12,7 @@ public class ChunkGeneratorFromNoiseTest extends GdxTest {
 
     @Test
     public void testGenerateL() {
-        WorldGeneratorFromNoise generator = new WorldGeneratorFromNoise(2048, 2048, 0);
+        WorldGeneratorFromNoise generator = new WorldGeneratorFromNoise(5096, 5096, 0);
         generator.setDebug(true);
         generator.generate();
         Pixmap heightmap = generator.toHeightMap();
