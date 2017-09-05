@@ -5,6 +5,7 @@ import com.caletes.game.Biome;
 import com.caletes.game.Elevations;
 
 import java.awt.*;
+import java.util.function.Function;
 
 /**
  * cf. http://www.redblobgames.com/maps/terrain-from-noise/
@@ -41,10 +42,17 @@ public class WorldGeneratorFromNoise {
 
     public Elevations generate() {
         elevations = new Elevations(width, height);
+
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                double elevation = sumOctave(12, x + startX, y + startY, 0.002, 1, 0.5);
-                elevation += sumOctave(1, x + startX, y + startY, 0.001, 1, 0.5);
+                // amplitudeCoeff :
+                // -2 red noise
+                // -1 pink noise 0
+                // 0 white noise
+                // 1 blue noise
+                // 2 violet noise
+                double elevation = sumOctave(12, x + startX, y + startY, 0.002, f -> 1 / f);
+                elevation += sumOctave(1, x + startX, y + startY, 0.0015, f -> 1 / f / f);
                 elevation /= 2;
                 if (debug) {
                     minNoiseDebug = Math.min(minNoiseDebug, elevation);
@@ -66,14 +74,14 @@ public class WorldGeneratorFromNoise {
         return elevations;
     }
 
-    private double sumOctave(int octaveCount, double x, double y, double frequency, double amplitude, double persistence) {
+    private double sumOctave(int octaveCount, double x, double y, double frequency, Function<Double, Double> amplitudeFunction) {
         double amplitudesSum = 0;
         double noise = 0;
         //add successively smaller, higher-frequency terms
         for (int i = 0; i < octaveCount; ++i) {
+            double amplitude = amplitudeFunction.apply(frequency);
             noise += amplitude * simplexNoise1.eval(x * frequency, y * frequency);
             amplitudesSum += amplitude;
-            amplitude *= persistence;
             frequency *= 2;
         }
         //take the average value of the iterations
