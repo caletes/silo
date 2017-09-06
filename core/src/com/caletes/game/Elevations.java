@@ -30,18 +30,6 @@ public class Elevations {
         elevations[x][y] = elevation;
     }
 
-    /**
-     * Normalize a value between 0 and 1
-     *
-     * @param value
-     * @param min
-     * @param max
-     * @return
-     */
-    public static double normalize(double value, double min, double max) {
-        return (value - min) / (max - min);
-    }
-
     public double getMinAround(int x, int y) {
         double inf = 9999;
         double north = (y > 0) ? get(x, y - 1) : inf;

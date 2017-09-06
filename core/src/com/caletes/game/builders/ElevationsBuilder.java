@@ -35,7 +35,10 @@ public class ElevationsBuilder extends Builder {
                 // On cherche l'élévation la plus basse autour de x,y pour trouver le zMin
                 int zMin = ocean ? zMax : toZ(elevations.getMinAround(x, y));
                 // puis on commence juste au dessus pour avoir le moins de cubes possibles tout en gardant un ensemble continu
-                if (zMin < zMax) zMin++;
+                if (zMin < zMax)
+                    zMin++;
+                else
+                    zMin = zMax;
                 try {
                     for (int z = zMin; z <= zMax; z++) {
                         Cube cube = getCubeFromBiome(biome);
