@@ -29,6 +29,7 @@ public class GameScreen extends ScreenAdapter {
     private static Logger logger;
     private static final int WORLD_SIZE = 1024;
     private static final int CHUNK_SIZE = 50;
+    private static long seed = 0;
 
     public GameScreen(SiloGame game) {
         this.batch = new SpriteBatch();
@@ -38,19 +39,21 @@ public class GameScreen extends ScreenAdapter {
         this.cubeFactory = new CubeFactory(cubeSheet);
         this.world = new World(WORLD_SIZE);
         this.camera = new Camera(game.getViewportWidth(), game.getViewportHeight(), isoConverter);
-        //this.camera.setPositionToWorld(2371, 1416, 1);
-        this.camera.setPositionToWorld(1, 1, 1);
+        this.camera.setPositionToWorld(70, 40, 0);
+       // this.camera.setPositionToWorld(4200, 2400, 0);
+        //this.camera.setPositionToWorld(50230, 5281, 0);
+        //this.camera.setPositionToWorld(50700, 50400, 0);
         this.drawer = new ChunkDrawer(batch);
+        this.seed = 0;
     }
 
     @Override
     public void render(float delta) {
+
         logger.setCameraWorldPosition(camera.getPositionFromWorld());
         camera.handleInput();
         camera.update();
         batch.setProjectionMatrix(camera.combined);
-
-
         int[] camPos = camera.getPositionFromWorld();
         int camX = camPos[0];
         int camY = camPos[1];
@@ -58,11 +61,13 @@ public class GameScreen extends ScreenAdapter {
         int worldX = camX / CHUNK_SIZE;
         int worldY = camY / CHUNK_SIZE;
         int worldZ = camZ / CHUNK_SIZE;
+        drawer.processShaders(delta, camera.position);
         try {
             if (world.isWithinBounds(worldX, worldY, worldZ)) {
-                drawer.processShaders();
+
                 Node chunkNode = world.getLeafAt(worldX, worldY, worldZ);
                 List<Direction> cardinals = Direction.getCardinals();
+                batch.begin();
                 for (Direction direction : cardinals) {
                     Node nextNode = chunkNode.getNextOn(direction);
                     Chunk nextChunk = null;
@@ -75,7 +80,7 @@ public class GameScreen extends ScreenAdapter {
                         int nextY = worldY + delta1.y;
                         int nextZ = worldZ + delta1.z;
                         if (world.isWithinBounds(nextX, nextY, nextZ)) {
-                            nextChunk = generateChunk(CHUNK_SIZE, worldX + delta1.x, worldY + delta1.y);
+                            nextChunk = generateChunk(CHUNK_SIZE, worldX + delta1.x, worldY + delta1.y, seed);
                             world.pushObjectAt(nextChunk, worldX + delta1.x, worldY + delta1.y, worldZ + delta1.z);
                         }
                     }
@@ -83,6 +88,7 @@ public class GameScreen extends ScreenAdapter {
                         drawer.draw(nextChunk);
                     }
                 }
+                batch.end();
             }
 
         } catch (OctreeOutOfBoundsException e) {
@@ -90,8 +96,8 @@ public class GameScreen extends ScreenAdapter {
         }
     }
 
-    private Chunk generateChunk(int chunkSize, int worldX, int worldY) {
-        WorldGeneratorFromNoise generator = new WorldGeneratorFromNoise(chunkSize, chunkSize, worldX * chunkSize, worldY * chunkSize, 0);
+    private Chunk generateChunk(int chunkSize, int worldX, int worldY, long seed) {
+        WorldGeneratorFromNoise generator = new WorldGeneratorFromNoise(chunkSize, chunkSize, worldX * chunkSize, worldY * chunkSize, seed);
         Elevations elevations = generator.generate();
         ElevationsBuilder builder = new ElevationsBuilder(elevations, 30, cubeFactory, isoConverter, CHUNK_SIZE);
         return builder.build(worldX, worldY);

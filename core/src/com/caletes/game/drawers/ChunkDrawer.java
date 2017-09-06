@@ -1,6 +1,7 @@
 package com.caletes.game.drawers;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
 import com.caletes.game.models.Chunk;
 import com.caletes.game.models.items.Item;
 import com.caletes.game.models.items.cubes.Cube;
@@ -19,13 +20,6 @@ public class ChunkDrawer {
     }
 
     public void draw(Chunk chunk) {
-
-
-
-
-        batch.begin();
-
-
         for (Node octree : chunk) {
             NodeIterator it = octree.iterator();
             while (it.hasNext()) {
@@ -39,14 +33,11 @@ public class ChunkDrawer {
                 }
             }
         }
-
-
-        batch.end();
         shaders.backToDefault();
     }
 
-    public void processShaders(){
-        shaders.process();
+    public void processShaders(float delta, Vector3 camPos) {
+        shaders.process(delta, camPos);
     }
 
 }
