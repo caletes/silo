@@ -5,18 +5,13 @@ import com.caletes.game.models.Chunk;
 
 public abstract class Builder {
 
-    protected int width, height;
+    protected int size;
     protected Chunk chunk;
 
 
-    public Builder(int width, int height, IsoConverter isoConverter) {
-        this.width = width;
-        this.height = height;
-        this.chunk = new Chunk(computeWorldSize(), isoConverter);
-    }
-
-    public int computeWorldSize() {
-        return nextPowOf2(Math.max(height, width));
+    public Builder(int size, IsoConverter isoConverter) {
+        this.size = size;
+        this.chunk = new Chunk(nextPowOf2(size), isoConverter);
     }
 
     public static int nextPowOf2(int a) {

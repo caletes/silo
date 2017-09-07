@@ -7,13 +7,22 @@ import com.caletes.game.octree.Node;
 import com.caletes.game.octree.Octree;
 import com.caletes.game.octree.OctreeOutOfBoundsException;
 
-public class Chunk extends Octree<Item> {
+public class Chunk {
+
+    private int size;
+
+    private Octree<Item> items;
 
     private final IsoConverter isoConverter;
 
     public Chunk(int size, IsoConverter isoConverter) {
-        super(size);
+        this.size = size;
+        items = new Octree(size);
         this.isoConverter = isoConverter;
+    }
+
+    public Octree<Item> getItems() {
+        return items;
     }
 
     public Node pushObjectAt(Item item, int x, int y, int z, int chunkSize, int worldX, int worldY) throws OctreeOutOfBoundsException {
@@ -21,6 +30,6 @@ public class Chunk extends Octree<Item> {
         int cubeY = y + worldY * chunkSize;
         int[] screenPosition = isoConverter.toScreen(cubeX, cubeY, z);
         item.setPosition(screenPosition[0], screenPosition[1]);
-        return super.pushObjectAt(item, x, y, z);
+        return items.pushObjectAt(item, x, y, z);
     }
 }

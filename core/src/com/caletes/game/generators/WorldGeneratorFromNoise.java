@@ -14,7 +14,7 @@ import java.util.function.Function;
 public class WorldGeneratorFromNoise {
 
     private static OpenSimplexNoise simplexNoise1;
-    private int width, height;
+    private int size;
     private int startX, startY;
     private Elevations elevations;
 
@@ -24,27 +24,26 @@ public class WorldGeneratorFromNoise {
     static double absoluteMinDebug = 999;
     static double absoluteMaxDebug = -999;
 
-    public WorldGeneratorFromNoise(int width, int height, long seed) {
-        this(width, height, 0, 0, seed);
+    public WorldGeneratorFromNoise(int size, long seed) {
+        this(size, 0, 0, seed);
     }
 
     public void setDebug(boolean debug) {
         this.debug = debug;
     }
 
-    public WorldGeneratorFromNoise(int width, int height, int startX, int startY, long seed) {
-        this.width = width;
-        this.height = height;
+    public WorldGeneratorFromNoise(int size, int startX, int startY, long seed) {
+        this.size = size;
         this.startX = startX;
         this.startY = startY;
         simplexNoise1 = new OpenSimplexNoise(seed);
     }
 
     public Elevations generate() {
-        elevations = new Elevations(width, height);
+        elevations = new Elevations(size);
 
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
+        for (int y = 0; y < size; y++) {
+            for (int x = 0; x < size; x++) {
                 // amplitudeCoeff :
                 // -2 red noise
                 // -1 pink noise 0
@@ -97,10 +96,10 @@ public class WorldGeneratorFromNoise {
 
 
     public Pixmap toHeightMap() {
-        Pixmap pixmap = new Pixmap(width, height, Pixmap.Format.RGB888);
+        Pixmap pixmap = new Pixmap(size, size, Pixmap.Format.RGB888);
         int i = 0;
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
+        for (int y = 0; y < size; y++) {
+            for (int x = 0; x < size; x++) {
                 byte greyscale = toGrayScale(elevations.get(x, y));
                 pixmap.getPixels().put(i++, greyscale);
                 pixmap.getPixels().put(i++, greyscale);
@@ -115,10 +114,10 @@ public class WorldGeneratorFromNoise {
     }
 
     public Pixmap toBiomeMap() {
-        Pixmap pixmap = new Pixmap(width, height, Pixmap.Format.RGB888);
+        Pixmap pixmap = new Pixmap(size, size, Pixmap.Format.RGB888);
         int i = 0;
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
+        for (int y = 0; y < size; y++) {
+            for (int x = 0; x < size; x++) {
                 Color color = Biome.find(elevations.get(x, y)).getColor();
                 pixmap.getPixels().put(i++, (byte) color.getRed());
                 pixmap.getPixels().put(i++, (byte) color.getGreen());

@@ -4,7 +4,7 @@ package com.caletes.game.screens;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.caletes.game.*;
-import com.caletes.game.builders.ElevationsBuilder;
+import com.caletes.game.builders.ChunkBuilder;
 import com.caletes.game.drawers.ChunkDrawer;
 import com.caletes.game.generators.WorldGeneratorFromNoise;
 import com.caletes.game.models.Chunk;
@@ -40,9 +40,9 @@ public class GameScreen extends ScreenAdapter {
         this.world = new World(WORLD_SIZE);
         this.camera = new Camera(game.getViewportWidth(), game.getViewportHeight(), isoConverter);
         this.camera.setPositionToWorld(70, 40, 0);
-       // this.camera.setPositionToWorld(4200, 2400, 0);
+        // this.camera.setPositionToWorld(4200, 2400, 0);
         //this.camera.setPositionToWorld(50230, 5281, 0);
-        //this.camera.setPositionToWorld(50700, 50400, 0);
+        this.camera.setPositionToWorld(50700, 50400, 0);
         this.drawer = new ChunkDrawer(batch);
         this.seed = 0;
     }
@@ -97,9 +97,9 @@ public class GameScreen extends ScreenAdapter {
     }
 
     private Chunk generateChunk(int chunkSize, int worldX, int worldY, long seed) {
-        WorldGeneratorFromNoise generator = new WorldGeneratorFromNoise(chunkSize, chunkSize, worldX * chunkSize, worldY * chunkSize, seed);
+        WorldGeneratorFromNoise generator = new WorldGeneratorFromNoise(chunkSize, worldX * chunkSize, worldY * chunkSize, seed);
         Elevations elevations = generator.generate();
-        ElevationsBuilder builder = new ElevationsBuilder(elevations, 30, cubeFactory, isoConverter, CHUNK_SIZE);
+        ChunkBuilder builder = new ChunkBuilder(elevations, 30, cubeFactory, isoConverter);
         return builder.build(worldX, worldY);
     }
 

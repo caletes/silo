@@ -8,25 +8,23 @@ import com.caletes.game.models.items.cubes.Cube;
 import com.caletes.game.models.items.cubes.CubeFactory;
 import com.caletes.game.octree.OctreeOutOfBoundsException;
 
-public class ElevationsBuilder extends Builder {
+public class ChunkBuilder extends Builder {
 
     private Elevations elevations;
     private int maxHeight;
     private CubeFactory cubeFactory;
-    private int chunkSize;
 
-    public ElevationsBuilder(Elevations elevations, int maxHeight, CubeFactory cubeFactory, IsoConverter isoConverter, int chunkSize) {
-        super(elevations.getWidth(), elevations.getHeight(), isoConverter);
+    public ChunkBuilder(Elevations elevations, int maxHeight, CubeFactory cubeFactory, IsoConverter isoConverter) {
+        super(elevations.getSize(), isoConverter);
         this.elevations = elevations;
         this.maxHeight = maxHeight;
         this.cubeFactory = cubeFactory;
-        this.chunkSize = chunkSize;
     }
 
     @Override
     public Chunk build(int worldX, int worldY) {
-        for (int y = 0; y < elevations.getHeight(); y++) {
-            for (int x = 0; x < elevations.getWidth(); x++) {
+        for (int y = 0; y < elevations.getSize(); y++) {
+            for (int x = 0; x < elevations.getSize(); x++) {
                 double elevation = elevations.get(x, y);
                 Biome biome = Biome.find(elevation);
                 boolean ocean = biome == Biome.OCEAN;
@@ -42,7 +40,7 @@ public class ElevationsBuilder extends Builder {
                 try {
                     for (int z = zMin; z <= zMax; z++) {
                         Cube cube = getCubeFromBiome(biome);
-                        chunk.pushObjectAt(cube, x, y, z, chunkSize, worldX, worldY);
+                        chunk.pushObjectAt(cube, x, y, z, elevations.getSize(), worldX, worldY);
                     }
                 } catch (OctreeOutOfBoundsException e) {
                     e.printStackTrace();

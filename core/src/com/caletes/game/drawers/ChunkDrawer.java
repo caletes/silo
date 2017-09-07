@@ -20,7 +20,7 @@ public class ChunkDrawer {
     }
 
     public void draw(Chunk chunk) {
-        for (Node octree : chunk) {
+        for (Node octree : chunk.getItems()) {
             NodeIterator it = octree.iterator();
             while (it.hasNext()) {
                 Node<Cube> node = it.next();
