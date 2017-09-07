@@ -11,7 +11,7 @@ import java.util.function.Function;
  * cf. http://www.redblobgames.com/maps/terrain-from-noise/
  * https://cmaher.github.io/posts/working-with-simplex-noise/
  */
-public class WorldGeneratorFromNoise {
+public class ElevationsGenerator {
 
     private static OpenSimplexNoise simplexNoise1;
     private int size;
@@ -24,15 +24,15 @@ public class WorldGeneratorFromNoise {
     static double absoluteMinDebug = 999;
     static double absoluteMaxDebug = -999;
 
-    public WorldGeneratorFromNoise(int size, long seed) {
-        this(size, 0, 0, seed);
+    public ElevationsGenerator(int size, long seed) {
+        this(0, 0, size, seed);
     }
 
     public void setDebug(boolean debug) {
         this.debug = debug;
     }
 
-    public WorldGeneratorFromNoise(int size, int startX, int startY, long seed) {
+    public ElevationsGenerator(int startX, int startY, int size, long seed) {
         this.size = size;
         this.startX = startX;
         this.startY = startY;

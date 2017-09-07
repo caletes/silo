@@ -28,11 +28,11 @@ public class OctreeTest extends TestCase {
     @Test
     public void testPushAndGetObjects() throws OctreeOutOfBoundsException {
         Octree<String> octree = new Octree<>(1024);
-        octree.pushObjectAt("Item 1", 1, 3, 1);
-        octree.pushObjectAt("Item 2", 4, 5, 7);
-        octree.pushObjectAt("Item 3", 7, 7, 7);
-        octree.pushObjectAt("Item 4", 4, 5, 5);
-        octree.pushObjectAt("Item 5", 1023, 1023, 1023);
+        octree.setObjectAt("Item 1", 1, 3, 1);
+        octree.setObjectAt("Item 2", 4, 5, 7);
+        octree.setObjectAt("Item 3", 7, 7, 7);
+        octree.setObjectAt("Item 4", 4, 5, 5);
+        octree.setObjectAt("Item 5", 1023, 1023, 1023);
 
         assertEquals("Item 1", octree.getObjectAt(1, 3, 1));
         assertEquals("Item 2", octree.getObjectAt(4, 5, 7));
@@ -47,7 +47,7 @@ public class OctreeTest extends TestCase {
         int z = 1;
         for (int x = 0; x < 1024; x++) {
             for (int y = 0; y < 1024; y++) {
-                octree.pushObjectAt("Item " + x + "," + y + "," + z, x, y, z);
+                octree.setObjectAt("Item " + x + "," + y + "," + z, x, y, z);
             }
         }
 
@@ -59,21 +59,21 @@ public class OctreeTest extends TestCase {
     @Test
     public void testPopObjectAt() throws OctreeOutOfBoundsException {
         Octree<String> octree = new Octree(1024);
-        octree.pushObjectAt("Item 1", 567, 52, 345);
+        octree.setObjectAt("Item 1", 567, 52, 345);
         assertEquals("Item 1", octree.getObjectAt(567, 52, 345));
-        assertEquals("Item 1", octree.popObjectAt(567, 52, 345));
+        assertEquals("Item 1", octree.clearObjectAt(567, 52, 345));
         assertNull(octree.getObjectAt(567, 52, 345));
-        assertNull(octree.popObjectAt(567, 52, 345));
+        assertNull(octree.clearObjectAt(567, 52, 345));
     }
 
     @Test
     public void testIterator() throws OctreeOutOfBoundsException {
         Octree<String> octree = new Octree(128);
-        octree.pushObjectAt("Item 1", 0, 0, 0);
-        octree.pushObjectAt("Item 2", 0, 1, 0);
-        octree.pushObjectAt("Item 3", 0, 0, 1);
-        octree.pushObjectAt("Item 4", 1, 1, 1);
-        octree.pushObjectAt("Item 5", 127, 127, 127);
+        octree.setObjectAt("Item 1", 0, 0, 0);
+        octree.setObjectAt("Item 2", 0, 1, 0);
+        octree.setObjectAt("Item 3", 0, 0, 1);
+        octree.setObjectAt("Item 4", 1, 1, 1);
+        octree.setObjectAt("Item 5", 127, 127, 127);
         Iterator<Node> it = octree.iterator();
         while (it.hasNext()) {
             Node node = it.next();
@@ -86,14 +86,14 @@ public class OctreeTest extends TestCase {
     @Test
     public void testIteratorOrder() throws OctreeOutOfBoundsException {
         Octree<String> octree = new Octree(2);
-        octree.pushObjectAt("Item 0", 0, 0, 0);
-        octree.pushObjectAt("Item 1", 1, 0, 0);
-        octree.pushObjectAt("Item 2", 0, 1, 0);
-        octree.pushObjectAt("Item 3", 1, 1, 0);
-        octree.pushObjectAt("Item 4", 0, 0, 1);
-        octree.pushObjectAt("Item 5", 1, 0, 1);
-        octree.pushObjectAt("Item 6", 0, 1, 1);
-        octree.pushObjectAt("Item 7", 1, 1, 1);
+        octree.setObjectAt("Item 0", 0, 0, 0);
+        octree.setObjectAt("Item 1", 1, 0, 0);
+        octree.setObjectAt("Item 2", 0, 1, 0);
+        octree.setObjectAt("Item 3", 1, 1, 0);
+        octree.setObjectAt("Item 4", 0, 0, 1);
+        octree.setObjectAt("Item 5", 1, 0, 1);
+        octree.setObjectAt("Item 6", 0, 1, 1);
+        octree.setObjectAt("Item 7", 1, 1, 1);
         Iterator<Node> it = octree.iterator();
         int i = 0;
         while (it.hasNext()) {
@@ -105,8 +105,8 @@ public class OctreeTest extends TestCase {
     @Test
     public void testGetPosition() throws OctreeOutOfBoundsException {
         Octree<String> octree = new Octree(256);
-        octree.pushObjectAt("Item 0", 0, 0, 0);
-        octree.pushObjectAt("Item 1", 124, 12, 235);
+        octree.setObjectAt("Item 0", 0, 0, 0);
+        octree.setObjectAt("Item 1", 124, 12, 235);
         NodeIterator it = octree.iterator();
         while (it.hasNext()) {
             Node node = it.next();
@@ -125,7 +125,7 @@ public class OctreeTest extends TestCase {
         for (int x = 0; x < 4; x++) {
             for (int y = 0; y < 4; y++) {
                 for (int z = 0; z < 4; z++) {
-                    octree.pushObjectAt("Item " + x + y + z, x, y, z);
+                    octree.setObjectAt("Item " + x + y + z, x, y, z);
                 }
             }
         }

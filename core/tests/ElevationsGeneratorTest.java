@@ -1,18 +1,14 @@
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.PixmapIO;
-import com.caletes.game.generators.WorldGeneratorFromNoise;
+import com.caletes.game.generators.ElevationsGenerator;
 import org.junit.Test;
 
-import java.util.Random;
+public class ElevationsGeneratorTest extends GdxTest {
 
-public class ChunkGeneratorFromNoiseTest extends GdxTest {
-
-    private static Random random = new Random();
-
-    @Test
+    //@Test
     public void testGenerateL() {
-        WorldGeneratorFromNoise generator = new WorldGeneratorFromNoise(5096, 0);
+        ElevationsGenerator generator = new ElevationsGenerator(5096, 0);
         generator.setDebug(true);
         generator.generate();
         Pixmap heightmap = generator.toHeightMap();
@@ -21,9 +17,9 @@ public class ChunkGeneratorFromNoiseTest extends GdxTest {
         PixmapIO.writePNG(new FileHandle("assets/heightmaps/_generated_biomemap_l.png"), biomeMap);
     }
 
-    @Test
+    //@Test
     public void testGenerateM() {
-        WorldGeneratorFromNoise generator = new WorldGeneratorFromNoise(256, 0);
+        ElevationsGenerator generator = new ElevationsGenerator(256, 0);
         generator.setDebug(true);
         generator.generate();
         Pixmap heightmap = generator.toHeightMap();
@@ -34,7 +30,7 @@ public class ChunkGeneratorFromNoiseTest extends GdxTest {
 
     @Test
     public void testGenerateXS() {
-        WorldGeneratorFromNoise generator = new WorldGeneratorFromNoise(8, 0);
+        ElevationsGenerator generator = new ElevationsGenerator(8, 0);
         generator.setDebug(true);
         generator.generate();
         Pixmap heightmap = generator.toHeightMap();

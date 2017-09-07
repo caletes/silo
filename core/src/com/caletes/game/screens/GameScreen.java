@@ -6,17 +6,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.caletes.game.*;
 import com.caletes.game.builders.ChunkBuilder;
 import com.caletes.game.drawers.ChunkDrawer;
-import com.caletes.game.generators.WorldGeneratorFromNoise;
+import com.caletes.game.generators.ElevationsGenerator;
 import com.caletes.game.models.Chunk;
 import com.caletes.game.models.World;
+import com.caletes.game.models.WorldOutOfBoundsException;
 import com.caletes.game.models.items.cubes.CubeFactory;
 import com.caletes.game.models.tilesheet.CubeSheet;
 import com.caletes.game.models.tilesheet.KenneyCubeSheet;
 import com.caletes.game.octree.Direction;
-import com.caletes.game.octree.Node;
-import com.caletes.game.octree.OctreeOutOfBoundsException;
-
-import java.util.List;
 
 public class GameScreen extends ScreenAdapter {
 
@@ -42,65 +39,58 @@ public class GameScreen extends ScreenAdapter {
         this.camera.setPositionToWorld(70, 40, 0);
         // this.camera.setPositionToWorld(4200, 2400, 0);
         //this.camera.setPositionToWorld(50230, 5281, 0);
-        this.camera.setPositionToWorld(50700, 50400, 0);
+        //this.camera.setPositionToWorld(50700, 50400, 0);
         this.drawer = new ChunkDrawer(batch);
-        this.seed = 0;
     }
 
     @Override
     public void render(float delta) {
+        int[] camPos = camera.getPositionFromWorld();
 
-        logger.setCameraWorldPosition(camera.getPositionFromWorld());
+        logger.setCameraWorldPosition(camPos);
         camera.handleInput();
         camera.update();
         batch.setProjectionMatrix(camera.combined);
-        int[] camPos = camera.getPositionFromWorld();
+
         int camX = camPos[0];
         int camY = camPos[1];
         int camZ = (int) camera.position.z;
-        int worldX = camX / CHUNK_SIZE;
-        int worldY = camY / CHUNK_SIZE;
-        int worldZ = camZ / CHUNK_SIZE;
+
+        int chunkX = camX / CHUNK_SIZE;
+        int chunkY = camY / CHUNK_SIZE;
+        int chunkZ = camZ / CHUNK_SIZE;
+
         drawer.processShaders(delta, camera.position);
         try {
-            if (world.isWithinBounds(worldX, worldY, worldZ)) {
-
-                Node chunkNode = world.getLeafAt(worldX, worldY, worldZ);
-                List<Direction> cardinals = Direction.getCardinals();
+            if (world.isIn(chunkX, chunkY, chunkZ)) {
                 batch.begin();
-                for (Direction direction : cardinals) {
-                    Node nextNode = chunkNode.getNextOn(direction);
-                    Chunk nextChunk = null;
-                    if (nextNode != null) {
-                        nextChunk = (Chunk) nextNode.getObject();
-                    }
-                    if (nextChunk == null) {
-                        Direction.Delta delta1 = direction.getDelta();
-                        int nextX = worldX + delta1.x;
-                        int nextY = worldY + delta1.y;
-                        int nextZ = worldZ + delta1.z;
-                        if (world.isWithinBounds(nextX, nextY, nextZ)) {
-                            nextChunk = generateChunk(CHUNK_SIZE, worldX + delta1.x, worldY + delta1.y, seed);
-                            world.pushObjectAt(nextChunk, worldX + delta1.x, worldY + delta1.y, worldZ + delta1.z);
+                for (Direction cardinal : Direction.getCardinals()) {
+                    Direction.Delta cardinalDt = cardinal.getDelta();
+                    int nextX = chunkX + cardinalDt.x;
+                    int nextY = chunkY + cardinalDt.y;
+                    int nextZ = chunkZ + cardinalDt.z;
+                    if (world.isIn(nextX, nextY, nextZ)) {
+                        Chunk nextChunk = world.getChunk(nextX, nextY, nextZ);
+                        if (nextChunk == null) {
+                            nextChunk = generateChunk(CHUNK_SIZE, chunkX + cardinalDt.x, chunkY + cardinalDt.y, seed);
+                            world.setChunk(nextChunk, chunkX + cardinalDt.x, chunkY + cardinalDt.y, chunkZ + cardinalDt.z);
                         }
-                    }
-                    if (nextChunk != null) {
                         drawer.draw(nextChunk);
                     }
                 }
                 batch.end();
             }
 
-        } catch (OctreeOutOfBoundsException e) {
+        } catch (WorldOutOfBoundsException e) {
             e.printStackTrace();
         }
     }
 
-    private Chunk generateChunk(int chunkSize, int worldX, int worldY, long seed) {
-        WorldGeneratorFromNoise generator = new WorldGeneratorFromNoise(chunkSize, worldX * chunkSize, worldY * chunkSize, seed);
+    private Chunk generateChunk(int chunkSize, int chunkX, int chunkY, long seed) {
+        ElevationsGenerator generator = new ElevationsGenerator(chunkX * chunkSize, chunkY * chunkSize,chunkSize, seed);
         Elevations elevations = generator.generate();
         ChunkBuilder builder = new ChunkBuilder(elevations, 30, cubeFactory, isoConverter);
-        return builder.build(worldX, worldY);
+        return builder.build(chunkX, chunkY);
     }
 
     @Override
