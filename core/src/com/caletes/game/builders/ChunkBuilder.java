@@ -36,6 +36,7 @@ public class ChunkBuilder {
                 try {
                     for (int z = zMin; z <= zMax; z++) {
                         Cube cube = getCubeFromBiome(biome);
+                        //todo: à revoir pour simplifier le système de coordonnées
                         chunk.pushObjectAt(cube, x, y, z, worldX, worldY);
                     }
                 } catch (OctreeOutOfBoundsException e) {

@@ -1,6 +1,7 @@
 package com.caletes.game.models;
 
 
+import com.badlogic.gdx.math.Vector2;
 import com.caletes.game.IsoConverter;
 import com.caletes.game.models.items.Item;
 import com.caletes.game.octree.Node;
@@ -23,11 +24,12 @@ public class Chunk {
         return items;
     }
 
+    //todo: à revoir pour simplifier le système de coordonnées
     public Node pushObjectAt(Item item, int x, int y, int z, int worldX, int worldY) throws OctreeOutOfBoundsException {
         int cubeX = x + worldX * size;
         int cubeY = y + worldY * size;
-        int[] screenPosition = isoConverter.toScreen(cubeX, cubeY, z);
-        item.setPosition(screenPosition[0], screenPosition[1]);
+        Vector2 screenPosition = isoConverter.toScreen(cubeX, cubeY, z);
+        item.setPosition((int) screenPosition.x, (int) screenPosition.y);
         return items.setObjectAt(item, x, y, z);
     }
 

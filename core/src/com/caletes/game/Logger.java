@@ -2,6 +2,7 @@ package com.caletes.game;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
 
 
 public class Logger {
@@ -9,7 +10,7 @@ public class Logger {
     private static SpriteBatch batch;
     private int viewportWidth, viewportHeight;
     private int fps;
-    private int[] cameraWorldPosition;
+    private Vector3 cameraPosition;
 
     private static BitmapFont font;
 
@@ -31,13 +32,13 @@ public class Logger {
     }
 
 
-    public void setCameraWorldPosition(int[] cameraWorldPosition) {
-        this.cameraWorldPosition = cameraWorldPosition;
+    public void setCameraPosition(Vector3 cameraWorldPosition) {
+        this.cameraPosition = cameraWorldPosition;
     }
 
     public void render() {
         String message = fps + " fps";
-        message += "\nCamera position " + cameraWorldPosition[0] + "," + cameraWorldPosition[1];
+        message += "\nCamera position " + (int)cameraPosition.x + "," + (int)cameraPosition.y + "," + (int)cameraPosition.z;
         font.draw(batch, message, -viewportWidth / 2 + PADDING, viewportHeight / 2 - PADDING);
     }
 
