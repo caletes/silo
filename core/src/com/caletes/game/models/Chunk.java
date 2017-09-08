@@ -2,6 +2,7 @@ package com.caletes.game.models;
 
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.caletes.game.IsoConverter;
 import com.caletes.game.models.items.Item;
 import com.caletes.game.octree.Node;
@@ -24,13 +25,13 @@ public class Chunk {
         return items;
     }
 
-    //todo: à revoir pour simplifier le système de coordonnées
-    public Node pushObjectAt(Item item, int x, int y, int z, int worldX, int worldY) throws OctreeOutOfBoundsException {
-        int cubeX = x + worldX * size;
-        int cubeY = y + worldY * size;
-        Vector2 screenPosition = isoConverter.toScreen(cubeX, cubeY, z);
-        item.setPosition((int) screenPosition.x, (int) screenPosition.y);
-        return items.setObjectAt(item, x, y, z);
+    public Node pushObjectAt(Item item, WorldPosition worldPosition) throws OctreeOutOfBoundsException {
+
+        Vector2 screenPosition = isoConverter.toScreen(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ());
+        item.setPosition(screenPosition.x, screenPosition.y);
+
+        Vector3 inChunkPos = worldPosition.getItemPositionInChunk(size);
+        return items.setObjectAt(item, (int) inChunkPos.x, (int) inChunkPos.y, (int) inChunkPos.z);
     }
 
     public static int nextPowOf2(int a) {

@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
+import com.caletes.game.models.WorldPosition;
 
 public class Camera extends OrthographicCamera {
 
@@ -101,11 +101,12 @@ public class Camera extends OrthographicCamera {
         return TRANSLATION_VELOCITY * zoom;
     }
 
-    public Vector3 getPositionFromWorld() {
-        return new Vector3(isoConverter.toWorld(position.x, position.y), position.z);
+    public WorldPosition getWorldPosition() {
+        Vector2 wposition = isoConverter.toWorld(position.x, position.y);
+        return new WorldPosition(wposition.x, wposition.y, position.z);
     }
 
-    public void setPositionToWorld(int x, int y, int z) {
+    public void setWorldPosition(float x, float y, float z) {
         Vector2 screenPosition = isoConverter.toScreen(x, y, z);
         position.x = screenPosition.x;
         position.y = screenPosition.y;

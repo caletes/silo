@@ -15,7 +15,7 @@ public class ElevationsGenerator {
 
     private static OpenSimplexNoise simplexNoise1;
     private int size;
-    private int startX, startY;
+    private float startX, startY;
     private Elevations elevations;
 
     private boolean debug;
@@ -32,7 +32,7 @@ public class ElevationsGenerator {
         this.debug = debug;
     }
 
-    public ElevationsGenerator(int startX, int startY, int size, long seed) {
+    public ElevationsGenerator(float startX, float startY, int size, long seed) {
         this.size = size;
         this.startX = startX;
         this.startY = startY;

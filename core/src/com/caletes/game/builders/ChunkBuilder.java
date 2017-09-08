@@ -4,6 +4,7 @@ import com.caletes.game.Biome;
 import com.caletes.game.Elevations;
 import com.caletes.game.IsoConverter;
 import com.caletes.game.models.Chunk;
+import com.caletes.game.models.WorldPosition;
 import com.caletes.game.models.items.cubes.Cube;
 import com.caletes.game.models.items.cubes.CubeFactory;
 import com.caletes.game.octree.OctreeOutOfBoundsException;
@@ -22,7 +23,7 @@ public class ChunkBuilder {
         this.cubeFactory = cubeFactory;
     }
 
-    public Chunk build(int worldX, int worldY) {
+    public Chunk build(WorldPosition worldPosition) {
         for (int y = 0; y < elevations.getSize(); y++) {
             for (int x = 0; x < elevations.getSize(); x++) {
                 double elevation = elevations.get(x, y);
@@ -36,8 +37,8 @@ public class ChunkBuilder {
                 try {
                     for (int z = zMin; z <= zMax; z++) {
                         Cube cube = getCubeFromBiome(biome);
-                        //todo: à revoir pour simplifier le système de coordonnées
-                        chunk.pushObjectAt(cube, x, y, z, worldX, worldY);
+                        WorldPosition cubePos = new WorldPosition(worldPosition.getX() + x, worldPosition.getY() + y, worldPosition.getZ() + z);
+                        chunk.pushObjectAt(cube, cubePos);
                     }
                 } catch (OctreeOutOfBoundsException e) {
                     e.printStackTrace();

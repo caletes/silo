@@ -10,9 +10,9 @@ public class IsoConverter {
         this.tileHeight = tileHeight;
     }
 
-    public Vector2 toScreen(int x, int y, int z) {
-        int sX = (x - y) * tileWidth / 2;
-        int sY = (x + y) * -(tileHeight / 2) + z * tileHeight;
+    public Vector2 toScreen(float x, float y, float z) {
+        float sX = (x - y) * tileWidth / 2;
+        float sY = (x + y) * -(tileHeight / 2) + z * tileHeight;
         return new Vector2(sX, sY);
     }
 

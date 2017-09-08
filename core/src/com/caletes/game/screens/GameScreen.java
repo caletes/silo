@@ -3,7 +3,6 @@ package com.caletes.game.screens;
 
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector3;
 import com.caletes.game.Camera;
 import com.caletes.game.IsoConverter;
 import com.caletes.game.Logger;
@@ -11,6 +10,7 @@ import com.caletes.game.SiloGame;
 import com.caletes.game.drawers.ChunkDrawer;
 import com.caletes.game.generators.ChunkGenerator;
 import com.caletes.game.models.Chunk;
+import com.caletes.game.models.WorldPosition;
 import com.caletes.game.models.World;
 import com.caletes.game.models.WorldOutOfBoundsException;
 import com.caletes.game.models.items.cubes.CubeFactory;
@@ -38,10 +38,10 @@ public class GameScreen extends ScreenAdapter {
 
         this.world = new World(WORLD_SIZE, CHUNK_SIZE, chunkGenerator);
         this.camera = new Camera(game.getViewportWidth(), game.getViewportHeight(), isoConverter);
-        this.camera.setPositionToWorld(70, 40, 0);
-        // this.camera.setPositionToWorld(4200, 2400, 0);
-        //this.camera.setPositionToWorld(50230, 5281, 0);
-        //this.camera.setPositionToWorld(50700, 50400, 0);
+        this.camera.setWorldPosition(70, 40, 0);
+        // this.camera.setWorldPosition(4200, 2400, 0);
+        //this.camera.setWorldPosition(50230, 5281, 0);
+        //this.camera.setWorldPosition(50700, 50400, 0);
         this.drawer = new ChunkDrawer(batch);
     }
 
@@ -52,7 +52,7 @@ public class GameScreen extends ScreenAdapter {
         camera.handleInput();
         camera.update();
         batch.setProjectionMatrix(camera.combined);
-        Vector3 camPos = camera.getPositionFromWorld();
+        WorldPosition camPos = camera.getWorldPosition();
         logger.setCameraPosition(camPos);
         
         try {
@@ -63,7 +63,6 @@ public class GameScreen extends ScreenAdapter {
                 }
                 batch.end();
             }
-
         } catch (WorldOutOfBoundsException e) {
             e.printStackTrace();
         }
