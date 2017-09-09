@@ -1,9 +1,9 @@
 package com.caletes.game.drawers;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.math.Vector3;
 import com.caletes.game.models.items.Item;
 import com.caletes.game.models.items.cubes.WaterCube;
 
@@ -27,37 +27,40 @@ public class ShaderSwitcher {
         this.defaultShader = SpriteBatch.createDefaultShader();
     }
 
-    public void process(){
-        processWaterShader();
+    public void process(float delta, Vector3 camPos) {
+        processWaterShader(delta, camPos);
     }
 
-    private void processWaterShader() {
-        float dt = Gdx.graphics.getRawDeltaTime();
-        angleWave += dt * angleWaveSpeed;
+    private void processWaterShader(float delta, Vector3 camPos) {
+        angleWave += delta * angleWaveSpeed;
         while (angleWave > PI2)
             angleWave -= PI2;
         waterShader.begin();
-        waterShader.setUniformf("waveData", angleWave, amplitudeWave);
+        waterShader.setUniformf("angleWave", angleWave);
+        waterShader.setUniformf("amplitudeWave", amplitudeWave);
+        // On passe la position de la camera pour rescaler la position du shader, sinon probleme avec les fonctions trigo
+        // On arrondi à 10000 pour éviter de changer la valeur à chaque déplacement de la caméra
+        waterShader.setUniformf("camPosX", (int)camPos.x/10000*10000);
+        waterShader.setUniformf("camPosY", (int)camPos.y/10000*10000);
         waterShader.end();
     }
 
-    public void switchFor(Item item) {
-        if (item instanceof WaterCube) {
-            setShader(waterShader);
-        } else {
-            setShader(defaultShader);
-        }
+    public boolean switchFor(Item item) {
+        if (item instanceof WaterCube)
+            return setShader(waterShader);
+        return setShader(defaultShader);
     }
 
-    public void backToDefault(){
+    public void backToDefault() {
         setShader(defaultShader);
     }
 
-    private void setShader(ShaderProgram shader) {
+    private boolean setShader(ShaderProgram shader) {
         if (currentShader != shader) {
-            batch.flush();
             batch.setShader(shader);
             currentShader = shader;
+            return true;
         }
+        return false;
     }
 }

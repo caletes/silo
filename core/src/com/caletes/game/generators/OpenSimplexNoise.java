@@ -1,4 +1,4 @@
-package com.caletes.game;
+package com.caletes.game.generators;
 /*
  * OpenSimplex Noise in Java.
  * by Kurt Spencer

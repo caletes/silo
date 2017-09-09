@@ -1,59 +1,69 @@
 package com.caletes.game.screens;
 
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.caletes.game.*;
-import com.caletes.game.builders.ElevationsBuilder;
-import com.caletes.game.drawers.WorldDrawer;
+import com.caletes.game.Camera;
+import com.caletes.game.IsoConverter;
+import com.caletes.game.Logger;
+import com.caletes.game.SiloGame;
+import com.caletes.game.drawers.ChunkDrawer;
+import com.caletes.game.generators.ChunkGenerator;
+import com.caletes.game.models.Chunk;
 import com.caletes.game.models.World;
+import com.caletes.game.models.WorldOutOfBoundsException;
+import com.caletes.game.models.WorldPosition;
 import com.caletes.game.models.items.cubes.CubeFactory;
 import com.caletes.game.models.tilesheet.CubeSheet;
 import com.caletes.game.models.tilesheet.KenneyCubeSheet;
 
-import java.util.Random;
-
 public class GameScreen extends ScreenAdapter {
 
-    private static CubeFactory cubeFactory;
-    private static IsoConverter isoConverter;
+
     private static Camera camera;
     private static World world;
-    private static WorldDrawer drawer;
+    private static ChunkDrawer drawer;
+    private static CubeFactory cubeFactory;
     private static SpriteBatch batch;
     private static Logger logger;
+    private static final int WORLD_SIZE = 1024;
+    private static final int CHUNK_SIZE = 50;
+    private static final long SEED = 0;
 
     public GameScreen(SiloGame game) {
         this.batch = new SpriteBatch();
         this.logger = game.getLogger();
         CubeSheet cubeSheet = new KenneyCubeSheet();
-        this.isoConverter = new IsoConverter(cubeSheet.getTileWidth(), cubeSheet.getTileHeight());
-        this.cubeFactory = new CubeFactory(cubeSheet);
-        this.world = createWorld();
+        IsoConverter isoConverter = new IsoConverter(cubeSheet.getTileWidth(), cubeSheet.getTileHeight());
+        this.cubeFactory = new CubeFactory(cubeSheet, isoConverter);
+        ChunkGenerator chunkGenerator = new ChunkGenerator(cubeFactory, SEED);
+
+        this.world = new World(WORLD_SIZE, CHUNK_SIZE, chunkGenerator);
         this.camera = new Camera(game.getViewportWidth(), game.getViewportHeight(), isoConverter);
-        this.camera.setPositionToWorld(127, 127, 1);
-        this.drawer = new WorldDrawer(world, batch, camera);
+        this.camera.setWorldPosition(70, 40, 0);
+        this.drawer = new ChunkDrawer(batch);
     }
 
     @Override
     public void render(float delta) {
-        logger.setCameraWorldPosition(camera.getPositionFromWorld());
-        logger.setBranchExponent(drawer.getBranchExponent());
-        handleInput();
+        drawer.processShaders(delta, camera.position);
         camera.handleInput();
         camera.update();
         batch.setProjectionMatrix(camera.combined);
-        drawer.draw();
-    }
+        WorldPosition camPos = camera.getWorldPosition();
+        logger.setCameraPosition(camPos);
 
-    private World createWorld() {
-        Random random = new Random();
-        long seed = random.nextLong();
-        WorldGeneratorFromNoise generator = new WorldGeneratorFromNoise(256, 256, seed, true, true);
-        ElevationsBuilder builder = new ElevationsBuilder(generator.getElevations(), 15, cubeFactory, isoConverter);
-        return builder.build();
+        try {
+            if (world.isWithinBounds(camPos)) {
+                batch.begin();
+                for (Chunk chunk : world.getChunksAround(camPos)) {
+                    drawer.draw(chunk);
+                }
+                batch.end();
+            }
+        } catch (WorldOutOfBoundsException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -66,12 +76,5 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void dispose() {
         batch.dispose();
-    }
-
-    private void handleInput() {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.PLUS))
-            drawer.setBranchExponent(drawer.getBranchExponent() + 1);
-        if (Gdx.input.isKeyJustPressed(Input.Keys.MINUS))
-            drawer.setBranchExponent(drawer.getBranchExponent() - 1);
     }
 }

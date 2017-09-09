@@ -1,8 +1,5 @@
 package com.caletes.game.octree;
 
-import java.util.ArrayList;
-import java.util.List;
-
 //cf. http://pierre-benet.developpez.com/tutoriels/algorithme-3d/octree-morton/
 public class Node<T> implements Iterable<Node> {
 
@@ -73,7 +70,7 @@ public class Node<T> implements Iterable<Node> {
 
     public boolean isWithinBounds(int x, int y, int z) {
         long morton = MortonCode.pack(x, y, z);
-        return morton > 0 && morton < getMortonMax();
+        return morton >= 0 && morton < getMortonMax();
     }
 
     public long getMortonMax() {
@@ -90,16 +87,16 @@ public class Node<T> implements Iterable<Node> {
         return morton;
     }
 
-    public Node pushObjectAt(T object, int x, int y, int z) throws OctreeOutOfBoundsException {
+    public Node setObjectAt(T object, int x, int y, int z) throws OctreeOutOfBoundsException {
         long morton = MortonCode.pack(x, y, z);
-        return pushObjectAt(object, morton);
+        return setObjectAt(object, morton);
     }
 
-    public Node pushObjectAt(T object, long morton) throws OctreeOutOfBoundsException {
+    public Node setObjectAt(T object, long morton) throws OctreeOutOfBoundsException {
         if (!isFinalLeaf()) {
             if (isLeaf())
                 split();
-            return getLeaf(morton).pushObjectAt(object, morton);
+            return getLeaf(morton).setObjectAt(object, morton);
         }
         this.object = object;
         return this;
@@ -113,7 +110,7 @@ public class Node<T> implements Iterable<Node> {
         return getLeaf(MortonCode.pack(x, y, z));
     }
 
-    public T popObjectAt(int x, int y, int z) throws OctreeOutOfBoundsException {
+    public T clearObjectAt(int x, int y, int z) throws OctreeOutOfBoundsException {
         long morton = MortonCode.pack(x, y, z);
         Node leaf = getLeaf(morton);
         T object = (T) leaf.object;
@@ -190,25 +187,6 @@ public class Node<T> implements Iterable<Node> {
     @Override
     public NodeIterator iterator() {
         return new NodeIterator(this);
-    }
-
-    public Node getBranch(int x, int y, int z, int exponent) throws OctreeOutOfBoundsException {
-        Node node = getLeafAt(x, y, z);
-        while (node.exponent < exponent) {
-            node = node.parent;
-        }
-        return node;
-    }
-
-    public List<Node> withNeighbors() {
-        List<Node> neighbors = new ArrayList<>();
-        for (Direction direction : Direction.values()) {
-            Node neighbor = getNextOn(direction);
-            if (neighbor != null) {
-                neighbors.add(neighbor);
-            }
-        }
-        return neighbors;
     }
 
     public Node getNextOn(Direction direction) {

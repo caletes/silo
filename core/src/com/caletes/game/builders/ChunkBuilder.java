@@ -2,29 +2,29 @@ package com.caletes.game.builders;
 
 import com.caletes.game.Biome;
 import com.caletes.game.Elevations;
-import com.caletes.game.IsoConverter;
-import com.caletes.game.models.World;
+import com.caletes.game.models.Chunk;
+import com.caletes.game.models.WorldPosition;
 import com.caletes.game.models.items.cubes.Cube;
 import com.caletes.game.models.items.cubes.CubeFactory;
 import com.caletes.game.octree.OctreeOutOfBoundsException;
 
-public class ElevationsBuilder extends Builder {
+public class ChunkBuilder {
 
+    private Chunk chunk;
     private Elevations elevations;
     private int maxHeight;
     private CubeFactory cubeFactory;
 
-    public ElevationsBuilder(Elevations elevations, int maxHeight, CubeFactory cubeFactory, IsoConverter isoConverter) {
-        super(elevations.getWidth(), elevations.getHeight(), isoConverter);
+    public ChunkBuilder(Elevations elevations, int maxHeight, CubeFactory cubeFactory) {
+        this.chunk = new Chunk(elevations.getSize());
         this.elevations = elevations;
         this.maxHeight = maxHeight;
         this.cubeFactory = cubeFactory;
     }
 
-    @Override
-    public World build() {
-        for (int y = 0; y < elevations.getHeight(); y++) {
-            for (int x = 0; x < elevations.getWidth(); x++) {
+    public Chunk build(WorldPosition worldPosition) {
+        for (int y = 0; y < elevations.getSize(); y++) {
+            for (int x = 0; x < elevations.getSize(); x++) {
                 double elevation = elevations.get(x, y);
                 Biome biome = Biome.find(elevation);
                 boolean ocean = biome == Biome.OCEAN;
@@ -32,41 +32,42 @@ public class ElevationsBuilder extends Builder {
                 // On cherche l'élévation la plus basse autour de x,y pour trouver le zMin
                 int zMin = ocean ? zMax : toZ(elevations.getMinAround(x, y));
                 // puis on commence juste au dessus pour avoir le moins de cubes possibles tout en gardant un ensemble continu
-                if (zMin < zMax) zMin++;
+                zMin = zMin < zMax ? zMin + 1 : zMax;
                 try {
                     for (int z = zMin; z <= zMax; z++) {
-                        Cube cube = getCubeFromBiome(biome);
-                        world.pushObjectAt(cube, x, y, z);
+                        WorldPosition cubePos = new WorldPosition(worldPosition.getX() + x, worldPosition.getY() + y, worldPosition.getZ() + z);
+                        Cube cube = getCubeFromBiome(biome, cubePos);
+                        chunk.pushItem(cube);
                     }
                 } catch (OctreeOutOfBoundsException e) {
                     e.printStackTrace();
                 }
             }
         }
-        return world;
+        return chunk;
     }
 
     private int toZ(double elevation) {
         return (int) Math.round(elevation * maxHeight);
     }
 
-    private Cube getCubeFromBiome(Biome biome) {
+    private Cube getCubeFromBiome(Biome biome, WorldPosition cubePosition) {
         Cube cube = null;
         switch (biome) {
             case OCEAN:
-                cube = cubeFactory.createWaterCube();
+                cube = cubeFactory.createWaterCube(cubePosition);
                 break;
             case BEACH:
-                cube = cubeFactory.createSandCube();
+                cube = cubeFactory.createSandCube(cubePosition);
                 break;
             case GRASSLAND:
-                cube = cubeFactory.createGrassCube();
+                cube = cubeFactory.createGrassCube(cubePosition);
                 break;
             case STONE:
-                cube = cubeFactory.createStoneCube();
+                cube = cubeFactory.createStoneCube(cubePosition);
                 break;
             case SNOW:
-                cube = cubeFactory.createSnowCube();
+                cube = cubeFactory.createSnowCube(cubePosition);
                 break;
         }
         return cube;
