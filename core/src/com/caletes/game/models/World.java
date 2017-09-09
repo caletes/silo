@@ -24,6 +24,7 @@ public class World {
     }
 
 
+    //TODO à déplacer dans un WorldGenerator ?
     public List<Chunk> getChunksAround(WorldPosition worldPosition) throws WorldOutOfBoundsException {
         Vector3 chunkPos = worldPosition.getChunkPosition(chunkSize);
         List<Chunk> chunks = new ArrayList<>();
@@ -45,8 +46,18 @@ public class World {
         return chunks;
     }
 
-    public void setItemAt(Item item, WorldPosition worldPosition) throws WorldOutOfBoundsException {
-        //todo
+    public void pushItem(Item item) throws WorldOutOfBoundsException {
+        WorldPosition worldPosition = item.getWorldPosition();
+        Chunk chunk = getChunk(worldPosition);
+        if (chunk == null) {
+            chunk = new Chunk(chunkSize);
+            setChunk(chunk, worldPosition);
+        }
+        try {
+            chunk.pushItem(item);
+        } catch (OctreeOutOfBoundsException e) {
+            throw new WorldOutOfBoundsException(worldPosition);
+        }
     }
 
     public boolean isWithinBounds(WorldPosition worldPosition) {
@@ -59,7 +70,7 @@ public class World {
         try {
             chunks.setObjectAt(chunk, (int) chunkPos.x, (int) chunkPos.y, (int) chunkPos.z);
         } catch (OctreeOutOfBoundsException e) {
-            throw new WorldOutOfBoundsException(chunkPos);
+            throw new WorldOutOfBoundsException(worldPosition);
         }
     }
 
@@ -72,7 +83,7 @@ public class World {
                 chunk = (Chunk) node.getObject();
             }
         } catch (OctreeOutOfBoundsException e) {
-            throw new WorldOutOfBoundsException(chunkPos);
+            throw new WorldOutOfBoundsException(worldPosition);
         }
         return chunk;
     }

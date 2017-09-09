@@ -2,7 +2,6 @@ package com.caletes.game.builders;
 
 import com.caletes.game.Biome;
 import com.caletes.game.Elevations;
-import com.caletes.game.IsoConverter;
 import com.caletes.game.models.Chunk;
 import com.caletes.game.models.WorldPosition;
 import com.caletes.game.models.items.cubes.Cube;
@@ -16,8 +15,8 @@ public class ChunkBuilder {
     private int maxHeight;
     private CubeFactory cubeFactory;
 
-    public ChunkBuilder(Elevations elevations, int maxHeight, CubeFactory cubeFactory, IsoConverter isoConverter) {
-        this.chunk = new Chunk(elevations.getSize(), isoConverter);
+    public ChunkBuilder(Elevations elevations, int maxHeight, CubeFactory cubeFactory) {
+        this.chunk = new Chunk(elevations.getSize());
         this.elevations = elevations;
         this.maxHeight = maxHeight;
         this.cubeFactory = cubeFactory;
@@ -36,9 +35,9 @@ public class ChunkBuilder {
                 zMin = zMin < zMax ? zMin + 1 : zMax;
                 try {
                     for (int z = zMin; z <= zMax; z++) {
-                        Cube cube = getCubeFromBiome(biome);
                         WorldPosition cubePos = new WorldPosition(worldPosition.getX() + x, worldPosition.getY() + y, worldPosition.getZ() + z);
-                        chunk.pushObjectAt(cube, cubePos);
+                        Cube cube = getCubeFromBiome(biome, cubePos);
+                        chunk.pushItem(cube);
                     }
                 } catch (OctreeOutOfBoundsException e) {
                     e.printStackTrace();
@@ -52,23 +51,23 @@ public class ChunkBuilder {
         return (int) Math.round(elevation * maxHeight);
     }
 
-    private Cube getCubeFromBiome(Biome biome) {
+    private Cube getCubeFromBiome(Biome biome, WorldPosition cubePosition) {
         Cube cube = null;
         switch (biome) {
             case OCEAN:
-                cube = cubeFactory.createWaterCube();
+                cube = cubeFactory.createWaterCube(cubePosition);
                 break;
             case BEACH:
-                cube = cubeFactory.createSandCube();
+                cube = cubeFactory.createSandCube(cubePosition);
                 break;
             case GRASSLAND:
-                cube = cubeFactory.createGrassCube();
+                cube = cubeFactory.createGrassCube(cubePosition);
                 break;
             case STONE:
-                cube = cubeFactory.createStoneCube();
+                cube = cubeFactory.createStoneCube(cubePosition);
                 break;
             case SNOW:
-                cube = cubeFactory.createSnowCube();
+                cube = cubeFactory.createSnowCube(cubePosition);
                 break;
         }
         return cube;

@@ -10,19 +10,17 @@ import com.caletes.game.models.items.cubes.CubeFactory;
 public class ChunkGenerator {
     public static final int MAX_HEIGHT = 30;
     private static CubeFactory cubeFactory;
-    private static IsoConverter isoConverter;
     private static long seed;
 
-    public ChunkGenerator(CubeFactory cubeFactory, IsoConverter isoConverter, long seed) {
+    public ChunkGenerator(CubeFactory cubeFactory, long seed) {
         this.cubeFactory = cubeFactory;
-        this.isoConverter = isoConverter;
         this.seed = seed;
     }
 
     public Chunk generate(WorldPosition worldPosition, int chunkSize) {
         ElevationsGenerator generator = new ElevationsGenerator(worldPosition.getX(), worldPosition.getY(), chunkSize, seed);
         Elevations elevations = generator.generate();
-        ChunkBuilder builder = new ChunkBuilder(elevations, MAX_HEIGHT, cubeFactory, isoConverter);
+        ChunkBuilder builder = new ChunkBuilder(elevations, MAX_HEIGHT, cubeFactory);
         return builder.build(worldPosition);
     }
 }

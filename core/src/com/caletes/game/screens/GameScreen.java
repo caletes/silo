@@ -10,9 +10,9 @@ import com.caletes.game.SiloGame;
 import com.caletes.game.drawers.ChunkDrawer;
 import com.caletes.game.generators.ChunkGenerator;
 import com.caletes.game.models.Chunk;
-import com.caletes.game.models.WorldPosition;
 import com.caletes.game.models.World;
 import com.caletes.game.models.WorldOutOfBoundsException;
+import com.caletes.game.models.WorldPosition;
 import com.caletes.game.models.items.cubes.CubeFactory;
 import com.caletes.game.models.tilesheet.CubeSheet;
 import com.caletes.game.models.tilesheet.KenneyCubeSheet;
@@ -23,6 +23,7 @@ public class GameScreen extends ScreenAdapter {
     private static Camera camera;
     private static World world;
     private static ChunkDrawer drawer;
+    private static CubeFactory cubeFactory;
     private static SpriteBatch batch;
     private static Logger logger;
     private static final int WORLD_SIZE = 1024;
@@ -34,27 +35,24 @@ public class GameScreen extends ScreenAdapter {
         this.logger = game.getLogger();
         CubeSheet cubeSheet = new KenneyCubeSheet();
         IsoConverter isoConverter = new IsoConverter(cubeSheet.getTileWidth(), cubeSheet.getTileHeight());
-        ChunkGenerator chunkGenerator = new ChunkGenerator(new CubeFactory(cubeSheet), isoConverter, SEED);
+        this.cubeFactory = new CubeFactory(cubeSheet, isoConverter);
+        ChunkGenerator chunkGenerator = new ChunkGenerator(cubeFactory, SEED);
 
         this.world = new World(WORLD_SIZE, CHUNK_SIZE, chunkGenerator);
         this.camera = new Camera(game.getViewportWidth(), game.getViewportHeight(), isoConverter);
         this.camera.setWorldPosition(70, 40, 0);
-        // this.camera.setWorldPosition(4200, 2400, 0);
-        //this.camera.setWorldPosition(50230, 5281, 0);
-        //this.camera.setWorldPosition(50700, 50400, 0);
         this.drawer = new ChunkDrawer(batch);
     }
 
     @Override
     public void render(float delta) {
         drawer.processShaders(delta, camera.position);
-
         camera.handleInput();
         camera.update();
         batch.setProjectionMatrix(camera.combined);
         WorldPosition camPos = camera.getWorldPosition();
         logger.setCameraPosition(camPos);
-        
+
         try {
             if (world.isWithinBounds(camPos)) {
                 batch.begin();
