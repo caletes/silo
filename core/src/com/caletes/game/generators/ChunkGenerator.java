@@ -19,8 +19,7 @@ public class ChunkGenerator {
 
     public Chunk generate(WorldPosition worldPosition, int chunkSize) {
         ElevationsGenerator generator = new ElevationsGenerator(worldPosition.getX(), worldPosition.getY(), chunkSize, seed);
-        Elevations elevations = generator.generate();
-        ChunkBuilder builder = new ChunkBuilder(elevations, MAX_HEIGHT, cubeFactory);
+        ChunkBuilder builder = new ChunkBuilder(generator, MAX_HEIGHT, cubeFactory);
         return builder.build(worldPosition);
     }
 }

@@ -44,15 +44,7 @@ public class ElevationsGenerator {
 
         for (int y = 0; y < size; y++) {
             for (int x = 0; x < size; x++) {
-                // amplitudeCoeff :
-                // -2 red noise
-                // -1 pink noise 0
-                // 0 white noise
-                // 1 blue noise
-                // 2 violet noise
-                double elevation = sumOctave(12, x + startX, y + startY, 0.002, f -> 1 / f);
-                elevation += sumOctave(1, x + startX, y + startY, 0.0015, f -> 1 / f / f);
-                elevation /= 2;
+                double elevation = getElevation(x + (int) startX, y + (int) startY);
                 if (debug) {
                     minNoiseDebug = Math.min(minNoiseDebug, elevation);
                     maxNoiseDebug = Math.max(maxNoiseDebug, elevation);
@@ -71,6 +63,19 @@ public class ElevationsGenerator {
             }
         }
         return elevations;
+    }
+
+    public double getElevation(int x, int y) {
+        // amplitudeCoeff :
+        // -2 red noise
+        // -1 pink noise 0
+        // 0 white noise
+        // 1 blue noise
+        // 2 violet noise
+        double elevation = sumOctave(12, x, y, 0.002, f -> 1 / f);
+        elevation += sumOctave(1, x, y, 0.0015, f -> 1 / f / f);
+        elevation /= 2;
+        return elevation;
     }
 
     private double sumOctave(int octaveCount, double x, double y, double frequency, Function<Double, Double> amplitudeFunction) {
@@ -125,5 +130,30 @@ public class ElevationsGenerator {
             }
         }
         return pixmap;
+    }
+
+    // TODO: Optimisation : voir pour aller chercher dans le tableau elevations quand c'est dans le chunk courant
+    public double getNorthElevations(int x, int y) {
+        return getElevation(x, y - 1);
+    }
+
+    public double getEastElevations(int x, int y) {
+        return getElevation(x + 1, y);
+    }
+
+    public double getSouthElevations(int x, int y) {
+        return getElevation(x, y + 1);
+    }
+
+    public double getWestElevations(int x, int y) {
+        return getElevation(x - 1, y);
+    }
+
+    public double getMinAround(int x, int y) {
+        double north = getNorthElevations(x, y);
+        double east = getEastElevations(x, y);
+        double south = getSouthElevations(x, y);
+        double west = getWestElevations(x, y);
+        return Math.min(Math.min(north, east), Math.min(south, west));
     }
 }
