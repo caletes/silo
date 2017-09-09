@@ -9,7 +9,7 @@ public abstract class Cube extends Item {
 
     protected Cube(CubeSheet cubeSheet, String name) {
         super();
-        setSprite(new Sprite(cubeSheet.findRegion(name)));
+        setSprite(new Sprite(cubeSheet.getTexture(name)));
         setOrigins(cubeSheet.getOriginX(), cubeSheet.getOriginY());
     }
 

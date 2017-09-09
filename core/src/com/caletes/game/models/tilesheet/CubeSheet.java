@@ -1,15 +1,15 @@
 package com.caletes.game.models.tilesheet;
 
-
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-//TODO ne plus hériter de textureAtlas mais faire une composition
-public abstract class CubeSheet extends TextureAtlas {
 
+public abstract class CubeSheet {
+
+    private TextureAtlas atlas;
     private static int spriteWidth, spriteHeight;
     private static int tileWidth, tileHeight;
 
     public CubeSheet(String internalPackFile, int spriteWidth, int spriteHeight, int tileWidth, int tileHeight) {
-        super(internalPackFile);
+        this.atlas = new TextureAtlas(internalPackFile);
         this.spriteWidth = spriteWidth;
         this.spriteHeight = spriteHeight;
         this.tileWidth = tileWidth;
@@ -38,5 +38,9 @@ public abstract class CubeSheet extends TextureAtlas {
 
     public int getOriginY() {
         return spriteHeight - tileHeight / 2;
+    }
+
+    public TextureAtlas.AtlasRegion getTexture(String name) {
+        return atlas.findRegion(name);
     }
 }
