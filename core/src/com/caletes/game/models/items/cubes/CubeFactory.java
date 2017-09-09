@@ -15,44 +15,51 @@ public class CubeFactory {
         this.isoConverter = isoConverter;
     }
 
-    public GrassCube createGrassCube(WorldPosition worldPosition) {
+    public GrassCube createGrassCube(WorldPosition worldPosition, boolean borderLeft, boolean borderRight) {
         GrassCube cube = new GrassCube(worldPosition, cubeSheet);
+        cube.setBorders(borderLeft,borderRight);
         setSpritePosition(worldPosition, cube);
         return cube;
     }
 
-    public GroundCube createGroundCube(WorldPosition worldPosition) {
+    public GroundCube createGroundCube(WorldPosition worldPosition, boolean borderLeft, boolean borderRight) {
         GroundCube cube = new GroundCube(worldPosition, cubeSheet);
+        cube.setBorders(borderLeft,borderRight);
         setSpritePosition(worldPosition, cube);
         return cube;
     }
 
-    public SandCube createSandCube(WorldPosition worldPosition) {
+    public SandCube createSandCube(WorldPosition worldPosition, boolean borderLeft, boolean borderRight) {
         SandCube cube = new SandCube(worldPosition, cubeSheet);
+        cube.setBorders(borderLeft,borderRight);
         setSpritePosition(worldPosition, cube);
         return cube;
     }
 
-    public SnowCube createSnowCube(WorldPosition worldPosition) {
+    public SnowCube createSnowCube(WorldPosition worldPosition, boolean borderLeft, boolean borderRight) {
         SnowCube cube = new SnowCube(worldPosition, cubeSheet);
+        cube.setBorders(borderLeft,borderRight);
         setSpritePosition(worldPosition, cube);
         return cube;
     }
 
-    public StoneCube createStoneCube(WorldPosition worldPosition) {
+    public StoneCube createStoneCube(WorldPosition worldPosition, boolean borderLeft, boolean borderRight) {
         StoneCube cube = new StoneCube(worldPosition, cubeSheet);
+        cube.setBorders(borderLeft,borderRight);
         setSpritePosition(worldPosition, cube);
         return cube;
     }
 
-    public WaterCube createWaterCube(WorldPosition worldPosition) {
+    public WaterCube createWaterCube(WorldPosition worldPosition, boolean borderLeft, boolean borderRight) {
         WaterCube cube = new WaterCube(worldPosition, cubeSheet);
+        cube.setBorders(borderLeft,borderRight);
         setSpritePosition(worldPosition, cube);
         return cube;
     }
 
-    public MarkerCube createMarkerCube(WorldPosition worldPosition) {
+    public MarkerCube createMarkerCube(WorldPosition worldPosition, boolean borderLeft, boolean borderRight) {
         MarkerCube cube = new MarkerCube(worldPosition, cubeSheet);
+        cube.setBorders(borderLeft,borderRight);
         setSpritePosition(worldPosition, cube);
         return cube;
     }

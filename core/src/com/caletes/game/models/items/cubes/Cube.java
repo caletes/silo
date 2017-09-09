@@ -11,10 +11,11 @@ public abstract class Cube extends Item {
         setWorldPosition(worldPosition);
         setSprite(new Sprite(cubeSheet.getTexture(name)));
         setOrigins(cubeSheet.getOriginX(), cubeSheet.getOriginY());
+    }
 
-        // Changement de teinte en fonction de la heuteur pair ou impair
-        //boolean odd = (int) worldPosition.getZ() % 2 == 1;
-        //float brightness = odd ? 1f : 0.98f;
-        //sprite.setColor(brightness, brightness, brightness, 1f);
+    public void setBorders(boolean borderLeft, boolean borderRight) {
+        if (borderLeft || borderRight) {
+            sprite.setColor(0.95f, 0.95f, 0.95f, 1f);
+        }
     }
 }

@@ -35,14 +35,22 @@ public class ChunkBuilder {
                 // On cherche l'élévation la plus basse autour de x,y pour trouver le zMin
                 float worldX = worldPosition.getX() + x;
                 float worldY = worldPosition.getY() + y;
-                int zMin = ocean ? zMax : toZ(elevationsGenerator.getMinAround((int) worldX, (int) worldY));
+                double northZ = elevationsGenerator.getNorthElevations((int) worldX, (int) worldY);
+                double eastZ= elevationsGenerator.getEastElevations((int) worldX, (int) worldY);
+                double southZ = elevationsGenerator.getSouthElevations((int) worldX, (int) worldY);
+                double westZ = elevationsGenerator.getWestElevations((int) worldX, (int) worldY);
+                double zMinAround = Math.min(Math.min(northZ, eastZ), Math.min(southZ, westZ));
+                int zMin = ocean ? zMax : toZ(zMinAround);
                 // puis on commence juste au dessus pour avoir le moins de cubes possibles tout en gardant un ensemble continu
                 zMin = zMin < zMax ? zMin + 1 : zMax;
                 try {
                     for (int z = zMin; z <= zMax; z++) {
                         float worldZ = worldPosition.getZ() + z;
                         WorldPosition cubePos = new WorldPosition(worldX, worldY, worldZ);
-                        Cube cube = getCubeFromBiome(biome, cubePos);
+                        // on définit si le cube doit avoir une bordure à gauche ou à droite en fonction du z des voisins
+                        boolean boderLeft = !ocean && z > toZ(westZ);
+                        boolean boderRight = !ocean && z > toZ(northZ);
+                        Cube cube = getCubeFromBiome(biome, cubePos, boderLeft, boderRight);
                         chunk.pushItem(cube);
                     }
                 } catch (OctreeOutOfBoundsException e) {
@@ -57,23 +65,23 @@ public class ChunkBuilder {
         return (int) Math.round(elevation * maxHeight);
     }
 
-    private Cube getCubeFromBiome(Biome biome, WorldPosition cubePosition) {
+    private Cube getCubeFromBiome(Biome biome, WorldPosition cubePosition, boolean borderLeft, boolean borderRight) {
         Cube cube = null;
         switch (biome) {
             case OCEAN:
-                cube = cubeFactory.createWaterCube(cubePosition);
+                cube = cubeFactory.createWaterCube(cubePosition, borderLeft, borderRight);
                 break;
             case BEACH:
-                cube = cubeFactory.createSandCube(cubePosition);
+                cube = cubeFactory.createSandCube(cubePosition, borderLeft, borderRight);
                 break;
             case GRASSLAND:
-                cube = cubeFactory.createGrassCube(cubePosition);
+                cube = cubeFactory.createGrassCube(cubePosition, borderLeft, borderRight);
                 break;
             case STONE:
-                cube = cubeFactory.createStoneCube(cubePosition);
+                cube = cubeFactory.createStoneCube(cubePosition, borderLeft, borderRight);
                 break;
             case SNOW:
-                cube = cubeFactory.createSnowCube(cubePosition);
+                cube = cubeFactory.createSnowCube(cubePosition, borderLeft, borderRight);
                 break;
         }
         return cube;
