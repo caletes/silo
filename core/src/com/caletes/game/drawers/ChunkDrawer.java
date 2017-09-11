@@ -1,5 +1,6 @@
 package com.caletes.game.drawers;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.caletes.game.models.Chunk;
@@ -28,7 +29,9 @@ public class ChunkDrawer {
                     Item item = node.getObject();
                     if (item != null) {
                         shaders.switchFor(item);
-                        item.getSprite().draw(batch);
+                        for (Sprite sprite : item.getSprites()) {
+                            sprite.draw(batch);
+                        }
                     }
                 }
             }

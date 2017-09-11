@@ -66,6 +66,6 @@ public class CubeFactory {
 
     private void setSpritePosition(WorldPosition worldPosition, Cube cube) {
         Vector2 screenPosition = isoConverter.toScreen(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ());
-        cube.setSpritePosition(screenPosition.x, screenPosition.y);
+        cube.setSpritesPosition(screenPosition.x, screenPosition.y);
     }
 }
