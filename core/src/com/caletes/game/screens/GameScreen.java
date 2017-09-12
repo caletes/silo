@@ -13,9 +13,10 @@ import com.caletes.game.models.Chunk;
 import com.caletes.game.models.World;
 import com.caletes.game.models.WorldOutOfBoundsException;
 import com.caletes.game.models.WorldPosition;
+import com.caletes.game.models.items.Player;
 import com.caletes.game.models.items.cubes.CubeFactory;
-import com.caletes.game.models.tilesheet.CubeSheet;
-import com.caletes.game.models.tilesheet.KenneyCubeSheet;
+import com.caletes.game.models.spritesheet.CubeSheet;
+import com.caletes.game.models.spritesheet.KenneyCubeSheet;
 
 public class GameScreen extends ScreenAdapter {
 
@@ -34,7 +35,7 @@ public class GameScreen extends ScreenAdapter {
         this.batch = new SpriteBatch();
         this.logger = game.getLogger();
         CubeSheet cubeSheet = new KenneyCubeSheet();
-        IsoConverter isoConverter = new IsoConverter(cubeSheet.getTileWidth(), cubeSheet.getTileHeight());
+        IsoConverter isoConverter = IsoConverter.createInstance(cubeSheet.getTileWidth(), cubeSheet.getTileHeight());
         this.cubeFactory = new CubeFactory(cubeSheet, isoConverter);
         ChunkGenerator chunkGenerator = new ChunkGenerator(cubeFactory, SEED);
 
@@ -52,7 +53,6 @@ public class GameScreen extends ScreenAdapter {
         batch.setProjectionMatrix(camera.combined);
         WorldPosition camPos = camera.getWorldPosition();
         logger.setCameraPosition(camPos);
-
         try {
             if (world.isWithinBounds(camPos)) {
                 batch.begin();

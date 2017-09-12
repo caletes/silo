@@ -2,10 +2,10 @@ package com.caletes.game.models.items.cubes;
 
 
 import com.caletes.game.models.WorldPosition;
-import com.caletes.game.models.tilesheet.CubeSheet;
+import com.caletes.game.models.spritesheet.CubeSheet;
 
 public class MarkerCube extends Cube {
-    MarkerCube(WorldPosition worldPosition, CubeSheet cubeSheet) {
-        super(worldPosition, cubeSheet, "marker");
+    MarkerCube(CubeSheet cubeSheet) {
+        super(cubeSheet, "marker");
     }
 }

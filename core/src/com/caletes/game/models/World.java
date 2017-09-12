@@ -46,15 +46,14 @@ public class World {
         return chunks;
     }
 
-    public void pushItem(Item item) throws WorldOutOfBoundsException {
-        WorldPosition worldPosition = item.getWorldPosition();
+    public void pushItem(Item item, WorldPosition worldPosition) throws WorldOutOfBoundsException {
         Chunk chunk = getChunk(worldPosition);
         if (chunk == null) {
             chunk = new Chunk(chunkSize);
             setChunk(chunk, worldPosition);
         }
         try {
-            chunk.pushItem(item);
+            chunk.pushItem(item, worldPosition);
         } catch (OctreeOutOfBoundsException e) {
             throw new WorldOutOfBoundsException(worldPosition);
         }

@@ -50,8 +50,8 @@ public class ChunkBuilder {
                         // on définit si le cube doit avoir une bordure à gauche ou à droite en fonction du z des voisins
                         boolean boderLeft = !ocean && z > toZ(westZ);
                         boolean boderRight = !ocean && z > toZ(northZ);
-                        Cube cube = getCubeFromBiome(biome, cubePos, boderLeft, boderRight);
-                        chunk.pushItem(cube);
+                        Cube cube = getCubeFromBiome(biome, boderLeft, boderRight);
+                        chunk.pushItem(cube, cubePos);
                     }
                 } catch (OctreeOutOfBoundsException e) {
                     e.printStackTrace();
@@ -65,25 +65,26 @@ public class ChunkBuilder {
         return (int) Math.round(elevation * maxHeight);
     }
 
-    private Cube getCubeFromBiome(Biome biome, WorldPosition cubePosition, boolean borderLeft, boolean borderRight) {
+    private Cube getCubeFromBiome(Biome biome, boolean borderLeft, boolean borderRight) {
         Cube cube = null;
         switch (biome) {
             case OCEAN:
-                cube = cubeFactory.createWaterCube(cubePosition, borderLeft, borderRight);
+                cube = cubeFactory.createWaterCube(borderLeft, borderRight);
                 break;
             case BEACH:
-                cube = cubeFactory.createSandCube(cubePosition, borderLeft, borderRight);
+                cube = cubeFactory.createSandCube(borderLeft, borderRight);
                 break;
             case GRASSLAND:
-                cube = cubeFactory.createGrassCube(cubePosition, borderLeft, borderRight);
+                cube = cubeFactory.createGrassCube(borderLeft, borderRight);
                 break;
             case STONE:
-                cube = cubeFactory.createStoneCube(cubePosition, borderLeft, borderRight);
+                cube = cubeFactory.createStoneCube(borderLeft, borderRight);
                 break;
             case SNOW:
-                cube = cubeFactory.createSnowCube(cubePosition, borderLeft, borderRight);
+                cube = cubeFactory.createSnowCube(borderLeft, borderRight);
                 break;
         }
         return cube;
     }
+
 }

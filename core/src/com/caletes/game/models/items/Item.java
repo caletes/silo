@@ -1,6 +1,7 @@
 package com.caletes.game.models.items;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector2;
 import com.caletes.game.models.WorldPosition;
 
 import java.util.ArrayList;
@@ -12,8 +13,9 @@ public abstract class Item {
     private List<Sprite> sprites = new ArrayList<>();
     private float originX, originY = 0;
 
-    public void setWorldPosition(WorldPosition worldPosition) {
+    public void applyWorldPosition(WorldPosition worldPosition) {
         this.worldPosition = worldPosition;
+        setSpritesPosition(worldPosition.getSpritePosition());
     }
 
     public WorldPosition getWorldPosition() {
@@ -33,9 +35,9 @@ public abstract class Item {
         return sprites;
     }
 
-    public void setSpritesPosition(float x, float y) {
+    public void setSpritesPosition(Vector2 position) {
         for (Sprite sprite : sprites) {
-            sprite.setPosition(x - originX, y - originY);
+            sprite.setPosition(position.x - originX, position.y - originY);
         }
     }
 

@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.caletes.game.models.WorldPosition;
 import com.caletes.game.models.items.Item;
-import com.caletes.game.models.tilesheet.CubeSheet;
+import com.caletes.game.models.spritesheet.CubeSheet;
 
 public abstract class Cube extends Item {
 
@@ -12,10 +12,9 @@ public abstract class Cube extends Item {
 
     private Color borderColor;
 
-    protected Cube(WorldPosition worldPosition, CubeSheet cubeSheet, String name) {
+    protected Cube(CubeSheet cubeSheet, String name) {
         super();
         this.cubeSheet = cubeSheet;
-        setWorldPosition(worldPosition);
         addSprite(new Sprite(cubeSheet.getTexture(name)));
         setOrigins(cubeSheet.getOriginX(), cubeSheet.getOriginY());
     }

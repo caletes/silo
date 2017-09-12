@@ -1,4 +1,4 @@
-package com.caletes.game.models.tilesheet;
+package com.caletes.game.models.spritesheet;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 

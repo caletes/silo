@@ -5,9 +5,21 @@ import com.badlogic.gdx.math.Vector2;
 public class IsoConverter {
     private static int tileWidth, tileHeight;
 
-    public IsoConverter(int tileWidth, int tileHeight) {
+    private static IsoConverter instance;
+
+    private IsoConverter(int tileWidth, int tileHeight) {
         this.tileWidth = tileWidth;
         this.tileHeight = tileHeight;
+    }
+
+    // TODO: faut t'il synchroniser cette méthode pour du multithread?
+    public static IsoConverter createInstance(int tileWidth, int tileHeight) {
+        instance = new IsoConverter(tileWidth, tileHeight);
+        return instance;
+    }
+
+    public static IsoConverter getInstance() {
+        return instance;
     }
 
     public Vector2 toScreen(float x, float y, float z) {
@@ -21,4 +33,6 @@ public class IsoConverter {
         float wY = -(screenX / tileWidth + screenY / tileHeight);
         return new Vector2((int) wX, (int) wY);
     }
+
+
 }

@@ -1,4 +1,4 @@
-package com.caletes.game.models.tilesheet;
+package com.caletes.game.models.spritesheet;
 
 public class KenneyCubeSheet extends CubeSheet {
     public KenneyCubeSheet() {

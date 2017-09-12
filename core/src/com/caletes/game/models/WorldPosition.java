@@ -1,6 +1,8 @@
 package com.caletes.game.models;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.caletes.game.IsoConverter;
 
 public class WorldPosition {
     private Vector3 position;
@@ -39,10 +41,6 @@ public class WorldPosition {
         return new Vector3((int) x, (int) y, (int) z);
     }
 
-    public void add(Vector3 toAdd) {
-        position.add(toAdd);
-    }
-
     public Vector3 getItemPositionInChunk(int chunkSize) {
         return new Vector3((int) position.x % chunkSize, (int) position.y % chunkSize, (int) position.z % chunkSize);
     }
@@ -55,5 +53,9 @@ public class WorldPosition {
         float dy = Float.valueOf(ys.substring((ys.indexOf("."))));
         float dz = Float.valueOf(zs.substring((zs.indexOf("."))));
         return new Vector3(dx, dy, dz);
+    }
+
+    public Vector2 getSpritePosition() {
+        return IsoConverter.getInstance().toScreen(getX(), getY(), getZ());
     }
 }
