@@ -3,10 +3,13 @@ package com.caletes.game.models.items;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.caletes.game.models.WorldPosition;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class Item {
 
     private WorldPosition worldPosition;
-    protected Sprite sprite;
+    private List<Sprite> sprites = new ArrayList<>();
     private float originX, originY = 0;
 
     public void setWorldPosition(WorldPosition worldPosition) {
@@ -17,8 +20,8 @@ public abstract class Item {
         return worldPosition;
     }
 
-    protected void setSprite(Sprite sprite) {
-        this.sprite = sprite;
+    protected void addSprite(Sprite sprite) {
+        sprites.add(sprite);
     }
 
     protected void setOrigins(float originX, float originY) {
@@ -26,11 +29,25 @@ public abstract class Item {
         this.originY = originY;
     }
 
-    public Sprite getSprite() {
-        return sprite;
+    public List<Sprite> getSprites() {
+        return sprites;
     }
 
-    public void setSpritePosition(float x, float y) {
-        sprite.setPosition(x - originX, y - originY);
+    public void setSpritesPosition(float x, float y) {
+        for (Sprite sprite : sprites) {
+            sprite.setPosition(x - originX, y - originY);
+        }
+    }
+
+    public void setAlpha(float alpha) {
+        for (Sprite sprite : sprites) {
+            sprite.setAlpha(alpha);
+        }
+    }
+
+    public void setColor(float r, float g, float b, float a) {
+        for (Sprite sprite : sprites) {
+            sprite.setColor(r, g, b, a);
+        }
     }
 }

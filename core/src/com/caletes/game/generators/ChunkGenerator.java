@@ -1,7 +1,5 @@
 package com.caletes.game.generators;
 
-import com.caletes.game.Elevations;
-import com.caletes.game.IsoConverter;
 import com.caletes.game.builders.ChunkBuilder;
 import com.caletes.game.models.Chunk;
 import com.caletes.game.models.WorldPosition;
@@ -18,7 +16,7 @@ public class ChunkGenerator {
     }
 
     public Chunk generate(WorldPosition worldPosition, int chunkSize) {
-        ElevationsGenerator generator = new ElevationsGenerator(worldPosition.getX(), worldPosition.getY(), chunkSize, seed);
+        ElevationsGenerator generator = new ElevationsGenerator((int) worldPosition.getX(), (int) worldPosition.getY(), chunkSize, seed);
         ChunkBuilder builder = new ChunkBuilder(generator, MAX_HEIGHT, cubeFactory);
         return builder.build(worldPosition);
     }

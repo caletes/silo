@@ -15,7 +15,7 @@ public class ElevationsGenerator {
 
     private static OpenSimplexNoise simplexNoise1;
     private int size;
-    private float startX, startY;
+    private int startX, startY;
     private Elevations elevations;
 
     private boolean debug;
@@ -32,7 +32,7 @@ public class ElevationsGenerator {
         this.debug = debug;
     }
 
-    public ElevationsGenerator(float startX, float startY, int size, long seed) {
+    public ElevationsGenerator(int startX, int startY, int size, long seed) {
         this.size = size;
         this.startX = startX;
         this.startY = startY;
@@ -132,28 +132,27 @@ public class ElevationsGenerator {
         return pixmap;
     }
 
-    // TODO: Optimisation : voir pour aller chercher dans le tableau elevations quand c'est dans le chunk courant
-    public double getNorthElevations(int x, int y) {
-        return getElevation(x, y - 1);
-    }
-
-    public double getEastElevations(int x, int y) {
-        return getElevation(x + 1, y);
-    }
-
-    public double getSouthElevations(int x, int y) {
-        return getElevation(x, y + 1);
-    }
-
-    public double getWestElevations(int x, int y) {
-        return getElevation(x - 1, y);
-    }
-
     public double getMinAround(int x, int y) {
         double north = getNorthElevations(x, y);
         double east = getEastElevations(x, y);
         double south = getSouthElevations(x, y);
         double west = getWestElevations(x, y);
         return Math.min(Math.min(north, east), Math.min(south, west));
+    }
+
+    public double getNorthElevations(int x, int y) {
+        return (y - startY > 0) ? elevations.get(x - startX, y - startY - 1) : getElevation(x, y - 1);
+    }
+
+    public double getEastElevations(int x, int y) {
+        return (x - startX < size - 1) ? elevations.get(x - startX + 1, y - startY) : getElevation(x + 1, y);
+    }
+
+    public double getSouthElevations(int x, int y) {
+        return (y - startY < size - 1) ? elevations.get(x - startX, y - startY + 1) : getElevation(x, y + 1);
+    }
+
+    public double getWestElevations(int x, int y) {
+        return (x - startX > 0) ? elevations.get(x - startX - 1, y - startY) : getElevation(x - 1, y);
     }
 }

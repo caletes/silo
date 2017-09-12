@@ -1,250 +1,271 @@
 
 kenney.png
-size: 1024,2048
+size: 2048,2048
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
 abstractTile_01
   rotate: false
-  xy: 906, 1302
+  xy: 567, 1692
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 abstractTile_02
   rotate: false
-  xy: 228, 1562
+  xy: 228, 392
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 abstractTile_03
   rotate: false
-  xy: 115, 262
+  xy: 2, 912
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 abstractTile_04
   rotate: false
-  xy: 341, 912
+  xy: 341, 782
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 abstractTile_05
   rotate: false
-  xy: 341, 522
+  xy: 1584, 1822
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 abstractTile_06
   rotate: false
-  xy: 115, 1302
+  xy: 680, 912
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 abstractTile_07
   rotate: false
-  xy: 567, 782
+  xy: 454, 1432
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 abstractTile_08
   rotate: false
-  xy: 115, 652
+  xy: 793, 1042
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 abstractTile_09
   rotate: false
-  xy: 793, 1042
+  xy: 680, 1692
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 abstractTile_10
   rotate: false
-  xy: 115, 2
+  xy: 2, 652
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 abstractTile_11
   rotate: false
-  xy: 454, 1432
+  xy: 906, 1042
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 abstractTile_12
   rotate: false
-  xy: 228, 132
+  xy: 115, 1822
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 abstractTile_13
   rotate: false
-  xy: 906, 1042
+  xy: 793, 1822
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 abstractTile_14
   rotate: false
-  xy: 341, 262
+  xy: 341, 1172
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 abstractTile_15
   rotate: false
-  xy: 680, 2
+  xy: 1132, 1302
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 abstractTile_16
   rotate: false
-  xy: 341, 2
+  xy: 454, 1172
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 abstractTile_17
   rotate: false
-  xy: 341, 1302
+  xy: 1245, 1432
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 abstractTile_18
   rotate: false
-  xy: 567, 522
+  xy: 454, 522
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 abstractTile_19
   rotate: false
-  xy: 115, 912
+  xy: 115, 262
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 abstractTile_20
   rotate: false
-  xy: 454, 652
+  xy: 1358, 1432
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 abstractTile_21
   rotate: false
-  xy: 115, 782
+  xy: 906, 1692
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 abstractTile_22
   rotate: false
-  xy: 680, 1432
+  xy: 1471, 1562
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 abstractTile_23
   rotate: false
-  xy: 680, 652
+  xy: 341, 1042
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 abstractTile_24
   rotate: false
-  xy: 906, 782
+  xy: 1245, 1822
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 abstractTile_25
   rotate: false
-  xy: 567, 132
+  xy: 1019, 1692
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 abstractTile_26
   rotate: false
-  xy: 906, 1692
+  xy: 228, 2
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 abstractTile_27
   rotate: false
-  xy: 228, 1822
+  xy: 454, 652
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 abstractTile_28
   rotate: false
-  xy: 2, 522
+  xy: 341, 132
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 abstractTile_29
   rotate: false
-  xy: 793, 392
+  xy: 341, 912
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 abstractTile_30
   rotate: false
-  xy: 906, 392
+  xy: 680, 1302
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 abstractTile_31
   rotate: false
-  xy: 115, 522
+  xy: 2, 1302
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 abstractTile_32
   rotate: false
-  xy: 906, 262
+  xy: 1132, 1692
+  size: 111, 128
+  orig: 111, 128
+  offset: 0, 0
+  index: -1
+border_left
+  rotate: false
+  xy: 906, 912
+  size: 111, 128
+  orig: 111, 128
+  offset: 0, 0
+  index: -1
+border_left_right
+  rotate: false
+  xy: 1471, 1692
+  size: 111, 128
+  orig: 111, 128
+  offset: 0, 0
+  index: -1
+border_right
+  rotate: false
+  xy: 1584, 1692
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 grass
   rotate: false
-  xy: 454, 912
+  xy: 1471, 1822
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 ground
   rotate: false
-  xy: 341, 1042
+  xy: 793, 782
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 marker
   rotate: false
-  xy: 454, 1172
+  xy: 1697, 1822
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
@@ -258,693 +279,693 @@ platformerTile_02
   index: -1
 platformerTile_03
   rotate: false
-  xy: 906, 1432
+  xy: 228, 1172
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 platformerTile_04
   rotate: false
-  xy: 2, 1432
+  xy: 1132, 1172
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 platformerTile_06
   rotate: false
-  xy: 228, 1432
+  xy: 793, 912
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 platformerTile_07
   rotate: false
-  xy: 228, 912
+  xy: 680, 782
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 platformerTile_08
   rotate: false
-  xy: 454, 1692
+  xy: 1019, 1302
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 platformerTile_09
   rotate: false
-  xy: 2, 2
+  xy: 2, 782
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 platformerTile_10
   rotate: false
-  xy: 2, 392
+  xy: 115, 782
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 platformerTile_11
   rotate: false
-  xy: 567, 1562
+  xy: 1019, 1172
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 platformerTile_12
   rotate: false
-  xy: 793, 1692
+  xy: 228, 912
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 platformerTile_13
   rotate: false
-  xy: 680, 1692
+  xy: 1245, 1302
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 platformerTile_14
   rotate: false
-  xy: 454, 392
+  xy: 1019, 1562
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 platformerTile_15
   rotate: false
-  xy: 793, 1822
+  xy: 115, 912
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 platformerTile_16
   rotate: false
-  xy: 454, 782
+  xy: 567, 1302
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 platformerTile_17
   rotate: false
-  xy: 228, 1692
+  xy: 115, 1692
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 platformerTile_18
   rotate: false
-  xy: 793, 782
+  xy: 793, 1562
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 platformerTile_19
   rotate: false
-  xy: 567, 1302
+  xy: 115, 2
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 platformerTile_20
   rotate: false
-  xy: 567, 912
+  xy: 906, 1432
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 platformerTile_21
   rotate: false
-  xy: 454, 132
+  xy: 793, 1432
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 platformerTile_22
   rotate: false
-  xy: 793, 1562
+  xy: 1132, 1562
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 platformerTile_23
   rotate: false
-  xy: 567, 262
+  xy: 567, 652
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 platformerTile_24
   rotate: false
-  xy: 2, 1692
+  xy: 115, 132
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 platformerTile_25
   rotate: false
-  xy: 680, 392
+  xy: 1132, 1822
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 platformerTile_27
   rotate: false
-  xy: 906, 652
+  xy: 2, 392
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 platformerTile_29
   rotate: false
-  xy: 454, 2
+  xy: 115, 522
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 platformerTile_30
   rotate: false
-  xy: 680, 1822
+  xy: 228, 1692
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 platformerTile_31
   rotate: false
-  xy: 228, 652
+  xy: 1245, 1692
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 platformerTile_32
   rotate: false
-  xy: 341, 1822
+  xy: 2, 262
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 platformerTile_33
   rotate: false
-  xy: 341, 782
+  xy: 454, 392
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 platformerTile_34
   rotate: false
-  xy: 793, 2
+  xy: 115, 392
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 platformerTile_35
   rotate: false
-  xy: 115, 1042
+  xy: 341, 1692
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 platformerTile_36
   rotate: false
-  xy: 906, 132
+  xy: 228, 522
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 platformerTile_37
   rotate: false
-  xy: 567, 1042
+  xy: 454, 1822
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 platformerTile_38
   rotate: false
-  xy: 906, 2
+  xy: 341, 652
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 platformerTile_39
   rotate: false
-  xy: 793, 522
+  xy: 1358, 1822
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 platformerTile_40
   rotate: false
-  xy: 793, 1172
+  xy: 454, 1562
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 platformerTile_41
   rotate: false
-  xy: 2, 1302
+  xy: 2, 132
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 platformerTile_43
   rotate: false
-  xy: 341, 1172
+  xy: 228, 782
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 platformerTile_44
   rotate: false
-  xy: 2, 132
+  xy: 680, 1822
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 platformerTile_45
   rotate: false
-  xy: 341, 1692
+  xy: 341, 522
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 platformerTile_46
   rotate: false
-  xy: 228, 392
+  xy: 115, 1042
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 platformerTile_47
   rotate: false
-  xy: 2, 1172
+  xy: 228, 652
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 sand
   rotate: false
-  xy: 793, 132
+  xy: 906, 1562
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 snow
   rotate: false
-  xy: 454, 1822
+  xy: 454, 1042
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 stone
   rotate: false
-  xy: 793, 652
+  xy: 567, 1172
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_01
   rotate: false
-  xy: 228, 262
+  xy: 228, 1042
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_02
   rotate: false
-  xy: 115, 1172
+  xy: 1358, 1692
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_03
   rotate: false
-  xy: 454, 522
+  xy: 454, 1302
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_04
   rotate: false
-  xy: 341, 1432
+  xy: 2, 2
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_05
   rotate: false
-  xy: 680, 782
+  xy: 680, 1562
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_06
   rotate: false
-  xy: 567, 1692
+  xy: 228, 262
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_07
   rotate: false
-  xy: 793, 912
+  xy: 793, 1692
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_08
   rotate: false
-  xy: 2, 912
+  xy: 341, 392
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_10
   rotate: false
-  xy: 228, 2
+  xy: 1019, 1822
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_11
   rotate: false
-  xy: 567, 1432
+  xy: 341, 262
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_12
   rotate: false
-  xy: 454, 262
+  xy: 115, 652
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_15
   rotate: false
-  xy: 680, 1302
+  xy: 680, 652
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_16
   rotate: false
-  xy: 567, 392
+  xy: 567, 782
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_17
   rotate: false
-  xy: 906, 1822
+  xy: 341, 1302
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_18
   rotate: false
-  xy: 680, 522
+  xy: 341, 1822
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_19
   rotate: false
-  xy: 228, 1172
+  xy: 1019, 1042
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_20
   rotate: false
-  xy: 228, 782
+  xy: 454, 262
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_21
   rotate: false
-  xy: 680, 262
+  xy: 228, 1562
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_22
   rotate: false
-  xy: 454, 1042
+  xy: 2, 1822
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_23
   rotate: false
-  xy: 115, 1432
+  xy: 454, 912
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_24
   rotate: false
-  xy: 567, 1172
+  xy: 2, 1692
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_25
   rotate: false
-  xy: 906, 522
+  xy: 567, 1042
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_26
   rotate: false
-  xy: 793, 1432
+  xy: 2, 1562
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_27
   rotate: false
-  xy: 567, 2
+  xy: 680, 1172
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_28
   rotate: false
-  xy: 906, 1562
+  xy: 228, 1822
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_29
   rotate: false
-  xy: 680, 132
+  xy: 793, 1302
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_30
   rotate: false
-  xy: 2, 1822
+  xy: 454, 782
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_31
   rotate: false
-  xy: 793, 1302
+  xy: 115, 1302
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_32
   rotate: false
-  xy: 793, 262
+  xy: 567, 912
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_33
   rotate: false
-  xy: 2, 262
+  xy: 228, 1432
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_34
   rotate: false
-  xy: 115, 1822
+  xy: 680, 1042
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_35
   rotate: false
-  xy: 115, 392
+  xy: 341, 1562
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_36
   rotate: false
-  xy: 2, 1562
+  xy: 906, 1302
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_37
   rotate: false
-  xy: 228, 522
+  xy: 454, 1692
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_38
   rotate: false
-  xy: 115, 1692
+  xy: 1019, 1432
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_39
   rotate: false
-  xy: 341, 652
+  xy: 567, 1822
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_40
   rotate: false
-  xy: 680, 912
+  xy: 567, 1562
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_41
   rotate: false
-  xy: 341, 1562
+  xy: 906, 1172
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_42
   rotate: false
-  xy: 906, 1172
+  xy: 115, 1432
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_43
   rotate: false
-  xy: 567, 1822
+  xy: 1132, 1432
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_44
   rotate: false
-  xy: 115, 132
+  xy: 115, 1172
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_45
   rotate: false
-  xy: 2, 1042
+  xy: 1245, 1562
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_46
   rotate: false
-  xy: 341, 392
+  xy: 906, 1822
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_47
   rotate: false
-  xy: 228, 1302
+  xy: 2, 1042
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_48
   rotate: false
-  xy: 567, 652
+  xy: 567, 1432
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_49
   rotate: false
-  xy: 454, 1562
+  xy: 2, 1432
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_50
   rotate: false
-  xy: 2, 782
+  xy: 1358, 1562
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_51
   rotate: false
-  xy: 2, 652
+  xy: 680, 1432
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_52
   rotate: false
-  xy: 228, 1042
+  xy: 793, 1172
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_53
   rotate: false
-  xy: 906, 912
+  xy: 341, 1432
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_54
   rotate: false
-  xy: 454, 1302
+  xy: 228, 132
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 voxelTile_55
   rotate: false
-  xy: 341, 132
+  xy: 2, 522
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 water
   rotate: false
-  xy: 680, 1172
+  xy: 2, 1172
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 water2
   rotate: false
-  xy: 680, 1042
+  xy: 228, 1302
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
   index: -1
 wood
   rotate: false
-  xy: 680, 1562
+  xy: 567, 522
   size: 111, 128
   orig: 111, 128
   offset: 0, 0
