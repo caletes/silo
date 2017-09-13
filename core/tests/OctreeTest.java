@@ -87,12 +87,12 @@ public class OctreeTest extends TestCase {
     public void testIteratorOrder() throws OctreeOutOfBoundsException {
         Octree<String> octree = new Octree(2);
         octree.setObjectAt("Item 0", 0, 0, 0);
-        octree.setObjectAt("Item 1", 1, 0, 0);
+        octree.setObjectAt("Item 1", 0, 0, 1);
         octree.setObjectAt("Item 2", 0, 1, 0);
-        octree.setObjectAt("Item 3", 1, 1, 0);
-        octree.setObjectAt("Item 4", 0, 0, 1);
+        octree.setObjectAt("Item 3", 0, 1, 1);
+        octree.setObjectAt("Item 4", 1, 0, 0);
         octree.setObjectAt("Item 5", 1, 0, 1);
-        octree.setObjectAt("Item 6", 0, 1, 1);
+        octree.setObjectAt("Item 6", 1, 1, 0);
         octree.setObjectAt("Item 7", 1, 1, 1);
         Iterator<Node> it = octree.iterator();
         int i = 0;

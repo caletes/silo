@@ -13,7 +13,6 @@ import com.caletes.game.models.Chunk;
 import com.caletes.game.models.World;
 import com.caletes.game.models.WorldOutOfBoundsException;
 import com.caletes.game.models.WorldPosition;
-import com.caletes.game.models.items.Player;
 import com.caletes.game.models.items.cubes.CubeFactory;
 import com.caletes.game.models.spritesheet.CubeSheet;
 import com.caletes.game.models.spritesheet.KenneyCubeSheet;
