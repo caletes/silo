@@ -29,6 +29,8 @@ public class NodeIterator implements Iterator {
         } catch (OctreeOutOfBoundsException e) {
             e.printStackTrace();
         }
+        // garder current Vector 3
+        // TODO itérer en faisant incrémenter x tant que x < octree.size puis y et z -> mortonCode.pack
         morton = Node.getNextMorton(morton, node.exponent);
         return node;
     }

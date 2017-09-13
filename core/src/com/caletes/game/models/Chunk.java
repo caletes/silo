@@ -27,6 +27,16 @@ public class Chunk {
         return items.setObjectAt(item, (int) inChunkPos.x, (int) inChunkPos.y, (int) inChunkPos.z);
     }
 
+    public Item removeItem(WorldPosition worldPosition) throws OctreeOutOfBoundsException {
+        Vector3 inChunkPos = worldPosition.getItemPositionInChunk(size);
+        return items.clearObjectAt((int) inChunkPos.x, (int) inChunkPos.y, (int) inChunkPos.z);
+    }
+
+    public Item getItem(WorldPosition worldPosition) throws OctreeOutOfBoundsException {
+        Vector3 inChunkPos = worldPosition.getItemPositionInChunk(size);
+        return items.getObjectAt((int) inChunkPos.x, (int) inChunkPos.y, (int) inChunkPos.z);
+    }
+
     public static int nextPowOf2(int a) {
         int nextPow;
         for (nextPow = 1; nextPow < a; nextPow <<= 1) ;

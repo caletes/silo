@@ -7,6 +7,9 @@ import com.caletes.game.IsoConverter;
 public class WorldPosition {
     private Vector3 position;
 
+    public WorldPosition(Vector3 position) {
+        this.position = position;
+    }
     public WorldPosition(float x, float y, float z) {
         this.position = new Vector3(x, y, z);
     }
@@ -58,4 +61,5 @@ public class WorldPosition {
     public Vector2 getSpritePosition() {
         return IsoConverter.getInstance().toScreen(getX(), getY(), getZ());
     }
+
 }
