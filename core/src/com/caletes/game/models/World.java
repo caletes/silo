@@ -49,10 +49,7 @@ public class World {
     public void pushItem(Item item, WorldPosition worldPosition) throws WorldOutOfBoundsException {
         Chunk chunk = getChunk(worldPosition);
         if (chunk == null) {
-            Vector3 chunkPos = worldPosition.getChunkPosition(chunkSize);
-            WorldPosition nextPos = WorldPosition.createFromChunkPosition(chunkPos.x, chunkPos.y, chunkPos.z, chunkSize);
-            chunk = chunkGenerator.generate(nextPos, chunkSize);
-            setChunk(chunk, worldPosition);
+            chunk = createChunk(worldPosition);
         }
         try {
             chunk.pushItem(item, worldPosition);
@@ -61,8 +58,19 @@ public class World {
         }
     }
 
+    private Chunk createChunk(WorldPosition worldPosition) throws WorldOutOfBoundsException {
+        Vector3 chunkPos = worldPosition.getChunkPosition(chunkSize);
+        WorldPosition nextPos = WorldPosition.createFromChunkPosition(chunkPos.x, chunkPos.y, chunkPos.z, chunkSize);
+        Chunk chunk = chunkGenerator.generate(nextPos, chunkSize);
+        setChunk(chunk, worldPosition);
+        return chunk;
+    }
+
     public void removeItem(WorldPosition worldPosition) throws WorldOutOfBoundsException {
         Chunk chunk = getChunk(worldPosition);
+        if (chunk == null) {
+            chunk = createChunk(worldPosition);
+        }
         try {
             chunk.removeItem(worldPosition);
         } catch (OctreeOutOfBoundsException e) {
@@ -74,6 +82,9 @@ public class World {
     public Item getItem(WorldPosition worldPosition) throws WorldOutOfBoundsException {
         Item item;
         Chunk chunk = getChunk(worldPosition);
+        if (chunk == null) {
+            chunk = createChunk(worldPosition);
+        }
         try {
             item = chunk.getItem(worldPosition);
         } catch (OctreeOutOfBoundsException e) {

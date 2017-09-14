@@ -12,6 +12,7 @@ public class Logger {
     private int viewportWidth, viewportHeight;
     private int fps;
     private Vector3 cameraPosition;
+    private WorldPosition playerPosition;
 
     private static BitmapFont font;
 
@@ -36,10 +37,13 @@ public class Logger {
     public void setCameraPosition(WorldPosition worldPosition) {
         this.cameraPosition = worldPosition.getPosition();
     }
-
+    public void setPlayerPosition(WorldPosition worldPosition) {
+        this.playerPosition = worldPosition;
+    }
     public void render() {
         String message = fps + " fps";
         message += "\nCamera position " + (int) cameraPosition.x + "," + (int) cameraPosition.y + "," + (int) cameraPosition.z;
+        message += "\nPlayer position " + playerPosition.getPosition();
         font.draw(batch, message, -viewportWidth / 2 + PADDING, viewportHeight / 2 - PADDING);
     }
 

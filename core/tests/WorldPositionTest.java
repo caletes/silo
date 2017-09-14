@@ -15,14 +15,11 @@ public class WorldPositionTest extends TestCase {
         assertEquals(434.5f, worldPosition.x);
         assertEquals(237.2f, worldPosition.y);
         assertEquals(150.8f, worldPosition.z);
-        Vector3 itemPosition = position.getItemPositionInNode();
-        assertEquals(0.5f, itemPosition.x);
-        assertEquals(0.2f, itemPosition.y);
-        assertEquals(0.8f, itemPosition.z);
         Vector3 inChunkPosition = position.getItemPositionInChunk(50);
-        assertEquals(34f, inChunkPosition.x);
-        assertEquals(37f, inChunkPosition.y);
-        assertEquals(0f, inChunkPosition.z);
+        assertEquals(34.5f, inChunkPosition.x);
+        // Ajout du delta pour compenser l'approximation du modulo
+        assertEquals(37.2f, inChunkPosition.y, 0.1);
+        assertEquals(0.8f, inChunkPosition.z, 0.1);
     }
 
     @Test
@@ -36,10 +33,6 @@ public class WorldPositionTest extends TestCase {
         assertEquals(0f, worldPosition.x);
         assertEquals(0f, worldPosition.y);
         assertEquals(0f, worldPosition.z);
-        Vector3 itemPosition = position.getItemPositionInNode();
-        assertEquals(0f, itemPosition.x);
-        assertEquals(0f, itemPosition.y);
-        assertEquals(0f, itemPosition.z);
         Vector3 inChunkPosition = position.getItemPositionInChunk(50);
         assertEquals(0f, inChunkPosition.x);
         assertEquals(0f, inChunkPosition.y);
@@ -58,14 +51,10 @@ public class WorldPositionTest extends TestCase {
         assertEquals(0.2f, worldPosition.x);
         assertEquals(0.5f, worldPosition.y);
         assertEquals(0.9f, worldPosition.z);
-        Vector3 itemPosition = position.getItemPositionInNode();
-        assertEquals(0.2f, itemPosition.x);
-        assertEquals(0.5f, itemPosition.y);
-        assertEquals(0.9f, itemPosition.z);
         Vector3 inChunkPosition = position.getItemPositionInChunk(50);
-        assertEquals(0f, inChunkPosition.x);
-        assertEquals(0f, inChunkPosition.y);
-        assertEquals(0f, inChunkPosition.z);
+        assertEquals(0.2f, inChunkPosition.x);
+        assertEquals(0.5f, inChunkPosition.y);
+        assertEquals(0.9f, inChunkPosition.z);
     }
 
     @Test
@@ -79,14 +68,10 @@ public class WorldPositionTest extends TestCase {
         assertEquals(20.4f, worldPosition.x);
         assertEquals(-10.8f, worldPosition.y);
         assertEquals(0.5f, worldPosition.z);
-        Vector3 itemPosition = position.getItemPositionInNode();
-        assertEquals(0.4f, itemPosition.x);
-        assertEquals(0.8f, itemPosition.y);
-        assertEquals(0.5f, itemPosition.z);
         Vector3 inChunkPosition = position.getItemPositionInChunk(50);
-        assertEquals(20f, inChunkPosition.x);
-        assertEquals(-10f, inChunkPosition.y);
-        assertEquals(0f, inChunkPosition.z);
+        assertEquals(20.4f, inChunkPosition.x);
+        assertEquals(-10.8f, inChunkPosition.y);
+        assertEquals(0.5f, inChunkPosition.z);
     }
 
     @Test

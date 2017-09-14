@@ -66,6 +66,7 @@ public class GameScreen extends ScreenAdapter {
         batch.setProjectionMatrix(camera.combined);
         WorldPosition camPos = camera.getWorldPosition();
         logger.setCameraPosition(camPos);
+        logger.setPlayerPosition(player.getWorldPosition());
         try {
             if (world.isWithinBounds(camPos)) {
                 batch.begin();
@@ -94,25 +95,30 @@ public class GameScreen extends ScreenAdapter {
     public void playerInput() {
         try {
             if (Gdx.input.isKeyPressed(Input.Keys.Z))
-                move(new Vector3(0, -0.1f, 0));
+                move(new Vector3(0, -0.2f, 0));
             else if (Gdx.input.isKeyPressed(Input.Keys.D))
-                move(new Vector3(0.1f, 0, 0));
+                move(new Vector3(0.2f, 0, 0));
             else if (Gdx.input.isKeyPressed(Input.Keys.S))
-                move(new Vector3(0, 0.1f, 0));
+                move(new Vector3(0, 0.2f, 0));
             else if (Gdx.input.isKeyPressed(Input.Keys.Q))
-                move(new Vector3(-0.1f, 0, 0));
+                move(new Vector3(-0.2f, 0, 0));
+            else if (Gdx.input.isKeyJustPressed(Input.Keys.E))
+                move(new Vector3(0, 0, 1f));
+            else if (Gdx.input.isKeyJustPressed(Input.Keys.A))
+                move(new Vector3(0, 0, -1f));
         } catch (WorldOutOfBoundsException e) {
             e.printStackTrace();
         }
     }
 
     private void move(Vector3 move) throws WorldOutOfBoundsException {
+
         WorldPosition worldPosition = player.getWorldPosition();
+        this.camera.setWorldPosition(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ());
         Vector3 next = move.add(worldPosition.getPosition());
         WorldPosition nextWP = new WorldPosition(next);
-        //player.applyWorldPosition(nextWP);
         Item item = world.getItem(nextWP);
-        if (nextWP.getItemPositionInChunk(50).equals(worldPosition.getItemPositionInChunk(50)) || item == null) {
+        if (nextWP.getItemPositionInChunk(CHUNK_SIZE).equals(worldPosition.getItemPositionInChunk(CHUNK_SIZE)) || item == null || item == player) {
             world.removeItem(worldPosition);
             world.pushItem(player, nextWP);
         }
