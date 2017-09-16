@@ -7,6 +7,7 @@ import com.caletes.game.models.spritesheet.PlayerSheet;
 public class Player extends Item {
 
     public Player() {
+        super(1, 1, 1);
         PlayerSheet playerSheet = new PlayerSheet();
         addSprite(new Sprite(playerSheet.getTexture("marker")));
         setOrigins(playerSheet.getOriginX(), playerSheet.getOriginY());

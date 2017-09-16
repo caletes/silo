@@ -12,6 +12,13 @@ public abstract class Item {
     private WorldPosition worldPosition;
     private List<Sprite> sprites = new ArrayList<>();
     private float originX, originY = 0;
+    private float width, height, depth = 0;
+
+    public Item(float width, float height, float depth) {
+        this.width = width;
+        this.height = height;
+        this.depth = depth;
+    }
 
     public void applyWorldPosition(WorldPosition worldPosition) {
         this.worldPosition = worldPosition;
@@ -51,5 +58,17 @@ public abstract class Item {
         for (Sprite sprite : sprites) {
             sprite.setColor(r, g, b, a);
         }
+    }
+
+    public float getWidth() {
+        return width;
+    }
+
+    public float getHeight() {
+        return height;
+    }
+
+    public float getDepth() {
+        return depth;
     }
 }

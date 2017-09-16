@@ -13,7 +13,7 @@ public abstract class Cube extends Item {
     private Color borderColor;
 
     protected Cube(CubeSheet cubeSheet, String name) {
-        super();
+        super(1,1,1);
         this.cubeSheet = cubeSheet;
         addSprite(new Sprite(cubeSheet.getTexture(name)));
         setOrigins(cubeSheet.getOriginX(), cubeSheet.getOriginY());
