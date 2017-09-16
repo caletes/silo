@@ -13,11 +13,9 @@ public class Camera extends OrthographicCamera {
     private static final int ZOOM_DEFAULT = 2;
     private static final int ZOOM_MIN = 20;
     private static final float ZOOM_VELOCITY = 0.25f;
-    private static IsoConverter isoConverter;
 
-    public Camera(float viewportWidth, float viewportHeight, IsoConverter isoConverter) {
+    public Camera(float viewportWidth, float viewportHeight) {
         super(viewportWidth, viewportHeight);
-        this.isoConverter = isoConverter;
         zoomDefault();
     }
 
@@ -102,12 +100,12 @@ public class Camera extends OrthographicCamera {
     }
 
     public WorldPosition getWorldPosition() {
-        Vector2 wposition = isoConverter.toWorld(position.x, position.y);
+        Vector2 wposition = IsoConverter.getInstance().toWorld(position.x, position.y);
         return new WorldPosition(wposition.x, wposition.y, position.z);
     }
 
     public void setWorldPosition(WorldPosition worldPosition) {
-        Vector2 screenPosition = isoConverter.toScreen(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ());
+        Vector2 screenPosition = IsoConverter.getInstance().toScreen(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ());
         position.x = screenPosition.x;
         position.y = screenPosition.y;
         position.z = worldPosition.getZ();

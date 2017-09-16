@@ -6,11 +6,9 @@ import com.caletes.game.models.spritesheet.CubeSheet;
 public class CubeFactory {
 
     protected static CubeSheet cubeSheet;
-    protected static IsoConverter isoConverter;
 
-    public CubeFactory(CubeSheet atlas, IsoConverter isoConverter) {
+    public CubeFactory(CubeSheet atlas) {
         this.cubeSheet = atlas;
-        this.isoConverter = isoConverter;
     }
 
     public GrassCube createGrassCube(boolean borderLeft, boolean borderRight) {

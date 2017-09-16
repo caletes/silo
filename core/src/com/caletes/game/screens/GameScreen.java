@@ -41,11 +41,11 @@ public class GameScreen extends ScreenAdapter {
         this.logger = game.getLogger();
         CubeSheet cubeSheet = new KenneyCubeSheet();
         IsoConverter isoConverter = IsoConverter.createInstance(cubeSheet.getTileWidth(), cubeSheet.getTileHeight());
-        this.cubeFactory = new CubeFactory(cubeSheet, isoConverter);
+        this.cubeFactory = new CubeFactory(cubeSheet);
         ChunkGenerator chunkGenerator = new ChunkGenerator(cubeFactory, SEED);
 
         this.world = new World(WORLD_SIZE, CHUNK_SIZE, chunkGenerator);
-        this.camera = new Camera(game.getViewportWidth(), game.getViewportHeight(), isoConverter);
+        this.camera = new Camera(game.getViewportWidth(), game.getViewportHeight());
         this.camera.setWorldPosition(new WorldPosition(50, 50, 9));
         this.drawer = new ChunkDrawer(batch);
 
