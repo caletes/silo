@@ -120,15 +120,17 @@ public class Node<T> implements Iterable<Node> {
     }
 
     private void cleanBranch() {
-        if (!isRoot() && this.parent.allChildrenAreEmpty()) {
-            this.parent.cleanBranch();
-            this.parent = null;
+        if (!isRoot() && parent.leafsAreEmpty()) {
+            parent.children = null;
+            parent.cleanBranch();
         }
     }
 
-    private boolean allChildrenAreEmpty() {
-        for (Node child : children) {
-            if (child.object != null)
+    private boolean leafsAreEmpty() {
+        NodeIterator it = this.iterator();
+        while (it.hasNext()) {
+            Node leaf = it.next();
+            if (leaf.object != null)
                 return false;
         }
         return true;
@@ -218,6 +220,5 @@ public class Node<T> implements Iterable<Node> {
         }
         return root;
     }
-
 
 }
