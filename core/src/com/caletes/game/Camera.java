@@ -106,11 +106,11 @@ public class Camera extends OrthographicCamera {
         return new WorldPosition(wposition.x, wposition.y, position.z);
     }
 
-    public void setWorldPosition(float x, float y, float z) {
-        Vector2 screenPosition = isoConverter.toScreen(x, y, z);
+    public void setWorldPosition(WorldPosition worldPosition) {
+        Vector2 screenPosition = isoConverter.toScreen(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ());
         position.x = screenPosition.x;
         position.y = screenPosition.y;
-        position.z = z;
+        position.z = worldPosition.getZ();
     }
 
     @Override

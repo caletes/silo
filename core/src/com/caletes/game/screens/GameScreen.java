@@ -46,7 +46,7 @@ public class GameScreen extends ScreenAdapter {
 
         this.world = new World(WORLD_SIZE, CHUNK_SIZE, chunkGenerator);
         this.camera = new Camera(game.getViewportWidth(), game.getViewportHeight(), isoConverter);
-        this.camera.setWorldPosition(50, 50, 9);
+        this.camera.setWorldPosition(new WorldPosition(50, 50, 9));
         this.drawer = new ChunkDrawer(batch);
 
         this.player = new Player();
@@ -114,13 +114,13 @@ public class GameScreen extends ScreenAdapter {
     private void move(Vector3 move) throws WorldOutOfBoundsException {
 
         WorldPosition worldPosition = player.getWorldPosition();
-        this.camera.setWorldPosition(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ());
         Vector3 next = move.add(worldPosition.getPosition());
         WorldPosition nextWP = new WorldPosition(next);
         Item item = world.getItem(nextWP);
         if (nextWP.getItemPositionInChunk(CHUNK_SIZE).equals(worldPosition.getItemPositionInChunk(CHUNK_SIZE)) || item == null || item == player) {
             world.removeItem(worldPosition);
             world.pushItem(player, nextWP);
+            camera.setWorldPosition(nextWP);
         }
     }
 
