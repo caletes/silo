@@ -7,6 +7,10 @@ import com.caletes.game.IsoConverter;
 public class WorldPosition {
     private Vector3 position;
 
+    public WorldPosition(Vector3 position) {
+        this.position = position;
+    }
+
     public WorldPosition(float x, float y, float z) {
         this.position = new Vector3(x, y, z);
     }
@@ -32,30 +36,22 @@ public class WorldPosition {
     }
 
     public Vector3 getChunkPosition(int chunkSize) {
-        float x = position.x / chunkSize;
+        //TODO revoir les valeurs < 0
+        float x = (float) Math.ceil(position.x) / chunkSize;
         if (x < 0) x--;
-        float y = position.y / chunkSize;
+        float y = (float) Math.ceil(position.y) / chunkSize;
         if (y < 0) y--;
-        float z = position.z / chunkSize;
+        float z = (float) Math.ceil(position.z) / chunkSize;
         if (z < 0) z--;
         return new Vector3((int) x, (int) y, (int) z);
     }
 
     public Vector3 getItemPositionInChunk(int chunkSize) {
-        return new Vector3((int) position.x % chunkSize, (int) position.y % chunkSize, (int) position.z % chunkSize);
-    }
-
-    public Vector3 getItemPositionInNode() {
-        String xs = String.valueOf(position.x);
-        String ys = String.valueOf(position.y);
-        String zs = String.valueOf(position.z);
-        float dx = Float.valueOf(xs.substring((xs.indexOf("."))));
-        float dy = Float.valueOf(ys.substring((ys.indexOf("."))));
-        float dz = Float.valueOf(zs.substring((zs.indexOf("."))));
-        return new Vector3(dx, dy, dz);
+        return new Vector3((float) Math.ceil(position.x) % chunkSize, (float) Math.ceil(position.y) % chunkSize, (float) Math.ceil(position.z) % chunkSize);
     }
 
     public Vector2 getSpritePosition() {
         return IsoConverter.getInstance().toScreen(getX(), getY(), getZ());
     }
+
 }

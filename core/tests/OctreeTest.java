@@ -7,11 +7,11 @@ import java.util.Iterator;
 public class OctreeTest extends TestCase {
     @Test
     public void testComputeExponent() {
-        Octree<String> octree = new Octree<>(8);
+        Node<String> octree = OctreeFactory.createWithSize(String.class, 8);
         assertEquals(3, octree.getExponent());
         assertEquals(8, octree.getSize());
 
-        Octree<String> octree2 = new Octree<>(256);
+        Node<String> octree2 = OctreeFactory.createWithSize(String.class, 256);
         assertEquals(8, octree2.getExponent());
         assertEquals(256, octree2.getSize());
     }
@@ -19,7 +19,7 @@ public class OctreeTest extends TestCase {
     @Test
     public void testSizeNotPowOf2ThrowException() {
         try {
-            new Octree<>(5);
+            OctreeFactory.createWithSize(String.class, 5);
         } catch (IllegalArgumentException e) {
             assertEquals("Octree size (5) is not a power of 2", e.getMessage());
         }
@@ -27,7 +27,7 @@ public class OctreeTest extends TestCase {
 
     @Test
     public void testPushAndGetObjects() throws OctreeOutOfBoundsException {
-        Octree<String> octree = new Octree<>(1024);
+        Node<String> octree = OctreeFactory.createWithSize(String.class, 1024);
         octree.setObjectAt("Item 1", 1, 3, 1);
         octree.setObjectAt("Item 2", 4, 5, 7);
         octree.setObjectAt("Item 3", 7, 7, 7);
@@ -43,7 +43,7 @@ public class OctreeTest extends TestCase {
 
     @Test
     public void testOneMillionObjects() throws OctreeOutOfBoundsException {
-        Octree<String> octree = new Octree(1024);
+        Node<String> octree = OctreeFactory.createWithSize(String.class, 1024);
         int z = 1;
         for (int x = 0; x < 1024; x++) {
             for (int y = 0; y < 1024; y++) {
@@ -58,7 +58,7 @@ public class OctreeTest extends TestCase {
 
     @Test
     public void testPopObjectAt() throws OctreeOutOfBoundsException {
-        Octree<String> octree = new Octree(1024);
+        Node<String> octree = OctreeFactory.createWithSize(String.class, 1024);
         octree.setObjectAt("Item 1", 567, 52, 345);
         assertEquals("Item 1", octree.getObjectAt(567, 52, 345));
         assertEquals("Item 1", octree.clearObjectAt(567, 52, 345));
@@ -68,7 +68,7 @@ public class OctreeTest extends TestCase {
 
     @Test
     public void testIterator() throws OctreeOutOfBoundsException {
-        Octree<String> octree = new Octree(128);
+        Node<String> octree = OctreeFactory.createWithSize(String.class, 128);
         octree.setObjectAt("Item 1", 0, 0, 0);
         octree.setObjectAt("Item 2", 0, 1, 0);
         octree.setObjectAt("Item 3", 0, 0, 1);
@@ -85,7 +85,7 @@ public class OctreeTest extends TestCase {
 
     @Test
     public void testIteratorOrder() throws OctreeOutOfBoundsException {
-        Octree<String> octree = new Octree(2);
+        Node<String> octree = OctreeFactory.createWithSize(String.class, 2);
         octree.setObjectAt("Item 0", 0, 0, 0);
         octree.setObjectAt("Item 1", 0, 0, 1);
         octree.setObjectAt("Item 2", 0, 1, 0);
@@ -104,7 +104,7 @@ public class OctreeTest extends TestCase {
 
     @Test
     public void testGetPosition() throws OctreeOutOfBoundsException {
-        Octree<String> octree = new Octree(256);
+        Node<String> octree = OctreeFactory.createWithSize(String.class, 256);
         octree.setObjectAt("Item 0", 0, 0, 0);
         octree.setObjectAt("Item 1", 124, 12, 235);
         NodeIterator it = octree.iterator();
@@ -121,7 +121,7 @@ public class OctreeTest extends TestCase {
 
     @Test
     public void testFindNeightboors() throws OctreeOutOfBoundsException {
-        Octree<String> octree = new Octree(4);
+        Node<String> octree = OctreeFactory.createWithSize(String.class, 4);
         for (int x = 0; x < 4; x++) {
             for (int y = 0; y < 4; y++) {
                 for (int z = 0; z < 4; z++) {

@@ -66,19 +66,30 @@ public class MortonCode {
 
     public static long incX(long morton) {
         long x_sum = (morton | YZ_MASK) + 4;
-        return (x_sum & X_MASK) | (morton & YZ_MASK);
+        return setX(morton, x_sum);
     }
 
     public static long incY(long morton) {
         long y_sum = (morton | XZ_MASK) + 2;
-        return (y_sum & Y_MASK) | (morton & XZ_MASK);
+        return setY(morton, y_sum);
     }
 
     public static long incZ(long morton) {
         long z_sum = (morton | XY_MASK) + 1;
-        return (z_sum & Z_MASK) | (morton & XY_MASK);
+        return setZ(morton, z_sum);
     }
 
+    public static long setX(long morton, long x) {
+        return (x & X_MASK) | (morton & YZ_MASK);
+    }
+
+    public static long setY(long morton, long y) {
+        return (y & Y_MASK) | (morton & XZ_MASK);
+    }
+
+    public static long setZ(long morton, long z) {
+        return (z & Z_MASK) | (morton & XY_MASK);
+    }
 
     public static class Vector3 {
         public final int x, y, z;

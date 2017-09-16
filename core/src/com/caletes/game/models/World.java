@@ -6,19 +6,19 @@ import com.caletes.game.generators.ChunkGenerator;
 import com.caletes.game.models.items.Item;
 import com.caletes.game.octree.Direction;
 import com.caletes.game.octree.Node;
-import com.caletes.game.octree.Octree;
+import com.caletes.game.octree.OctreeFactory;
 import com.caletes.game.octree.OctreeOutOfBoundsException;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class World {
-    private Octree<Chunk> chunks;
+    private Node<Chunk> chunks;
     private int chunkSize;
     private ChunkGenerator chunkGenerator;
 
     public World(int size, int chunkSize, ChunkGenerator chunkGenerator) {
-        chunks = new Octree<>(size);
+        chunks = OctreeFactory.createWithSize(Chunk.class, size);
         this.chunkSize = chunkSize;
         this.chunkGenerator = chunkGenerator;
     }
@@ -49,14 +49,48 @@ public class World {
     public void pushItem(Item item, WorldPosition worldPosition) throws WorldOutOfBoundsException {
         Chunk chunk = getChunk(worldPosition);
         if (chunk == null) {
-            chunk = new Chunk(chunkSize);
-            setChunk(chunk, worldPosition);
+            chunk = createChunk(worldPosition);
         }
         try {
             chunk.pushItem(item, worldPosition);
         } catch (OctreeOutOfBoundsException e) {
             throw new WorldOutOfBoundsException(worldPosition);
         }
+    }
+
+    private Chunk createChunk(WorldPosition worldPosition) throws WorldOutOfBoundsException {
+        Vector3 chunkPos = worldPosition.getChunkPosition(chunkSize);
+        WorldPosition nextPos = WorldPosition.createFromChunkPosition(chunkPos.x, chunkPos.y, chunkPos.z, chunkSize);
+        Chunk chunk = chunkGenerator.generate(nextPos, chunkSize);
+        setChunk(chunk, worldPosition);
+        return chunk;
+    }
+
+    public void removeItem(WorldPosition worldPosition) throws WorldOutOfBoundsException {
+        Chunk chunk = getChunk(worldPosition);
+        if (chunk == null) {
+            chunk = createChunk(worldPosition);
+        }
+        try {
+            chunk.removeItem(worldPosition);
+        } catch (OctreeOutOfBoundsException e) {
+            throw new WorldOutOfBoundsException(worldPosition);
+        }
+    }
+
+
+    public Item getItem(WorldPosition worldPosition) throws WorldOutOfBoundsException {
+        Item item;
+        Chunk chunk = getChunk(worldPosition);
+        if (chunk == null) {
+            chunk = createChunk(worldPosition);
+        }
+        try {
+            item = chunk.getItem(worldPosition);
+        } catch (OctreeOutOfBoundsException e) {
+            throw new WorldOutOfBoundsException(worldPosition);
+        }
+        return item;
     }
 
     public boolean isWithinBounds(WorldPosition worldPosition) {
@@ -86,5 +120,4 @@ public class World {
         }
         return chunk;
     }
-
 }

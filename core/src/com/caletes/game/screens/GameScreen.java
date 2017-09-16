@@ -1,8 +1,11 @@
 package com.caletes.game.screens;
 
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
 import com.caletes.game.Camera;
 import com.caletes.game.IsoConverter;
 import com.caletes.game.Logger;
@@ -13,6 +16,8 @@ import com.caletes.game.models.Chunk;
 import com.caletes.game.models.World;
 import com.caletes.game.models.WorldOutOfBoundsException;
 import com.caletes.game.models.WorldPosition;
+import com.caletes.game.models.items.Item;
+import com.caletes.game.models.items.Player;
 import com.caletes.game.models.items.cubes.CubeFactory;
 import com.caletes.game.models.spritesheet.CubeSheet;
 import com.caletes.game.models.spritesheet.KenneyCubeSheet;
@@ -26,6 +31,7 @@ public class GameScreen extends ScreenAdapter {
     private static CubeFactory cubeFactory;
     private static SpriteBatch batch;
     private static Logger logger;
+    private static Player player;
     private static final int WORLD_SIZE = 1024;
     private static final int CHUNK_SIZE = 50;
     private static final long SEED = 0;
@@ -40,18 +46,27 @@ public class GameScreen extends ScreenAdapter {
 
         this.world = new World(WORLD_SIZE, CHUNK_SIZE, chunkGenerator);
         this.camera = new Camera(game.getViewportWidth(), game.getViewportHeight(), isoConverter);
-        this.camera.setWorldPosition(70, 40, 0);
+        this.camera.setWorldPosition(new WorldPosition(50, 50, 9));
         this.drawer = new ChunkDrawer(batch);
+
+        this.player = new Player();
+        try {
+            world.pushItem(player, new WorldPosition(50, 50, 9));
+        } catch (WorldOutOfBoundsException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void render(float delta) {
+        playerInput();
         drawer.processShaders(delta, camera.position);
         camera.handleInput();
         camera.update();
         batch.setProjectionMatrix(camera.combined);
         WorldPosition camPos = camera.getWorldPosition();
         logger.setCameraPosition(camPos);
+        logger.setPlayerPosition(player.getWorldPosition());
         try {
             if (world.isWithinBounds(camPos)) {
                 batch.begin();
@@ -76,4 +91,37 @@ public class GameScreen extends ScreenAdapter {
     public void dispose() {
         batch.dispose();
     }
+
+    public void playerInput() {
+        try {
+            if (Gdx.input.isKeyPressed(Input.Keys.Z))
+                move(new Vector3(0, -0.2f, 0));
+            else if (Gdx.input.isKeyPressed(Input.Keys.D))
+                move(new Vector3(0.2f, 0, 0));
+            else if (Gdx.input.isKeyPressed(Input.Keys.S))
+                move(new Vector3(0, 0.2f, 0));
+            else if (Gdx.input.isKeyPressed(Input.Keys.Q))
+                move(new Vector3(-0.2f, 0, 0));
+            else if (Gdx.input.isKeyJustPressed(Input.Keys.E))
+                move(new Vector3(0, 0, 1f));
+            else if (Gdx.input.isKeyJustPressed(Input.Keys.A))
+                move(new Vector3(0, 0, -1f));
+        } catch (WorldOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void move(Vector3 move) throws WorldOutOfBoundsException {
+
+        WorldPosition worldPosition = player.getWorldPosition();
+        Vector3 next = move.add(worldPosition.getPosition());
+        WorldPosition nextWP = new WorldPosition(next);
+        Item item = world.getItem(nextWP);
+        if (nextWP.getItemPositionInChunk(CHUNK_SIZE).equals(worldPosition.getItemPositionInChunk(CHUNK_SIZE)) || item == null || item == player) {
+            world.removeItem(worldPosition);
+            world.pushItem(player, nextWP);
+            camera.setWorldPosition(nextWP);
+        }
+    }
+
 }

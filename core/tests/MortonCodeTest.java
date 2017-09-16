@@ -64,6 +64,33 @@ public class MortonCodeTest extends TestCase {
         assertEquals(5, MortonCode.unpack(MortonCode.incX(morton)).x);
         assertEquals(15, MortonCode.unpack(MortonCode.incY(morton)).y);
         assertEquals(55, MortonCode.unpack(MortonCode.incZ(morton)).z);
+    }
 
+    @Test
+    public void testReset() {
+        long morton = MortonCode.pack(4, 14, 54);
+        morton = MortonCode.setX(morton, 0);
+        assertEquals(0, MortonCode.unpack(morton).x);
+        assertEquals(14, MortonCode.unpack(morton).y);
+        assertEquals(54, MortonCode.unpack(morton).z);
+    }
+
+    @Test
+    public void testIncAll() {
+        int size = 3;
+        int sizeSquare = size * size;
+        long morton = 0;
+        long i = 0;
+        for (int z = 0; z < size; z++) {
+            for (int y = 0; y < size; y++) {
+                for (int x = 0; x < size; x++) {
+                    i++;
+                    System.out.println(MortonCode.unpack(morton));
+                    morton = i % size == 0 ? MortonCode.setX(morton, 0) : MortonCode.incX(morton);
+                }
+                morton = i % sizeSquare == 0 ? MortonCode.setY(morton, 0) : MortonCode.incY(morton);
+            }
+            morton = MortonCode.incZ(morton);
+        }
     }
 }
