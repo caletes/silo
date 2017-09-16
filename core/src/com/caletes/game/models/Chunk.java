@@ -22,7 +22,8 @@ public class Chunk {
     }
 
     public Node pushItem(Item item, WorldPosition worldPosition) throws OctreeOutOfBoundsException {
-        item.applyWorldPosition(worldPosition);
+        item.setWorldPosition(worldPosition);
+        item.applyWorldPosition();
         Vector3 inChunkPos = item.getWorldPosition().getItemPositionInChunk(size);
         return items.setObjectAt(item, (int) inChunkPos.x, (int) inChunkPos.y, (int) inChunkPos.z);
     }

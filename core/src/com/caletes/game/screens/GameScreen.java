@@ -6,10 +6,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
-import com.caletes.game.Camera;
-import com.caletes.game.IsoConverter;
-import com.caletes.game.Logger;
-import com.caletes.game.SiloGame;
+import com.caletes.game.*;
 import com.caletes.game.drawers.ChunkDrawer;
 import com.caletes.game.generators.ChunkGenerator;
 import com.caletes.game.models.Chunk;
@@ -21,6 +18,8 @@ import com.caletes.game.models.items.Player;
 import com.caletes.game.models.items.cubes.CubeFactory;
 import com.caletes.game.models.spritesheet.CubeSheet;
 import com.caletes.game.models.spritesheet.KenneyCubeSheet;
+
+import java.util.Set;
 
 public class GameScreen extends ScreenAdapter {
 
@@ -51,7 +50,7 @@ public class GameScreen extends ScreenAdapter {
 
         this.player = new Player();
         try {
-            world.pushItem(player, new WorldPosition(50, 50, 9));
+            world.pushItem(player, new WorldPosition(50, 50, 9f));
         } catch (WorldOutOfBoundsException e) {
             e.printStackTrace();
         }
@@ -95,17 +94,17 @@ public class GameScreen extends ScreenAdapter {
     public void playerInput() {
         try {
             if (Gdx.input.isKeyPressed(Input.Keys.Z))
-                move(new Vector3(0, -0.2f, 0));
+                move(new Vector3(0, -0.1f, 0));
             else if (Gdx.input.isKeyPressed(Input.Keys.D))
-                move(new Vector3(0.2f, 0, 0));
+                move(new Vector3(0.1f, 0, 0));
             else if (Gdx.input.isKeyPressed(Input.Keys.S))
-                move(new Vector3(0, 0.2f, 0));
+                move(new Vector3(0, 0.1f, 0));
             else if (Gdx.input.isKeyPressed(Input.Keys.Q))
-                move(new Vector3(-0.2f, 0, 0));
+                move(new Vector3(-0.1f, 0, 0));
             else if (Gdx.input.isKeyJustPressed(Input.Keys.E))
-                move(new Vector3(0, 0, 1f));
+                move(new Vector3(0, 0, 0.1f));
             else if (Gdx.input.isKeyJustPressed(Input.Keys.A))
-                move(new Vector3(0, 0, -1f));
+                move(new Vector3(0, 0, -0.1f));
         } catch (WorldOutOfBoundsException e) {
             e.printStackTrace();
         }
@@ -113,14 +112,21 @@ public class GameScreen extends ScreenAdapter {
 
     private void move(Vector3 move) throws WorldOutOfBoundsException {
 
-        WorldPosition worldPosition = player.getWorldPosition();
-        Vector3 next = move.add(worldPosition.getPosition());
-        WorldPosition nextWP = new WorldPosition(next);
-        Item item = world.getItem(nextWP);
-        if (nextWP.getItemPositionInChunk(CHUNK_SIZE).equals(worldPosition.getItemPositionInChunk(CHUNK_SIZE)) || item == null || item == player) {
-            world.removeItem(worldPosition);
-            world.pushItem(player, nextWP);
-            camera.setWorldPosition(nextWP);
+        WorldPosition playerPosition = player.getWorldPosition();
+        Vector3 next = move.add(playerPosition.getPosition());
+        WorldPosition nextPlayerPosition = new WorldPosition(next);
+
+
+        Set<Item> others = world.getItemsAround(nextPlayerPosition);
+        player.setWorldPosition(nextPlayerPosition);
+        Collider collider = Collider.getInstance();
+        if(!collider.collide(player,others)){
+            player.applyWorldPosition();
+            world.removeItem(playerPosition);
+            world.pushItem(player, nextPlayerPosition);
+            camera.setWorldPosition(nextPlayerPosition);
+        }else {
+            player.setWorldPosition(playerPosition);
         }
     }
 

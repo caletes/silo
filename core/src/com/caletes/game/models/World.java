@@ -4,13 +4,16 @@ package com.caletes.game.models;
 import com.badlogic.gdx.math.Vector3;
 import com.caletes.game.generators.ChunkGenerator;
 import com.caletes.game.models.items.Item;
+import com.caletes.game.models.items.Player;
 import com.caletes.game.octree.Direction;
 import com.caletes.game.octree.Node;
 import com.caletes.game.octree.OctreeFactory;
 import com.caletes.game.octree.OctreeOutOfBoundsException;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class World {
     private Node<Chunk> chunks;
@@ -44,6 +47,22 @@ public class World {
             }
         }
         return chunks;
+    }
+
+    public Set<Item> getItemsAround(WorldPosition worldPosition) throws WorldOutOfBoundsException {
+        Set<Item> items = new HashSet<>();
+        for (Direction direction : Direction.values()) {
+            if (direction != Direction.NONE) {
+                Direction.Delta delta = direction.getDelta();
+                float nextX = worldPosition.getX() + delta.x;
+                float nextY = worldPosition.getY() + delta.y;
+                float nextZ = worldPosition.getZ() + delta.z;
+                Item item = getItem(new WorldPosition(nextX, nextY, nextZ));
+                if (item != null && !(item instanceof Player))
+                    items.add(item);
+            }
+        }
+        return items;
     }
 
     public void pushItem(Item item, WorldPosition worldPosition) throws WorldOutOfBoundsException {

@@ -1,5 +1,7 @@
 package com.caletes.game.octree;
 
+import com.caletes.game.models.WorldPosition;
+
 import java.util.ArrayList;
 import java.util.List;
 

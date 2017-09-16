@@ -20,8 +20,11 @@ public abstract class Item {
         this.depth = depth;
     }
 
-    public void applyWorldPosition(WorldPosition worldPosition) {
+    public void setWorldPosition(WorldPosition worldPosition) {
         this.worldPosition = worldPosition;
+    }
+
+    public void applyWorldPosition() {
         setSpritesPosition(worldPosition.getSpritePosition());
     }
 
