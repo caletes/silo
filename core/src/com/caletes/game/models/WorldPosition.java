@@ -36,9 +36,13 @@ public class WorldPosition {
     }
 
     public Vector3 getChunkPosition(int chunkSize) {
+        //TODO revoir les valeurs < 0
         float x = (float) Math.ceil(position.x) / chunkSize;
+        if (x < 0) x--;
         float y = (float) Math.ceil(position.y) / chunkSize;
+        if (y < 0) y--;
         float z = (float) Math.ceil(position.z) / chunkSize;
+        if (z < 0) z--;
         return new Vector3((int) x, (int) y, (int) z);
     }
 
