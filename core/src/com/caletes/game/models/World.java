@@ -6,19 +6,19 @@ import com.caletes.game.generators.ChunkGenerator;
 import com.caletes.game.models.items.Item;
 import com.caletes.game.octree.Direction;
 import com.caletes.game.octree.Node;
-import com.caletes.game.octree.Octree;
+import com.caletes.game.octree.OctreeFactory;
 import com.caletes.game.octree.OctreeOutOfBoundsException;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class World {
-    private Octree<Chunk> chunks;
+    private Node<Chunk> chunks;
     private int chunkSize;
     private ChunkGenerator chunkGenerator;
 
     public World(int size, int chunkSize, ChunkGenerator chunkGenerator) {
-        chunks = new Octree<>(size);
+        chunks = OctreeFactory.createWithSize(Chunk.class, size);
         this.chunkSize = chunkSize;
         this.chunkGenerator = chunkGenerator;
     }

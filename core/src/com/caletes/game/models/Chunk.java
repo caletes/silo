@@ -4,20 +4,20 @@ package com.caletes.game.models;
 import com.badlogic.gdx.math.Vector3;
 import com.caletes.game.models.items.Item;
 import com.caletes.game.octree.Node;
-import com.caletes.game.octree.Octree;
+import com.caletes.game.octree.OctreeFactory;
 import com.caletes.game.octree.OctreeOutOfBoundsException;
 
 public class Chunk {
 
     private int size;
-    private Octree<Item> items;
+    private Node<Item> items;
 
     public Chunk(int size) {
         this.size = size;
-        this.items = new Octree(nextPowOf2(size));
+        this.items = OctreeFactory.createWithSize(Item.class,nextPowOf2(size));
     }
 
-    public Octree<Item> getItems() {
+    public Node<Item> getItems() {
         return items;
     }
 
